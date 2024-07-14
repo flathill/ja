@@ -1,0 +1,5578 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 10.2.0" />
+<title>pve-firewall(8)</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
+  padding: 0;
+  margin: 0;
+}
+pre {
+  white-space: pre-wrap;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; vertical-align: text-bottom; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel0, div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overridden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+</style>
+
+
+<style type="text/css">
+:root {
+    /* pre-defined colors */
+    --pdt-grey-950: hsl(0deg, 0%, 95%);
+    --pdt-grey-400: hsl(0deg, 0%, 40%);
+    --pdt-grey-250: hsl(0deg, 0%, 25%);
+    --pdt-grey-150: hsl(0deg, 0%, 15%);
+    --pdt-grey-100: hsl(0deg, 0%, 10%);
+    --pdt-primary-850: hsl(205deg, 100%, 85%);
+    --pdt-primary-800: hsl(205deg, 100%, 80%);
+    --pdt-primary-700: hsl(205deg, 100%, 70%);
+    --pdt-secondary-850: hsl(250deg, 100%, 85%);
+}
+
+/* adjust admonition block spacing. this allows for a background on
+ * admonition blocks that doesn't make the elements look to tightly
+ * spaced.
+ */
+div.admonitionblock {
+    border-radius: 3px;
+    margin: 1.5em 0;
+    padding: 0.5em 10% 0.5em 0.5em;
+}
+
+div.admonitionblock td.icon {
+    padding-right: 0.5em;
+}
+
+div.admonitionblock td.icon > img {
+    box-sizing: border-box;
+    padding: 0.15em;
+}
+
+/* Fine-tune headings a bit */
+h4 {
+  font-size: 1.1em;
+}
+h5 {
+  font-size: 1.05em;
+}
+h6 {
+  font-size: 1.0em;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+        --pdt-body-background: var(--pdt-grey-150);
+        --pdt-text: var(--pdt-grey-950);
+        --pdt-headline: var(--pdt-primary-800);
+        --pdt-link: var(--pdt-primary-700);
+        --pdt-link-visited: var(--pdt-secondary-850);
+        --pdt-highlighted-text: var(--pdt-primary-850);
+        --pdt-background-sidebar: var(--pdt-grey-100);
+        --pdt-background-listings: var(--pdt-grey-100);
+        --pdt-border: var(--pdt-grey-400);
+        --pdt-border-alt: var(--pdt-grey-250);
+        --pdt-table-border: var(--pdt-grey-400);
+        --pdt-background-admonition: var(--pdt-grey-250);
+    }
+
+    body {
+        color: var(--pdt-text);
+        background-color: var(--pdt-body-background);
+    }
+
+    a {
+        color: var(--pdt-link);
+    }
+
+    a:visited {
+        color: var(--pdt-link-visited);
+    }
+
+    /* style headlines, titles etc. */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    thead,
+    #author,
+    #toctitle,
+    div.title,
+    td.hdlist1,
+    caption.title,
+    p.tableblock.header {
+        color: var(--pdt-headline);
+    }
+
+    h1,
+    h2,
+    h3,
+    #footer {
+        border-color: var(--pdt-border);
+    }
+
+    /* formatted colored text */
+    dt,
+    em,
+    pre,
+    code,
+    strong,
+    .monospaced {
+        color: var(--pdt-highlighted-text);
+    }
+
+    /* style the table of contents sidebar */
+    div #toc {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-sidebar);
+        border-color: var(--pdt-border-alt);
+    }
+
+    div #toc a:link,
+    div #toc a:visited {
+        color: var(--pdt-text);
+    }
+
+    /* reduce the brigthness of images a bit and make it reversable
+     * through hovering over them.
+     */
+    .image > img {
+        filter: brightness(90%);
+    }
+
+    .image > img:hover {
+        filter: none;
+    }
+
+    /* tables */
+    th.tableblock,
+    td.tableblock,
+    table.tableblock {
+        border-color: var(--pdt-table-border);
+    }
+
+    div.quoteblock,
+    div.verseblock {
+        color: var(--pdt-text);
+        border-color: var(--pdt-border);
+    }
+
+    /* listings (e.g. code snippet blocks) */
+    div.listingblock > div.content {
+        background-color: var(--pdt-background-listings);
+        border-color: var(--pdt-border-alt);
+    }
+
+    /* admonition blocks (e.g. notes, warnings etc.) */
+    div.admonitionblock {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-admonition);
+    }
+
+    div.admonitionblock td.content {
+        border-color: var(--pdt-border);
+    }
+
+    /* makes the admonition icons appear a bit more consistent, by
+     * adding a white background the shadows in the icons look
+     * "correct"
+     */
+    div.admonitionblock td.icon > img {
+        background-color: white;
+        border-radius: 100%;
+        filter: brightness(95%);
+    }
+
+    /* invert the logo */
+    #header > h1 > .image > img {
+        filter: invert(100%) hue-rotate(180deg) brightness(90%);
+    }
+
+    /* fixes the black text on unorderd lists */
+    ul > li > * {
+        color: var(--pdt-text);
+    }
+}
+</style>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install();
+/*]]>*/
+</script>
+</head>
+<body class="article" style="max-width:55em">
+<div id="header">
+<h1>pve-firewall(8)</h1>
+<span id="author">プロックスモックス・サーバー・ソリューションズ社</span><br />
+<span id="email" class="monospaced"><a href="mailto:support@proxmox.com">&lt;support@proxmox.com&gt;</a></span><br />
+<span id="revnumber">バージョン8.2.2、</span>
+<span id="revdate">2024年 4月25日(木) 09:24:16 CEST</span>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="chapter_pve_firewall">名前</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>pve-firewall - PVE ファイアウォールデーモン</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_synopsis">シノプシス</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>pve-firewall</strong> <span class="monospaced">&lt;COMMAND&gt; [ARGS] [OPTIONS]</span>.</p></div>
+<div class="paragraph">
+<p><strong>pve-firewall コンパイル</strong></p></div>
+<div class="paragraph">
+<p>ファイアウォールのルールをコンパイルして印刷する。これはテストに便利です。</p></div>
+<div class="paragraph">
+<p><strong>pve-firewall help</strong> <span class="monospaced">[OPTIONS] [オプション]</span>。</p></div>
+<div class="paragraph">
+<p>指定したコマンドに関するヘルプを表示する。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--extra-args</span> <span class="monospaced">&lt;array&gt;</span></dt>
+<dd>
+<p>
+特定のコマンドのヘルプを表示する</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--verbose</span> <span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+冗長な出力形式。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pve-ファイアウォール</strong></p></div>
+<div class="paragraph">
+<p>ローカルネットワークの情報を印刷する。</p></div>
+<div class="paragraph">
+<p><strong>pve-ファイアウォール再起動</strong></p></div>
+<div class="paragraph">
+<p>Proxmox VEファイアウォールサービスを再起動します。</p></div>
+<div class="paragraph">
+<p><strong>pve-firewall simulate</strong> <span class="monospaced">[OPTIONS]</span>を<strong>シミュレート</strong>する。</p></div>
+<div class="paragraph">
+<p>ファイアウォールルールをシミュレートする。これはカーネルの<em>ルーティング</em>テーブルをシミュレートするのではなく、単にソースゾーンからデスティネーションゾーンへのルーティングが可能であると仮定する。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--dest</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+宛先IPアドレス。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--ポート</span> <span class="monospaced">&lt;整数</span></dt>
+<dd>
+<p>
+宛先ポート。</p>
+</dd>
+<dt class="hdlist1">
+--<span class="monospaced">from</span> <span class="monospaced">(host|outside|vmd+|ctd+|([a-zA-Z][a-zA-Z0-9]{0,9})/(˶S+))</span><em>(default =</em> <span class="monospaced">outside</span>)</dt>
+<dd>
+<p>
+ソースゾーン</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--プロトコル</span> <span class="monospaced">(tcp|udp)</span><em>(デフォルト =</em> <span class="monospaced">tcp</span>)</dt>
+<dd>
+<p>
+プロトコル</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--ソース</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+ソースIPアドレス。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--スポーツ</span> <span class="monospaced">&lt;整数</span></dt>
+<dd>
+<p>
+ソースポート</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--to</span> <span class="monospaced">(host|outside|vmd+|ctd+|([a-zA-Z][a-zA-Z0-9]{0,9})/(\S+))</span><em>(default =</em> <span class="monospaced">host</span>)</dt>
+<dd>
+<p>
+デスティネーションゾーン</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--verbose</span> <span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+冗長出力。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pve-firewall start</strong> <span class="monospaced">[OPTIONS] [オプション]</span>。</p></div>
+<div class="paragraph">
+<p>Proxmox VEファイアウォールサービスを開始します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--debug</span> <span class="monospaced">&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+デバッグモード - フォアグラウンドにとどまる</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pve-ファイアウォールのステータス</strong></p></div>
+<div class="paragraph">
+<p>ファイアウォールのステータスを取得します。</p></div>
+<div class="paragraph">
+<p><strong>pve-ファイアウォール停止</strong></p></div>
+<div class="paragraph">
+<p>Proxmox VEファイアウォールサービスを停止します。停止すると、Proxmox VE関連のiptableルールがすべてアクティブに削除され、ホストが保護されなくなる可能性があることに注意してください。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description">説明</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Proxmox VE Firewallは、ITインフラストラクチャを保護する簡単な方法を提供します。クラスタ内のすべてのホストのファイアウォールルールを設定したり、仮想マシンやコンテナのルールを定義したりできます。ファイアウォールマクロ、セキュリティグループ、IPセット、エイリアスなどの機能が、このタスクを容易にします。</p></div>
+<div class="paragraph">
+<p>すべてのコンフィギュレーションはクラスタ・ファイル・システムに保存されますが、<span class="monospaced">iptablesベースの</span>ファイアウォール・サービスは各クラスタ・ノード上で実行されるため、仮想マシン間で完全に分離されます。また、このシステムは分散型であるため、中央のファイアウォール・ソリューションよりもはるかに高い帯域幅を提供します。</p></div>
+<div class="paragraph">
+<p>ファイアウォールはIPv4とIPv6をフルサポートしています。IPv6のサポートは完全に透過的で、デフォルトで両方のプロトコルのトラフィックをフィルタリングします。そのため、IPv6用に別のルールセットを維持する必要はありません。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_zones">ゾーン</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Proxmox VE ファイアウォールはネットワークを以下の論理ゾーンにグループ化します：</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+ホスト</dt>
+<dd>
+<p>
+クラスタノードから/へのトラフィック</p>
+</dd>
+<dt class="hdlist1">
+VM</dt>
+<dd>
+<p>
+特定のVMから/へのトラフィック</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p>各ゾーンに対して、受信および/または送信トラフィックのファイアウォールルールを定義することができます。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration_files">設定ファイル</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ファイアウォール関連の設定はすべてproxmoxクラスタファイルシステムに保存されます。そのため、これらのファイルは自動的にすべてのクラスタノードに配布され、<span class="monospaced">pve-firewall</span>サービスは変更があったときに自動的に基礎となる<span class="monospaced">iptables</span>ルールを更新します。</p></div>
+<div class="paragraph">
+<p>GUI（<strong>データセンター</strong>→<strong>ファイアウォール</strong>、<strong>ノード</strong>→<strong>ファイアウォール</strong>）を使って何でも設定できますし、お好みのエディタを使って設定ファイルを直接編集することもできます。</p></div>
+<div class="paragraph">
+<p>ファイアウォール設定ファイルには、キーと値のペアのセクションがあります。<span class="monospaced">で</span>始まる行と空白行はコメントとみなされます。セクションは<span class="monospaced">[</span>と<span class="monospaced">]</span> で囲まれたセクション名を含むヘッダー行で始まります。</p></div>
+<div class="sect2">
+<h3 id="pve_firewall_cluster_wide_setup">クラスターワイドセットアップ</h3>
+<div class="paragraph">
+<p>クラスタ全体のファイアウォールのコンフィギュレーションは以下の場所に保存されます：</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>/etc/pve/firewall/cluster.fw</pre>
+</div></div>
+<div class="paragraph">
+<p>コンフィギュレーションには以下のセクションを含めることができる：</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">[オプション］</span></dt>
+<dd>
+<p>
+クラスタ全体のファイアウォールオプションを設定するために使用します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ebtables</span>:<span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+クラスタ全体でebtablesルールを有効にします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">enable</span>:<span class="monospaced">&lt;整数&gt; (0 - N</span>)</dt>
+<dd>
+<p>
+ファイアウォールクラスター全体を有効または無効にします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">log_ratelimit</span>:<span class="monospaced">[enable=]&lt;1|0&gt; [,burst=&lt;integer&gt;] [,rate=&lt;rate&gt;]</span>.</dt>
+<dd>
+<p>
+ログ・レイトリミットの設定</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">burst=&lt;整数&gt;</span><span class="monospaced">(0 - N)</span><em>(デフォルト =</em> <span class="monospaced">5</span>)</dt>
+<dd>
+<p>
+レートが適用される前に常に記録されるパッケージの初期バースト</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">enable=&lt;boolean&gt;</span><em>（デフォルト =</em> <span class="monospaced">1）</span></dt>
+<dd>
+<p>
+ログのレート制限を有効または無効にする</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">rate</span><span class="monospaced">=&lt;レート</span><em>&gt;（デフォルト=</em> <span class="monospaced">1/秒）</span></dt>
+<dd>
+<p>
+バーストバケツが補充される頻度</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">policy_in</span>:<span class="monospaced">&lt;ACCEPT | DROP | REJECT&gt;。</span></dt>
+<dd>
+<p>
+インプットポリシー。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">policy_out</span>:<span class="monospaced">&lt;ACCEPT | DROP | REJECT&gt;。</span></dt>
+<dd>
+<p>
+アウトプットの方針。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">[ルール］</span></dt>
+<dd>
+<p>
+このセクションには、全ノードのクラスタ全体のファイアウォールルールが含まれます。</p>
+</dd>
+<dt class="hdlist1">
+[<span class="monospaced">IPSET &lt;名前&gt;]</span>。</dt>
+<dd>
+<p>
+クラスタ全体のIPセット定義。</p>
+</dd>
+<dt class="hdlist1">
+[<span class="monospaced">GROUP &lt;名前&gt;]</span>。</dt>
+<dd>
+<p>
+クラスタ全体のセキュリティグループ定義。</p>
+</dd>
+<dt class="hdlist1">
+[<span class="monospaced">ALIASES］</span></dt>
+<dd>
+<p>
+クラスタ全体のエイリアス定義。</p>
+</dd>
+</dl></div>
+<div class="sect3">
+<h4 id="_enabling_the_firewall">ファイアウォールの有効化</h4>
+<div class="paragraph">
+<p>ファイアウォールはデフォルトでは完全に無効になっているので、ここで有効オプションを設定する必要がある：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>[OPTIONS] # enable firewall (クラスタ全体の設定。デフォルトは無効) enable：1</pre>
+</div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Important" src="data:image/png;base64,
+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
+EQn3XQAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">ファイアウォールを有効にすると、デフォルトですべてのホストへのトラフィックがブロックされます。唯一の例外は、ローカルネットワークからのWebGUI(8006)とssh(22)です。</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>リモートから Proxmox VE ホストを管理する場合は、リモート IP から Web GUI (ポート 8006) へのトラフィックを許可するルールを作成する必要があります。また、ssh(ポート22)やSPICE(ポート3128)も許可する必要があります。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Tip" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">ファイアウォールを有効にする前に、Proxmox VEホストの1つにSSH接続を開いてください。そうすれば、何か問題が発生した場合でもホストにアクセスできます。</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>この作業を簡略化するには、代わりに「management」というIPSセットを作成し、そこにすべてのリモートIPを追加します。これにより、リモートからGUIにアクセスするために必要なファイアウォールルールがすべて作成される。</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="pve_firewall_host_specific_configuration">ホスト固有の設定</h3>
+<div class="paragraph">
+<p>ホスト関連のコンフィギュレーションを読み込む：</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>/etc/pve/nodes/&lt;nodename&gt;/host.fw</pre>
+</div></div>
+<div class="paragraph">
+<p><span class="monospaced">cluster.fw</span>設定からルールを上書きしたい場合に便利です。また、ログの冗長度を上げたり、ネットフィルタ関連のオプションを設定することもできます。コンフィギュレーションには以下のセクションを含めることができます：</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">[オプション］</span></dt>
+<dd>
+<p>
+ホスト関連のファイアウォールオプションを設定する。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">enable</span>:<span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+ホストファイアウォールルールを有効にする。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">log_level_in</span>:<span class="monospaced">&lt;alert | crit | debug | emerg | err | info | nolog | notice | warning&gt;</span>.</dt>
+<dd>
+<p>
+受信トラフィックのログレベル。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">log_level_out</span>:<span class="monospaced">&lt;alert | crit | debug | emerg | err | info | nolog | notice | warning&gt;。</span></dt>
+<dd>
+<p>
+発信トラフィックのログレベル。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">log_nf_conntrack</span>:<span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+conntrack情報のロギングを有効にする。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ndp</span>:<span class="monospaced">&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+NDP（Neighbor Discovery Protocol）を有効にする。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">nf_conntrack_allow_invalid</span>:<span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+コネクション・トラッキングで無効なパケットを許可する。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">nf_conntrack_helpers</span>:<span class="monospaced">&lt;string&gt;</span><em>(デフォルトは</em>``)</dt>
+<dd>
+<p>
+特定のプロトコルの conntrack ヘルパーを有効にします。対応プロトコル: amanda、ftp、irc、netbios-ns、pptp、sane、sip、snmp、tftp</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">nf_conntrack_max</span>:<span class="monospaced">&lt;整数&gt; (32768 - N)</span><em>(デフォルト =</em> <span class="monospaced">262144</span>)</dt>
+<dd>
+<p>
+追跡接続の最大数。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">nf_conntrack_tcp_timeout_established</span>:<span class="monospaced">&lt;整数&gt; (7875 - N)</span><em>(デフォルト =</em> <span class="monospaced">432000</span>)</dt>
+<dd>
+<p>
+CONNTRACK がタイムアウト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">nf_conntrack_tcp_timeout_syn_recv</span>:<span class="monospaced">&lt;整数&gt; (30 - 60</span>)<em>(デフォルト =</em> <span class="monospaced">60</span>)</dt>
+<dd>
+<p>
+Conntrack syn recv タイムアウト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">nftables</span>:<span class="monospaced">&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+nftablesベースのファイアウォールを有効にする（技術プレビュー）</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">nosmurfs</span>:<span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+SMURFSフィルターを有効にする。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">protection_synflood</span>:<span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+シン・フラッド・プロテクションを有効にする</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">protection_synflood_burst</span>:<span class="monospaced">&lt;整数&gt;</span><em>(デフォルト =</em> <span class="monospaced">1000</span>)</dt>
+<dd>
+<p>
+ip srcによるシンフラッド・プロテクション・レート・バースト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">protection_synflood_rate</span>:<span class="monospaced">&lt;整数&gt;</span><em>(デフォルト =</em> <span class="monospaced">200</span>)</dt>
+<dd>
+<p>
+ip srcによるシン・フラッド・プロテクション・レート syn/sec。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">smurf_log_level</span>:<span class="monospaced">&lt;alert | crit | debug | emerg | err | info | nolog | notice | warning&gt;</span>.</dt>
+<dd>
+<p>
+SMURFSフィルターのログレベル。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">tcp_flags_log_level</span>:<span class="monospaced">&lt;alert | crit | debug | emerg | err | info | nolog | notice | warning&gt;</span>.</dt>
+<dd>
+<p>
+不正なtcpフラグフィルターのログレベル。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">tcpflags</span>:<span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+TCPフラグの不正な組み合わせをフィルタリングする。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">[ルール］</span></dt>
+<dd>
+<p>
+このセクションにはホスト固有のファイアウォールルールが含まれる。</p>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="pve_firewall_vm_container_configuration">VM/コンテナの構成</h3>
+<div class="paragraph">
+<p>VM ファイアウォールのコンフィギュレーションが読み込まれる：</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>/etc/pve/firewall/&lt;VMID&gt;.fw</pre>
+</div></div>
+<div class="paragraph">
+<p>そして以下のデータを含んでいる：</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">[オプション］</span></dt>
+<dd>
+<p>
+VM/Container 関連のファイアウォールオプションを設定する。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">dhcp</span>:<span class="monospaced">&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+DHCPを有効にする。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">enable</span>:<span class="monospaced">&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+ファイアウォールルールを有効/無効にする。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ipfilter</span>:<span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+デフォルトのIPフィルタを有効にする。これは、すべてのインターフェイスに空の ipfilter-net&lt;id&gt; ipset を追加することと同じです。このようなipsetは、IPv6リンクのローカルアドレスをインターフェイスのMACアドレスに由来するものに制限するような、まともなデフォルトの制限を暗黙的に含んでいる。コンテナに対しては、設定されたIPアドレスが暗黙のうちに追加される。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">log_level_in</span>:<span class="monospaced">&lt;alert | crit | debug | emerg | err | info | nolog | notice | warning&gt;</span>.</dt>
+<dd>
+<p>
+受信トラフィックのログレベル。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">log_level_out</span>:<span class="monospaced">&lt;alert | crit | debug | emerg | err | info | nolog | notice | warning&gt;。</span></dt>
+<dd>
+<p>
+発信トラフィックのログレベル。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">macfilter</span>:<span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+MACアドレスフィルターの有効/無効。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ndp</span>:<span class="monospaced">&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+NDP（Neighbor Discovery Protocol）を有効にする。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">policy_in</span>:<span class="monospaced">&lt;ACCEPT | DROP | REJECT&gt;。</span></dt>
+<dd>
+<p>
+インプットポリシー。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">policy_out</span>:<span class="monospaced">&lt;ACCEPT | DROP | REJECT&gt;。</span></dt>
+<dd>
+<p>
+アウトプットの方針。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">radv</span>:<span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+ルーター広告の送信を許可する。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">[ルール］</span></dt>
+<dd>
+<p>
+このセクションには、VM/コンテナファイアウォールルールが含まれます。</p>
+</dd>
+<dt class="hdlist1">
+[<span class="monospaced">IPSET &lt;名前&gt;]</span>。</dt>
+<dd>
+<p>
+IPセットの定義。</p>
+</dd>
+<dt class="hdlist1">
+[<span class="monospaced">ALIASES］</span></dt>
+<dd>
+<p>
+IPエイリアスの定義。</p>
+</dd>
+</dl></div>
+<div class="sect3">
+<h4 id="_enabling_the_firewall_for_vms_and_containers">VMとコンテナのファイアウォールを有効にする</h4>
+<div class="paragraph">
+<p>各仮想ネットワーク・デバイスはそれぞれファイアウォール有効フラグを持っている。そのため、インターフェイスごとにファイアウォールを選択的に有効にすることができます。これは、一般的なファイアウォール<span class="monospaced">有効</span>オプションに加えて必要です。</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_firewall_rules">ファイアウォールルール</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ファイアウォール・ルールは、方向<span class="monospaced">（IN</span>または<span class="monospaced">OUT</span>）とアクション<span class="monospaced">（ACCEPT</span>、<span class="monospaced">DENY</span>、<span class="monospaced">REJECT</span>）で構成される。マクロ名を指定することもできます。マクロには定義済みのルールとオプションのセットが含まれます。ルールの前に<span class="monospaced">|</span> を付けると、ルールを無効にできます。</p></div>
+<div class="listingblock">
+<div class="title">ファイアウォールルールの構文</div>
+<div class="content monospaced">
+<pre>[ルール] DIRECTION ACTION [オプション] |DIRECTION ACTION [オプション] # 無効ルール DIRECTION MACRO(ACTION) [オプション] # 定義済みのマクロを使う</pre>
+</div></div>
+<div class="paragraph">
+<p>以下のオプションを使用して、ルールのマッチを絞り込むことができる。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--dest</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+パケットの宛先アドレスを制限する。これは、単一のIPアドレス、IPセット<em>(+ipsetname</em>)、またはIPエイリアスの定義を参照することができます。また、<em>20.34.101.207-201.3.9.99の</em>ようなアドレス範囲や、IPアドレスとネットワークのリストを指定することもできます（エントリーはカンマで区切られます）。このようなリストの中にIPv4アドレスとIPv6アドレスを混在させないでください。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">-dポート</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+TCP/UDP宛先ポートを制限する。<em>etc/servicesで</em>定義されているように、サービス名または単純な番号（0～65535）を使用できます。ポート範囲は、例えば<em>80:85の</em>ように<em>"˶+:˶+"</em>で指定することができます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--icmp-type</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+icmp-type を指定する。proto が<em>icmp</em>または<em>icmpv6/ipv6-icmp</em> の場合のみ有効。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--iface</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+ネットワーク・インターフェース名。VMとコンテナにはネットワーク構成キー名を使用する必要がある<em>（netd+）。</em>ホスト関連のルールでは、任意の文字列を使用できる。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--ログ</span> <span class="monospaced">&lt;alert | crit | debug | emerg | err | info | nolog | notice | warning&gt;</span>.</dt>
+<dd>
+<p>
+ファイアウォールルールのログレベル。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">-プロト</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+IPプロトコル。<em>etc/protocolsで</em>定義されているように、プロトコル名<em>（tcp/</em><em>udp</em>）または単純な数字を使うことができる。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--ソース</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+パケットの送信元アドレスを制限する。これは、単一のIPアドレス、IPセット<em>(+ipsetname</em>)、またはIPエイリアスの定義を参照することができます。また、<em>20.34.101.207-201.3.9.99の</em>ようなアドレス範囲や、IPアドレスとネットワークのリストを指定することもできます（エントリーはカンマで区切られます）。このようなリストの中にIPv4アドレスとIPv6アドレスを混在させないでください。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--スポーツ</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+TCP/UDPソース・ポートを制限する。<em>etc/servicesで</em>定義されているように、サービス名または単純な番号（0～65535）を使用できます。ポート範囲は、例えば<em>80:85の</em>ように<em>"˶+:˶+"</em>で指定することができます。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p>いくつか例を挙げよう：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>[RULES] IN SSH(ACCEPT) -i net0 IN SSH(ACCEPT) -i net0 # コメント IN SSH(ACCEPT) -i net0 -source 192.168.2.192 # 192.168.2.192からのSSHだけを許可する。168.2.192 IN SSH(ACCEPT) -i net0 -source 10.0.0.1-10.0.0.10 # IPレンジのSSHを受け入れる IN SSH(ACCEPT) -i net0 -source 10.0.0.1,10.0.0.2,10.0.0.3 #accept ssh for IP list IN SSH(ACCEPT) -i net0 -source +mynetgroup # accept ssh for ipset mynetgroup IN SSH(ACCEPT) -i net0 -source myserveralias #accept ssh for alias myserveralias |IN SSH(ACCEPT) -i net0 # disabled rule IN DROP # drop all incoming packages OUT ACCEPT # accept all outgoing packages</pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pve_firewall_security_groups">セキュリティ・グループ</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>セキュリティ・グループとは、クラスタ・レベルで定義されるルールの集合体であり、すべての VM のルールで使用することができる。例えば、<em>http</em>と<em>https の</em>ポートを開くルールを持つ "webserver" という名前のグループを定義することができる。</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># /etc/pve/firewall/cluster.fw [group webserver] IN ACCEPT -p tcp -dport 80 IN ACCEPT -p tcp -dport 443</pre>
+</div></div>
+<div class="paragraph">
+<p>次に、このグループをVMのファイアウォールに追加する。</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># /etc/pve/firewall/&lt;VMID&gt;.fw [RULES] GROUP webserver</pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pve_firewall_ip_aliases">IPエイリアス</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>IPエイリアスを使用すると、ネットワークのIPアドレスを名前に関連付けることができます。そして、その名前を参照することができます：</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+インサイドIPセット定義</p>
+</li>
+<li>
+<p>
+ファイアウォールルールの<span class="monospaced">送信元と</span> <span class="monospaced">送信先の</span>プロパティ</p>
+</li>
+</ul></div>
+<div class="sect2">
+<h3 id="_standard_ip_alias_span_class_monospaced_local_network_span">標準IPエイリアス<span class="monospaced">local_network</span></h3>
+<div class="paragraph">
+<p>このエイリアスは自動的に定義されます。割り当てられた値を確認するには、以下のコマンドを使用してください：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># pve-firewall localnet local hostname: example local IP address：192.168.2.100 network auto detect: 192.168.0.0/20 using detected local_network：192.168.0.0/20</pre>
+</div></div>
+<div class="paragraph">
+<p>ファイアウォールは、このエイリアスを使用してクラスタ通信（corosync、API、SSH）に必要なすべてのものを許可するルールを自動的に設定する。</p></div>
+<div class="paragraph">
+<p>ユーザは<span class="monospaced">cluster.fw</span>aliasセクションでこれらの値を上書きできます。パブリックネットワーク上で単一のホストを使用する場合は、明示的にローカルIPアドレス</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># /etc/pve/firewall/cluster.fw [ALIASES] local_network 1.2.3.4 # シングルIPアドレスを使う</pre>
+</div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pve_firewall_ip_sets">IPセット</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>IP セットは、ネットワークとホストのグループを定義するために使用できます。ファイアウォールルールの<span class="monospaced">source</span>と<span class="monospaced">dest</span>プロパティで '+name` を使って参照できます。</p></div>
+<div class="paragraph">
+<p>以下の例では、<span class="monospaced">管理</span>IPセットからのHTTPトラフィックを許可している。</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>IN HTTP(ACCEPT) -ソース +管理</pre>
+</div></div>
+<div class="sect2">
+<h3 id="_standard_ip_set_span_class_monospaced_management_span">標準IPセット<span class="monospaced">管理</span></h3>
+<div class="paragraph">
+<p>この IP セットはホストファイアウォールのみに適用されます(VM ファイアウォールではありません)。  これらのIPは通常の管理タスク(Proxmox VE GUI、VNC、SPICE、SSH)を実行できます。</p></div>
+<div class="paragraph">
+<p>ローカルクラスタネットワークは自動的にこのIPセット(alias<span class="monospaced">cluster_network</span>)に追加され、ホスト間のクラスタ通信が可能になります。(マルチキャスト、ssh、...)</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># /etc/pve/firewall/cluster.fw [IPSET 管理] 192.168.2.10 192.168.2.10/24</pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_standard_ip_set_span_class_monospaced_blacklist_span">標準IPセット<span class="monospaced">ブラックリスト</span></h3>
+<div class="paragraph">
+<p>これらのIPからのトラフィックは、各ホストとVMのファイアウォールによってドロップされる。</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># /etc/pve/firewall/cluster.fw [IPSET ブラックリスト] 77.240.159.182 213.87.123.0/24</pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="pve_firewall_ipfilter_section">標準IPセット<span class="monospaced">ipfilter-net*</span></h3>
+<div class="paragraph">
+<p>これらのフィルターはVMのネットワーク・インターフェースに属し、主にIPスプーフィングを防ぐために使用される。このようなセットがインターフェイスに存在する場合、そのインターフェイスの対応するipfilterセットに一致しないソースIPを持つ発信トラフィックはすべてドロップされる。</p></div>
+<div class="paragraph">
+<p>IPアドレスが設定されているコンテナでは、これらのセットが存在する場合（またはVMのファイアウォールの<strong>オプション・</strong>タブにある一般的な<span class="monospaced">IPフィルター</span>・オプションで有効になっている場合）、関連するIPアドレスが暗黙的に含まれる。</p></div>
+<div class="paragraph">
+<p>仮想マシンとコンテナの両方について、近隣発見プロトコルを動作させるために、標準MAC由来のIPv6リンクローカルアドレスも暗黙的に含んでいる。</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>/etc/pve/firewall/&lt;VMID&gt;.fw [IPSET ipfilter-net0] # net0 192.168.2.10上の指定されたIPのみを許可する。</pre>
+</div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pve_firewall_services_commands">サービスとコマンド</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ファイアウォールは各ノードで2つのサービス・デーモンを実行する：</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+pvefw-logger：NFLOG デーモン (ulogd の置き換え)。</p>
+</li>
+<li>
+<p>
+pve-firewall: iptablesルールを更新</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p><span class="monospaced">pve-firewallという</span>CLIコマンドもあり、ファイアウォール・サービスの開始と停止に使用できる：</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># pve-firewall start # pve-firewall stop</pre>
+</div></div>
+<div class="paragraph">
+<p>ステータスを取得するには</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># pve-firewall status</pre>
+</div></div>
+<div class="paragraph">
+<p>上記のコマンドは、すべてのファイアウォール・ルールを読み込んでコンパイルするので、ファイアウォール設定にエラーがある場合は警告が表示される。</p></div>
+<div class="paragraph">
+<p>生成されたiptablesルールを見たい場合は、次のようにする：</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># iptables-save</pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pve_firewall_default_rules">デフォルトのファイアウォールルール</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>以下のトラフィックは、デフォルトのファイアウォール設定によってフィルターされる：</p></div>
+<div class="sect2">
+<h3 id="_datacenter_incoming_outgoing_drop_reject">データセンター着信/発信 DROP/REJECT</h3>
+<div class="paragraph">
+<p>ファイアウォールの入力または出力ポリシーがDROPまたはREJECTに設定されている場合でも、クラスタ内のすべてのProxmox VEホストで次のトラフィックが許可されます：</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+ループバックインターフェース上のトラフィック</p>
+</li>
+<li>
+<p>
+すでに確立されたコネクション</p>
+</li>
+<li>
+<p>
+IGMPプロトコルを使用したトラフィック</p>
+</li>
+<li>
+<p>
+ウェブインターフェースへのアクセスを許可するため、管理ホストからのTCPトラフィックをポート8006に送る</p>
+</li>
+<li>
+<p>
+管理ホストからのTCPトラフィックをポート範囲5900～5999に送り、VNCウェブコンソールのトラフィックを許可する</p>
+</li>
+<li>
+<p>
+管理ホストからの TCP トラフィックは、SPICE プロキシへの接続用にポート 3128 に送られる。</p>
+</li>
+<li>
+<p>
+管理ホストからのTCPトラフィックをポート22に送り、sshアクセスを許可する。</p>
+</li>
+<li>
+<p>
+クラスタネットワークのUDPトラフィックをポート5405-5412に送る。</p>
+</li>
+<li>
+<p>
+クラスタネットワークのUDPマルチキャストトラフィック</p>
+</li>
+<li>
+<p>
+ICMPトラフィック・タイプ3（宛先到達不能）、4（輻輳制御）、または11（時間超過</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>以下のトラフィックはドロップされるが、ロギングを有効にしてもログには記録されない：</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+無効な接続状態のTCPコネクション</p>
+</li>
+<li>
+<p>
+corosyncに関連しないブロードキャスト、マルチキャスト、エニーキャストのトラフィック、すなわちポート5405-5412を経由しないトラフィック。</p>
+</li>
+<li>
+<p>
+ポート43へのTCPトラフィック</p>
+</li>
+<li>
+<p>
+ポート135と445へのUDPトラフィック</p>
+</li>
+<li>
+<p>
+UDPトラフィックのポートレンジは137から139。</p>
+</li>
+<li>
+<p>
+送信元ポート137からポート範囲1024～65535へのUDPトラフィック</p>
+</li>
+<li>
+<p>
+ポート1900へのUDPトラフィック</p>
+</li>
+<li>
+<p>
+ポート135、139、445へのTCPトラフィック</p>
+</li>
+<li>
+<p>
+送信元ポート53からのUDPトラフィック</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>残りのトラフィックは、それぞれドロップまたは拒否され、ログにも記録されます。 これは、NDP、SMURFS、TCPフラグフィルタリングなど、<strong>ファイアウォール</strong>→<strong>オプションで</strong>有効になっている追加オプションによって異なる場合があります。</p></div>
+<div class="paragraph" id="pve_firewall_iptables_inspect">
+<p>の出力を調べてください。</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># iptables-save</pre>
+</div></div>
+<div class="paragraph">
+<p>この出力は<span class="monospaced">システム・レポートにも</span>含まれ、ウェブGUIのノードのサブスクリプション・タブ、または<span class="monospaced">pvereport</span>コマンドライン・ツールからアクセスできます。</p></div>
+</div>
+<div class="sect2">
+<h3 id="_vm_ct_incoming_outgoing_drop_reject">VM/CT着信/発信 DROP/REJECT</h3>
+<div class="paragraph">
+<p>これは、設定されたコンフィギュレーションに応じて、DHCP、NDP、ルーター・アドバタイズド、MACおよびIPフィルタリングのためのいくつかの例外を除いて、VMへのすべてのトラフィックをドロップまたは拒否します。  パケットをドロップ/リジェクトするルールはデータセンターから引き継がれ、ホストの送受信トラフィックの例外は適用されません。</p></div>
+<div class="paragraph">
+<p>繰り返しになるが、<a href="pve-firewall.8.html#pve_firewall_iptables_inspect">iptables-save（上記参照</a>）を使って、適用されたすべてのルールとチェーンを検査することができる。</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_logging_of_firewall_rules">ファイアウォールルールのログ</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>デフォルトでは、ファイアウォールルールによってフィルタリングされたトラフィックのロギングはすべて無効になっています。 ロギングを有効にするには、受信トラフィックおよび/または送信トラフィックの<span class="monospaced">ログレベルを</span> <strong>ファイアウォール</strong>→<strong>オプションで</strong>設定する必要があります。これは、VM/CT ファイアウォールだけでなく、ホストに対しても個別に行うことができます。これにより、Proxmox VEの標準ファイアウォールルールのロギングが有効になり、<strong>Firewall</strong>→<strong>Logで</strong>出力を確認できます。 さらに、標準ルールでは、一部のドロップまたは拒否されたパケットのみがログに記録されます（<a href="pve-firewall.8.html#pve_firewall_default_rules">デフォルトのファイアウォールルールを</a>参照）。</p></div>
+<div class="paragraph">
+<p><span class="monospaced">loglevelは</span>、フィルターされたトラフィックがどれだけログに記録されるかに影響しない。これは、フィルタリングと後処理を容易にするために、ログ出力に接頭辞として付加される<span class="monospaced">LOGIDを</span>変更する。</p></div>
+<div class="paragraph">
+<p><span class="monospaced">loglevelは</span>以下のフラグのいずれかである：</p></div>
+<table class="tableblock frame-all grid-all" id="pve_firewall_log_levels" style="
+width:25%;
+">
+<col style="width:50%;" />
+<col style="width:50%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">ログレベル </th>
+<th class="tableblock halign-left valign-top">ロジッド</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ノログ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">エマージェンシー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">アラート</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">クリティック</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">誤る</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">警告</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">お知らせ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">インフォメーション</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">デバッグ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>典型的なファイアウォールのログ出力は次のようになる：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>vmid logid chain timestamp policy：PACKET_DETAILS</pre>
+</div></div>
+<div class="paragraph">
+<p>ホストファイアウォールの場合、<span class="monospaced">VMIDは</span>0に等しい。</p></div>
+<div class="sect2">
+<h3 id="_logging_of_user_defined_firewall_rules">ユーザー定義のファイアウォールルールのログ</h3>
+<div class="paragraph">
+<p>ユーザー定義のファイアウォールルールによってフィルタリングされたパケットをログに記録するために、各ルールに対して個別にログレベルパラメータを設定することができます。 これにより、<strong>ファイアウォール</strong>→<strong>オプションで</strong>標準ルールに定義されたログレベルとは独立して、きめ細かくログを記録することができます。</p></div>
+<div class="paragraph">
+<p>個々のルールの<span class="monospaced">ログレベルは</span>、ルールの作成または変更時にウェブUIで簡単に定義または変更できますが、対応する<span class="monospaced">pvesh</span>APIコールでも設定できます。</p></div>
+<div class="paragraph">
+<p>さらに、選択したルールに<span class="monospaced">-log &lt;loglevel&gt;</span>を追加することで、ファイアウォール設定ファイル経由でログレベルを設定することもできる（<a href="pve-firewall.8.html#pve_firewall_log_levels">可能なログレベルを</a>参照）。</p></div>
+<div class="paragraph">
+<p>例えば、以下の2つは同じである：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>IN REJECT -p icmp -log nolog IN REJECT -p icmp</pre>
+</div></div>
+<div class="paragraph">
+<p>一方</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>IN REJECT -p icmp -log debug</pre>
+</div></div>
+<div class="paragraph">
+<p>は、<span class="monospaced">デバッグ・</span>レベルのフラグが付いたログ出力を生成する。</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tips_and_tricks">ヒントとコツ</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_how_to_allow_ftp">FTPの許可方法</h3>
+<div class="paragraph">
+<p>FTPは、ポート21と他のいくつかの動的ポートを使用する古いスタイルのプロトコルである。そのため、ポート21を受け入れるルールが必要です。さらに、<span class="monospaced">ip_conntrack_ftp</span>モジュールをロードする必要がある。 そこで、実行してほしい：</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>modprobe ip_conntrack_ftp</pre>
+</div></div>
+<div class="paragraph">
+<p>を追加し、<span class="monospaced">/etc/modulesに</span> <span class="monospaced">ip_conntrack_ftpを</span>追加する（再起動後も動作するようにする）。</p></div>
+</div>
+<div class="sect2">
+<h3 id="_suricata_ips_integration">スリカータIPS統合</h3>
+<div class="paragraph">
+<p><a href="https://suricata.io/">スリカタのIPS</a>（侵入防御システム）を使いたいなら可能です。</p></div>
+<div class="paragraph">
+<p>パケットは、ファイアウォールがACCEPTした後にのみIPSに転送される。</p></div>
+<div class="paragraph">
+<p>リジェクト/ドロップされたファイアウォールのパケットはIPSに送られない。</p></div>
+<div class="paragraph">
+<p>suricataをproxmoxホストにインストールする：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># apt-get install suricata # modprobe nfnetlink_queue</pre>
+</div></div>
+<div class="paragraph">
+<p>次回のリブート時には、<span class="monospaced">/etc/modulesに</span> <span class="monospaced">nfnetlink_queueを</span>追加することをお忘れなく。</p></div>
+<div class="paragraph">
+<p>次に、特定のVMに対してIPSを有効にする：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># /etc/pve/firewall/&lt;VMID&gt;.fw [OPTIONS] ips：1 ips_queues: 0</pre>
+</div></div>
+<div class="paragraph">
+<p>ips_<span class="monospaced">queuesは</span>、このVMに特定のCPUキューをバインドする。</p></div>
+<div class="paragraph">
+<p>利用可能なキューは</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># etc/default/suricata NFQUEUE=0</pre>
+</div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_notes_on_ipv6">IPv6に関する注意事項</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ファイアウォールにはIPv6特有のオプションがいくつかあります。IPv6はARPプロトコルを使わず、IPレベルで動作するNDP(Neighbor Discovery Protocol)を使うので、成功させるにはIPアドレスが必要です。このため、インターフェイスのMACアドレスに由来するリンクローカルアドレスが使用される。デフォルトでは、<span class="monospaced">NDP</span>オプションはホストレベルとVMレベルの両方で有効になっており、近隣探索（NDP）パケットの送受信が可能になっている。</p></div>
+<div class="paragraph">
+<p>NDPはネイバーディスカバリーの他にも、自動コンフィギュレーションやルーターの広告など、いくつかのことに使われる。</p></div>
+<div class="paragraph">
+<p>デフォルトでは、VMはルーター勧誘メッセージの送信（ルーターへの問い合わせ）とルーター広告パケットの受信を許可されている。これにより、ステートレス自動コンフィギュレーションを使用できる。一方、「ルーター広告を許可する」<span class="monospaced">（radv: 1</span>）オプションが設定されていない限り、VMは自分自身をルーターとして広告することはできない。</p></div>
+<div class="paragraph">
+<p>NDPに必要なリンク・ローカル・アドレスについては、「IPフィルター」<span class="monospaced">（ipfilter: 1</span>）オプションもあり、これを有効にすると、対応するリンク・ローカル・アドレスを含むVMの各ネットワーク・インターフェースに<span class="monospaced">ipfilter-net*</span>ipsetを追加したのと同じ効果が得られる。  (詳細については、<a href="pve-firewall.8.html#pve_firewall_ipfilter_section">標準IPセット<span class="monospaced">ipfilter-net*の</span></a>セクションを参照してください)。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ports_used_by_proxmox_ve">Proxmox VEが使用するポート</h2>
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+ウェブインターフェース8006（TCP、HTTP/1.1 over TLS）</p>
+</li>
+<li>
+<p>
+VNCウェブコンソール5900-5999（TCP、WebSocket）</p>
+</li>
+<li>
+<p>
+SPICE プロキシ：3128 (TCP)</p>
+</li>
+<li>
+<p>
+sshd (クラスタアクションに使用)：22 (TCP)</p>
+</li>
+<li>
+<p>
+rpcbind: 111 (UDP)</p>
+</li>
+<li>
+<p>
+sendmail：25 (TCP、送信)</p>
+</li>
+<li>
+<p>
+corosyncクラスタのトラフィック：5405-5412 UDP</p>
+</li>
+<li>
+<p>
+ライブマイグレーション（VMメモリとローカルディスクのデータ）：60000-60050 (tcp)</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nftables">エヌエフティーブルズ</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="monospaced">pve-firewallの</span>代替として、私たちは<span class="monospaced">proxmox-firewallを</span>提供しています。これはiptablesではなく、より新しい<a href="https://wiki.nftables.org/wiki-nftables/index.php/What_is_nftables%3F">nftablesを</a>ベースにしたProxmox VEファイアウォールの実装です。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==" />
+</td>
+<td class="content"><span class="monospaced">proxmox-firewallは</span>現在技術プレビュー中です。バグやオリジナルのファイアウォールとの非互換性があるかもしれません。現在のところ本番環境での使用には適していません。</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>この実装では、同じ設定ファイルと設定フォーマットを使用するため、切り替え時に以前の設定を使用することができます。いくつかの例外を除いて、まったく同じ機能を提供します：</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+REJECTは現在、ゲストラフィックにはできない（代わりにトラフィックはドロップされる）。</p>
+</li>
+<li>
+<p>
+<span class="monospaced">NDP</span>、<span class="monospaced">ルーター広告</span>、または<span class="monospaced">DHCP</span>オプションを使用すると、デフォルトのポリシーに関係なく、<strong>常に</strong>ファイアウォールルールが作成されます。</p>
+</li>
+<li>
+<p>
+ゲスト用のファイアウォールルールは、conntrackテーブルエントリを持つ接続に対しても評価される。</p>
+</li>
+</ul></div>
+<div class="sect2">
+<h3 id="_installation_and_usage">インストールと使用方法</h3>
+<div class="paragraph">
+<p><span class="monospaced">proxmox-firewall</span>パッケージをインストールします：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>apt install proxmox-firewall</pre>
+</div></div>
+<div class="paragraph">
+<p>nftables バックエンドを有効にするには、ホストの Web UI (Host &gt; Firewall &gt; Options &gt; nftables) を使用するか、ホストの設定ファイル<span class="monospaced">(/etc/pve/nodes/&lt;node_name&gt;/host.fw)</span> で有効にします：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>[OPTIONS] nftables: 1</pre>
+</div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content"><span class="monospaced">proxmox-firewall を</span>有効化/無効化した後、古い/新しいファイアウォールを正しく動作させるために、実行中のすべての VM とコンテナを再起動する必要がある。</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p><span class="monospaced">nftables</span>コンフィギュレーションキーを設定すると、新しい<span class="monospaced">proxmox-firewall</span>サービスが引き継がれます。新しいサービスが動作しているかどうかは、<span class="monospaced">proxmox-firewallの</span>systemctl statusをチェックすることで確認できます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>systemctl status proxmox-firewall</pre>
+</div></div>
+<div class="paragraph">
+<p>生成されたルールセットを調べることもできます。これについては「<a href="pve-firewall.8.html#pve_firewall_nft_helpful_commands">役に立つコマンド</a>」のセクションに詳しい情報があります。 また、<span class="monospaced">pve-firewall</span>が iptables ルールを生成しなくなったかどうかも確認する必要があります。それぞれのコマンドは「<a href="pve-firewall.8.html#pve_firewall_services_commands">サービスとコマンド</a>」のセクションにあります。</p></div>
+<div class="paragraph">
+<p>古いファイアウォールに戻すには、設定値を0/Noに戻すだけです。</p></div>
+</div>
+<div class="sect2">
+<h3 id="_usage">使用方法</h3>
+<div class="paragraph">
+<p><span class="monospaced">proxmox-firewallは</span><span class="monospaced">proxmox-firewall</span>サービスによって管理される2つのテーブル:<span class="monospaced">proxmox-firewallと</span> <span class="monospaced">proxmox-firewall-guestsを</span>作成します。<span class="monospaced">Proxmox</span>VE ファイアウォール設定の外側にあるカスタムルールを作成したい場合は、カスタムファイアウォールルールを管理するために独自のテーブルを作成することができます。</p></div>
+<div class="paragraph">
+<p><span class="monospaced">pve-firewall</span>コマンドを使う代わりに、nftablesベースのファイアウォールは<span class="monospaced">proxmox-firewallを</span>使う。これは systemd サービスなので、<span class="monospaced">systemctl</span> で起動と停止ができます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>systemctl start proxmox-firewall systemctl stop proxmox-firewall</pre>
+</div></div>
+<div class="paragraph">
+<p>ファイアウォール・サービスを停止すると、生成されたルールはすべて削除される。</p></div>
+<div class="paragraph">
+<p>ファイアウォールのステータスを照会するには、systemctl サービスのステータスを照会します：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>systemctl status proxmox-firewall</pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="pve_firewall_nft_helpful_commands">役立つコマンド</h3>
+<div class="paragraph">
+<p>生成されたルールセットは、以下のコマンドで確認できる：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>nftリスト・ルールセット</pre>
+</div></div>
+<div class="paragraph">
+<p><span class="monospaced">proxmox-firewallを</span>デバッグしたい場合は、<span class="monospaced">RUST_LOG</span>環境変数を<span class="monospaced">traceに</span>設定してデーモンをフォアグラウンドで実行するだけです。これにより詳細なデバッグ出力が得られるはずです：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>RUST_LOG=trace /usr/libexec/proxmox/proxmox-firewall</pre>
+</div></div>
+<div class="paragraph">
+<p>ファイアウォールデーモンの詳細な出力を得たい場合は、systemctlサービスを編集することもできる：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>systemctl proxmox-Firewallを編集する</pre>
+</div></div>
+<div class="paragraph">
+<p>次に、<span class="monospaced">RUST_LOG</span>環境変数のオーバーライドを追加する必要があります：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>[サービス] Environment="RUST_LOG=trace"</pre>
+</div></div>
+<div class="paragraph">
+<p>これは大量のログを素早く生成するので、デバッグ目的でのみ使用すること。他の、より冗長でないログレベルは<span class="monospaced">info</span>と<span class="monospaced">debug</span> です。</p></div>
+<div class="paragraph">
+<p>フォアグラウンドで実行すると、ログ出力がSTDERRに書き込まれるので、以下のコマンドでリダイレクトすることができる（コミュニティフォーラムにログを提出する場合など）：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>RUST_LOG=trace /usr/libexec/proxmox/proxmox-firewall 2&gt; firewall_log_$(hostname).txt</pre>
+</div></div>
+<div class="paragraph">
+<p>ファイアウォール・ルールをデバッグするために、異なるチェーンを経由するパケット・フローをトレースすることは有用である。これは、追跡したいパケットに<span class="monospaced">nftrace</span>を 1 に設定することで実現できる。<strong>すべての</strong>パケットにこのフラグを設定しないことをお勧めします。</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>#テーブル・ブリッジ・トレース・ブリッジ テーブル・ブリッジ・トレース・ブリッジ { チェーン・トレース { meta l4proto icmp meta nftrace set 1 } チェーン・プレルーティング { タイプ・フィルター・フック・プレルーティング優先度 -350; ポリシー・アクセプト; ジャンプ・トレース } チェーン・ポストルーティング { タイプ・フィルター・フック・ポストルーティング優先度 -350; ポリシー・アクセプト; ジャンプ・トレース } } チェーン・ポストルーティング { タイプ・フィルター・フック・ポストルーティング優先度 -350; ポリシー・アクセプト; ジャンプ・トレース</pre>
+</div></div>
+<div class="paragraph">
+<p>このファイルを保存し、実行可能にしてから一度実行すると、それぞれのトレースチェーンが作成されます。その後、Proxmox VE Web UI (Firewall &gt; Log) または<span class="monospaced">nft monitor trace</span> 経由でトレース出力を検査できます。</p></div>
+<div class="paragraph">
+<p>上記の例では、すべてのブリッジのトラフィックをトレースしていますが、これは通常、ゲストのトラフィックが流れる場所です。ホストのトラフィックを調べたい場合は、<span class="monospaced">ブリッジ</span>テーブルの代わりに<span class="monospaced">inet</span>テーブルにこれらのチェーンを作成します。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">これは<strong>大量の</strong>ログスパムを生成し、ネットワークスタックのパフォーマンスを著しく低下させる可能性があることに注意してください。</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>以下のコマンドを実行することで、トレースルールを削除することができる：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>nft テーブル削除 ブリッジ・トレース</pre>
+</div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_macro_definitions">マクロの定義</h2>
+<div class="sectionbody">
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>アマンダ</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+アマンダ・バックアップ</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10080</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10080</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>認証</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+認証（identd）トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">113</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>BGP</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+ボーダー・ゲートウェイ・プロトコルのトラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">179</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ビットトレント</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+BitTorrent 3.1以前のBitTorrentトラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6881:6889</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6881</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ビットトレント32</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+BitTorrent 3.2以降のBitTorrentトラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6881:6999</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6881</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>CVS</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+並行バージョン システム pserver トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2401</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>セフ</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Cephストレージクラスタのトラフィック (Cephモニタ、OSD、MDSデーモン)</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6789</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3300</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6800:7300</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>シトリックス</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Citrix/ICAトラフィック（ICA、ICAブラウザ、CGP）</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1494</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1604</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2598</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ダエーピー</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+デジタルオーディオアクセスプロトコルトラフィック（iTunes、Rythmboxデーモン）</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3689</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3689</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>DCC</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+分散型チェックサム・クリアリングハウス・スパム・フィルタリング機構</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6277</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>DHCPfwd</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+転送されたDHCPトラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">67:68</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">67:68</p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ディーエイチシーピーブイ6</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+DHCPv6トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">546:547</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">546:547</p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>DNS</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+ドメインネームシステムのトラフィック（updおよびtcp）</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">53</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">53</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ディストック</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+分散コンパイラサービス</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3632</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ファイル転送</em>プロトコル<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+ファイル転送プロトコル</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>指</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+フィンガープロトコル（RFC 742）</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">79</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>グニューネット</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+GNUnetセキュアなピアツーピアネットワーキングトラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2086</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2086</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1080</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1080</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>GRE</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+汎用ルーティング・カプセル化トンネリング・プロトコル</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">47</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ギット</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Git分散リビジョン管理トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9418</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>HKP</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+OpenPGP HTTP 鍵サーバ・プロトコル・トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11371</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>HTTP</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+ハイパーテキスト転送プロトコル（WWW）</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">80</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>HTTPS</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+SSL上のハイパーテキスト転送プロトコル（WWW）</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">443</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ICPV2</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+インターネット・キャッシュ・プロトコルV2（Squid）のトラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3130</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>アイシーキュー</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+AOLインスタント・メッセンジャーのトラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5190</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>アイマップ</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+インターネットメッセージアクセスプロトコル</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">143</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>IMAPS</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+インターネット・メッセージ・アクセス・プロトコル・オーバーSSL</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">993</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>IPIP</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+IPIPカプセレーション・トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">94</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>アイピーセック</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+IPsecトラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">500</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">500</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">50</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>アイピーセカ</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+IPsec認証（AH）トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">500</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">500</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">51</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>IPsecnat</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+IPsecトラフィックとNat-Traversal</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">500</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4500</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">50</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>インターネットリレーチャット</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+インターネット・リレー・チャットのトラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6667</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ジェットダイレクト</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+HP Jetdirectプリント</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9100</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>L2TP</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+レイヤー2トンネリングプロトコルのトラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1701</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ライトウェイトディレクトリアクセスプロトコル</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+ライトウェイト・ディレクトリアクセス・プロトコル・トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">389</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>LDAPS</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+セキュア・ライトウェイト・ディレクトリアクセス・プロトコル・トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">636</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>MDNS</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+マルチキャストDNS</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5353</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>エムエスエヌピー</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+マイクロソフト通知プロトコル</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1863</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>MSSQL</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+マイクロソフトSQLサーバー</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1433</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>メール</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+メールトラフィック（SMTP、SMTPS、送信）</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">465</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">587</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ムニン</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+ムニン・ネットワーク・リソース・モニタリング・トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4949</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>MySQL</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+MySQLサーバー</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3306</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>エヌエヌティーピー</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+NNTPトラフィック（ユースネット）。</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">119</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>エヌエヌティーピーエス</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+暗号化されたNNTPトラフィック（ユーズネット）</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">563</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>エヌティーピー</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+ネットワークタイムプロトコル (ntpd)</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">123</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ネイバーディスカバリー</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+IPv6ネイバー勧誘、ネイバー広告、ルーター広告</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">アイシーエムピーブイシックス</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ルーター募集</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">アイシーエムピーブイシックス</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ルーター広告</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">アイシーエムピーブイシックス</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">隣人募集</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">アイシーエムピーブイシックス</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">隣人広告</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>オープンさいたんパスファースト</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+OSPFマルチキャスト・トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">89</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>オープンVPN</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+OpenVPNトラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1194</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>主成分</em>分析<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+シマンテックPCAnywere (tm)</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5632</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5631</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>PMG</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Proxmox Mail Gatewayウェブインターフェース</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8006</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ポップスリー</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+POP3トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">110</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ポップスリー</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+暗号化されたPOP3トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">995</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ピーピーティーピー</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+ポイント・ツー・ポイント・トンネル・プロトコル</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">47</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1723</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ピン</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+ICMPエコーリクエスト</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">アイシーエムピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">エコー要求</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>PostgreSQL</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+PostgreSQLサーバー</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5432</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>プリンター</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+ラインプリンタープロトコルの印刷</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">515</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>右派系</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+マイクロソフト・リモート・デスクトップ・プロトコル・トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3389</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>リップ</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+ルーティング情報プロトコル（双方向）</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">520</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>RNDC</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+BINDリモート管理プロトコル</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">953</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>カミソリ</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+レイザーアンチスパムシステム</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2703</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>Rdate</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+リモート時刻検索（rdate）</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">37</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>同期</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Rsyncサーバー</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">873</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>サンエ</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+SANEネットワーク・スキャン</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6566</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>SMB</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+マイクロソフトSMBトラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">135,445</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">137:139</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1024:65535</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">137</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">135,139,445</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>SMBswat</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Sambaウェブ管理ツール</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">901</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>SMTP</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+簡易メール転送プロトコル</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>エスエムティーピーエス</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+暗号化メール転送プロトコル</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">465</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>SNMP</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+簡易ネットワーク管理プロトコル</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">161:162</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">161</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>スパムド</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+スパム・アサシン SPAMD トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">783</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>SPICEproxy</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Proxmox VE SPICEによるプロキシトラフィックの表示</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3128</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>SSH</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+安全なシェル・トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>エスブイエヌ</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Subversion サーバー (svnserve)</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3690</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>シックスエックスエス</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+SixXS IPv6導入とトンネルブローカー</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3874</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3740</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">41</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5072,8374</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>イカ</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+イカ・ウェブ・プロキシ・トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3128</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>提出</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+メール送信トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">587</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>シスログ</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Syslogプロトコル（RFC 5424）のトラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">514</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">514</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>TFTP</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Trivial File Transfer Protocol トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">69</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>テルネット</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Telnetトラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">23</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>テレネット</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Telnet over SSL</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">992</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>時間</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+RFC 868 タイム・プロトコル</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">37</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>Trcrt</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+トレースルート（30ホップまで）トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">udp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">33434:33524</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">アイシーエムピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">エコー要求</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ブイエヌシー</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+VNCディスプレイのVNCトラフィック 0 - 99</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5900:5999</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ブイエヌシーエル</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+VncsサーバーからVncviewerへのVNCトラフィック（リスンモード</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5500</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ウェブ</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+WWWトラフィック（HTTPおよびHTTPS）</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">80</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">443</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ウェブキャッシュ</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+ウェブキャッシュ/プロキシトラフィック（ポート8080）</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8080</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>ウェブミン</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+ウェブミンのトラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+<em>フーイズ</em><br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Whois（nicname、RFC 3912）トラフィック</p>
+</td>
+</tr>
+</table></div>
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">アクション</th>
+<th class="tableblock halign-left valign-top">プロト</th>
+<th class="tableblock halign-left valign-top">ポート</th>
+<th class="tableblock halign-left valign-top">スポーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">パラム</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ティーシーピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">43</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_copyright_and_disclaimer">著作権および免責事項</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>著作権 © 2007-2022 Proxmox Server Solutions GmbH</p></div>
+<div class="paragraph">
+<p>このプログラムはフリー・ソフトウェアです。あなたは、Free Software Foundationによって発行されたGNU Affero General Public Licenseのバージョン3、またはそれ以降のバージョンのいずれかに従って、このプログラムを再配布したり、改変したりすることができます。</p></div>
+<div class="paragraph">
+<p>このプログラムは有用であることを期待して配布されていますが、商品性や特定の目的への適合性についての暗黙の保証すらなく、いかなる保証もありません。詳細はGNU Affero General Public Licenseをご覧ください。</p></div>
+<div class="paragraph">
+<p>あなたはこのプログラムとともにGNU Affero General Public Licenseのコピーを受け取っているはずです。  そうでない場合は、<a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>をご覧ください。</p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+バージョン8.2.2<br>
+最終更新 Thu Apr 25 09:24:16 CEST 2024</div>
+</div>
+</body>
+</html>
+
+<!-- ***** END FILE ***** -->
+

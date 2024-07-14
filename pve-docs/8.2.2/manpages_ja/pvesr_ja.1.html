@@ -1,0 +1,1664 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 10.2.0" />
+<title>プベスル(1)</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
+  padding: 0;
+  margin: 0;
+}
+pre {
+  white-space: pre-wrap;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; vertical-align: text-bottom; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel0, div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overridden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+</style>
+
+
+<style type="text/css">
+:root {
+    /* pre-defined colors */
+    --pdt-grey-950: hsl(0deg, 0%, 95%);
+    --pdt-grey-400: hsl(0deg, 0%, 40%);
+    --pdt-grey-250: hsl(0deg, 0%, 25%);
+    --pdt-grey-150: hsl(0deg, 0%, 15%);
+    --pdt-grey-100: hsl(0deg, 0%, 10%);
+    --pdt-primary-850: hsl(205deg, 100%, 85%);
+    --pdt-primary-800: hsl(205deg, 100%, 80%);
+    --pdt-primary-700: hsl(205deg, 100%, 70%);
+    --pdt-secondary-850: hsl(250deg, 100%, 85%);
+}
+
+/* adjust admonition block spacing. this allows for a background on
+ * admonition blocks that doesn't make the elements look to tightly
+ * spaced.
+ */
+div.admonitionblock {
+    border-radius: 3px;
+    margin: 1.5em 0;
+    padding: 0.5em 10% 0.5em 0.5em;
+}
+
+div.admonitionblock td.icon {
+    padding-right: 0.5em;
+}
+
+div.admonitionblock td.icon > img {
+    box-sizing: border-box;
+    padding: 0.15em;
+}
+
+/* Fine-tune headings a bit */
+h4 {
+  font-size: 1.1em;
+}
+h5 {
+  font-size: 1.05em;
+}
+h6 {
+  font-size: 1.0em;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+        --pdt-body-background: var(--pdt-grey-150);
+        --pdt-text: var(--pdt-grey-950);
+        --pdt-headline: var(--pdt-primary-800);
+        --pdt-link: var(--pdt-primary-700);
+        --pdt-link-visited: var(--pdt-secondary-850);
+        --pdt-highlighted-text: var(--pdt-primary-850);
+        --pdt-background-sidebar: var(--pdt-grey-100);
+        --pdt-background-listings: var(--pdt-grey-100);
+        --pdt-border: var(--pdt-grey-400);
+        --pdt-border-alt: var(--pdt-grey-250);
+        --pdt-table-border: var(--pdt-grey-400);
+        --pdt-background-admonition: var(--pdt-grey-250);
+    }
+
+    body {
+        color: var(--pdt-text);
+        background-color: var(--pdt-body-background);
+    }
+
+    a {
+        color: var(--pdt-link);
+    }
+
+    a:visited {
+        color: var(--pdt-link-visited);
+    }
+
+    /* style headlines, titles etc. */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    thead,
+    #author,
+    #toctitle,
+    div.title,
+    td.hdlist1,
+    caption.title,
+    p.tableblock.header {
+        color: var(--pdt-headline);
+    }
+
+    h1,
+    h2,
+    h3,
+    #footer {
+        border-color: var(--pdt-border);
+    }
+
+    /* formatted colored text */
+    dt,
+    em,
+    pre,
+    code,
+    strong,
+    .monospaced {
+        color: var(--pdt-highlighted-text);
+    }
+
+    /* style the table of contents sidebar */
+    div #toc {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-sidebar);
+        border-color: var(--pdt-border-alt);
+    }
+
+    div #toc a:link,
+    div #toc a:visited {
+        color: var(--pdt-text);
+    }
+
+    /* reduce the brigthness of images a bit and make it reversable
+     * through hovering over them.
+     */
+    .image > img {
+        filter: brightness(90%);
+    }
+
+    .image > img:hover {
+        filter: none;
+    }
+
+    /* tables */
+    th.tableblock,
+    td.tableblock,
+    table.tableblock {
+        border-color: var(--pdt-table-border);
+    }
+
+    div.quoteblock,
+    div.verseblock {
+        color: var(--pdt-text);
+        border-color: var(--pdt-border);
+    }
+
+    /* listings (e.g. code snippet blocks) */
+    div.listingblock > div.content {
+        background-color: var(--pdt-background-listings);
+        border-color: var(--pdt-border-alt);
+    }
+
+    /* admonition blocks (e.g. notes, warnings etc.) */
+    div.admonitionblock {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-admonition);
+    }
+
+    div.admonitionblock td.content {
+        border-color: var(--pdt-border);
+    }
+
+    /* makes the admonition icons appear a bit more consistent, by
+     * adding a white background the shadows in the icons look
+     * "correct"
+     */
+    div.admonitionblock td.icon > img {
+        background-color: white;
+        border-radius: 100%;
+        filter: brightness(95%);
+    }
+
+    /* invert the logo */
+    #header > h1 > .image > img {
+        filter: invert(100%) hue-rotate(180deg) brightness(90%);
+    }
+
+    /* fixes the black text on unorderd lists */
+    ul > li > * {
+        color: var(--pdt-text);
+    }
+}
+</style>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install();
+/*]]>*/
+</script>
+</head>
+<body class="article" style="max-width:55em">
+<div id="header">
+<h1>プベスル(1)</h1>
+<span id="author">プロックスモックス・サーバー・ソリューションズ社</span><br />
+<span id="email" class="monospaced"><a href="mailto:support@proxmox.com">&lt;support@proxmox.com&gt;</a></span><br />
+<span id="revnumber">バージョン8.2.2、</span>
+<span id="revdate">2024年 4月25日(木) 09:24:16 CEST</span>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="chapter_pvesr">名前</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>pvesr - Proxmox VE ストレージレプリケーション</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_synopsis">シノプシス</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>pvesr</strong> <span class="monospaced">&lt;COMMAND&gt; [ARGS] [OPTIONS]</span>.</p></div>
+<div class="paragraph">
+<p><strong>pvesr create-local-job</strong> <span class="monospaced">&lt;id&gt; &lt;target&gt;</span> <span class="monospaced">[OPTIONS]</span>.</p></div>
+<div class="paragraph">
+<p>新しいレプリケーション・ジョブを作成する</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;id&gt;：</span> <span class="monospaced">[1-9][0-9]{2,8}-\d{1,9}</span>
+</dt>
+<dd>
+<p>
+レプリケーション・ジョブID。IDはゲストIDとジョブ番号で構成され、ハイフンで区切られます（<em>&lt;GUEST&gt;-&lt;JOBNUM&gt;）。</em></p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">&lt;ターゲット&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+ターゲット・ノード</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--コメント</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+説明</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--無効</span> <span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+エントリーを無効化/非活性化するフラグ。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--レート</span> <span class="monospaced">&lt;数値&gt; (1 - N</span>)</dt>
+<dd>
+<p>
+mbps（メガバイト/秒）単位の浮動小数点数でのレート制限。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--remove_job</span> <span class="monospaced">&lt;full | local&gt;</span>.</dt>
+<dd>
+<p>
+レプリケーション・ジョブを削除するようにマークします。このジョブはすべてのローカルレプリケーションスナップショットを削除します。<em>フルに</em>設定すると、ターゲット上のレプリケートされたボリュームも削除しようとします。その後、ジョブは設定ファイルから自身を削除します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--スケジュール</span> <span class="monospaced">&lt;文字列&gt;</span><em>(デフォルト =</em> <span class="monospaced">*/15</span>)</dt>
+<dd>
+<p>
+ストレージのレプリケーションスケジュール。このフォーマットは<span class="monospaced">systemd</span>カレンダーイベントのサブセットです。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--ソース</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+ゲストが盗まれたかどうかを検出するための内部使用。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesr delete</strong> <span class="monospaced">&lt;id&gt;</span> <span class="monospaced">[OPTIONS]</span>.</p></div>
+<div class="paragraph">
+<p>レプリケーションジョブに削除マークを付けます。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;id&gt;：</span> <span class="monospaced">[1-9][0-9]{2,8}-\d{1,9}</span>
+</dt>
+<dd>
+<p>
+レプリケーション・ジョブID。IDはゲストIDとジョブ番号で構成され、ハイフンで区切られます（<em>&lt;GUEST&gt;-&lt;JOBNUM&gt;）。</em></p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--force</span> <span class="monospaced">&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+jobconfigエントリーは削除されるが、クリーンアップはされない。</p>
+</dd>
+<dt class="hdlist1">
+--<span class="monospaced">keep</span> <span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+レプリケートされたデータをターゲットに残す（削除しない）。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesr disable</strong> <span class="monospaced">&lt;id</span></p></div>
+<div class="paragraph">
+<p>レプリケーション・ジョブを無効にします。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;id&gt;：</span> <span class="monospaced">[1-9][0-9]{2,8}-\d{1,9}</span>
+</dt>
+<dd>
+<p>
+レプリケーション・ジョブID。IDはゲストIDとジョブ番号で構成され、ハイフンで区切られます（<em>&lt;GUEST&gt;-&lt;JOBNUM&gt;）。</em></p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesr enable</strong> <span class="monospaced">&lt;id&gt;</span></p></div>
+<div class="paragraph">
+<p>レプリケーション・ジョブを有効にする。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;id&gt;：</span> <span class="monospaced">[1-9][0-9]{2,8}-\d{1,9}</span>
+</dt>
+<dd>
+<p>
+レプリケーション・ジョブID。IDはゲストIDとジョブ番号で構成され、ハイフンで区切られます（<em>&lt;GUEST&gt;-&lt;JOBNUM&gt;）。</em></p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesr finalize-local-job</strong> <span class="monospaced">&lt;id&gt; [&lt;extra-args&gt;]</span> <span class="monospaced">[OPTIONS]</span>.</p></div>
+<div class="paragraph">
+<p>レプリケーション・ジョブを確定します。これにより、&lt;last_sync&gt;と異なるタイムスタンプを持つすべてのレプリケーション・スナップショットが削除されます。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;id&gt;：</span> <span class="monospaced">[1-9][0-9]{2,8}-\d{1,9}</span>
+</dt>
+<dd>
+<p>
+レプリケーション・ジョブID。IDはゲストIDとジョブ番号で構成され、ハイフンで区切られます（<em>&lt;GUEST&gt;-&lt;JOBNUM&gt;）。</em></p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">&lt;extra-args&gt;:</span> <span class="monospaced">&lt;配列&gt;。</span></dt>
+<dd>
+<p>
+検討するボリュームIDのリスト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--last_sync</span> <span class="monospaced">&lt;整数&gt; (0 - N</span>)</dt>
+<dd>
+<p>
+最後に同期に成功した時刻（UNIXエポック）。指定しない場合は、すべてのレプリケーション・スナップショットが削除されます。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesr help</strong> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>指定したコマンドに関するヘルプを表示する。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--extra-args</span> <span class="monospaced">&lt;array&gt;</span></dt>
+<dd>
+<p>
+特定のコマンドのヘルプを表示する</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--verbose</span> <span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+冗長な出力形式。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesrリスト</strong></p></div>
+<div class="paragraph">
+<p>レプリケーション・ジョブを一覧表示します。</p></div>
+<div class="paragraph">
+<p><strong>pvesr prepare-local-job</strong> <span class="monospaced">&lt;id&gt; [&lt;extra-args&gt;]</span> <span class="monospaced">[OPTIONS]</span>.</p></div>
+<div class="paragraph">
+<p>レプリケーション・ジョブの開始準備。これはレプリケーション開始前にターゲットノードで呼び出されます。この呼び出しは内部用で、標準出力にJSONオブジェクトを返します。このメソッドはまず、VM &lt;vmid&gt;がローカルノードに存在するかどうかをテストします。存在する場合は直ちに停止する。その後、このメソッドはスナップショットについてすべてのボリュームIDをスキャンし、&lt;last_sync&gt;と異なるタイムスタンプを持つすべてのレプリケーション・スナップショットを削除します。また、未使用のボリュームも削除する。既存のレプリケーション・スナップショットを持つすべてのボリュームのブーリアン・マーカーを持つハッシュを返します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;id&gt;：</span> <span class="monospaced">[1-9][0-9]{2,8}-\d{1,9}</span>
+</dt>
+<dd>
+<p>
+レプリケーション・ジョブID。IDはゲストIDとジョブ番号で構成され、ハイフンで区切られます（<em>&lt;GUEST&gt;-&lt;JOBNUM&gt;）。</em></p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">&lt;extra-args&gt;:</span> <span class="monospaced">&lt;配列&gt;。</span></dt>
+<dd>
+<p>
+検討するボリュームIDのリスト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--force</span> <span class="monospaced">&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+存在するすべてのボリューム（空のボリュームリスト）の削除を許可する。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--last_sync</span> <span class="monospaced">&lt;整数&gt; (0 - N</span>)</dt>
+<dd>
+<p>
+最後に同期が成功した時刻（UNIXエポック）。指定しない場合は、すべてのレプリケーション・スナップショットが削除されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">-親スナップ名</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+スナップショットの名前。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--スキャン</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+古くなったボリュームをスキャンするストレージIDのリスト。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesr リード</strong> <span class="monospaced">&lt;id</span></p></div>
+<div class="paragraph">
+<p>レプリケーション・ジョブの設定を読み込む。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;id&gt;：</span> <span class="monospaced">[1-9][0-9]{2,8}-\d{1,9}</span>
+</dt>
+<dd>
+<p>
+レプリケーション・ジョブID。IDはゲストIDとジョブ番号で構成され、ハイフンで区切られます（<em>&lt;GUEST&gt;-&lt;JOBNUM&gt;）。</em></p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesr run</strong> <span class="monospaced">[OPTIONS］</span></p></div>
+<div class="paragraph">
+<p>このメソッドはsystemd-timerによって呼び出され、すべての（または特定の）同期ジョブを実行する。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--id</span> <span class="monospaced">[1-9][0-9]{2,8}-d{1,9}</span>
+</dt>
+<dd>
+<p>
+レプリケーション・ジョブID。IDはゲストIDとジョブ番号で構成され、ハイフンで区切られます（<em>&lt;GUEST&gt;-&lt;JOBNUM&gt;）。</em></p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--メール</span> <span class="monospaced">&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+障害が発生した場合、電子メールによる通知を送信します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--verbose</span> <span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+標準出力に詳細なログを出力する。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesr schedule-now</strong> <span class="monospaced">&lt;id&gt;</span></p></div>
+<div class="paragraph">
+<p>レプリケーション・ジョブをできるだけ早く開始するようにスケジュールする。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;id&gt;：</span> <span class="monospaced">[1-9][0-9]{2,8}-\d{1,9}</span>
+</dt>
+<dd>
+<p>
+レプリケーション・ジョブID。IDはゲストIDとジョブ番号で構成され、ハイフンで区切られます（<em>&lt;GUEST&gt;-&lt;JOBNUM&gt;）。</em></p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesr set-state</strong> <span class="monospaced">&lt;vmid&gt; &lt;state&gt;</span></p></div>
+<div class="paragraph">
+<p>マイグレーション時にジョブのレプリケーション状態を設定します。この呼び出しは内部用で、ja JSON objとしてジョブ状態を受け取ります。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;vmid&gt;:</span> <span class="monospaced">&lt;整数&gt; (100 - 999999999</span>)</dt>
+<dd>
+<p>
+VMの（ユニークな）ID。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">&lt;状態&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+JSONデコードされた文字列としてのジョブ状態。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesr status</strong> <span class="monospaced">[OPTIONS］</span></p></div>
+<div class="paragraph">
+<p>このノードのすべてのレプリケーション・ジョブのステータスを一覧表示します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--ゲスト</span> <span class="monospaced">&lt;整数&gt; (100 - 999999999</span>)</dt>
+<dd>
+<p>
+このゲストのレプリケーション・ジョブのみをリストします。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesr update</strong> <span class="monospaced">&lt;id&gt;</span> <span class="monospaced">[OPTIONS]</span>.</p></div>
+<div class="paragraph">
+<p>レプリケーション・ジョブの設定を更新します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;id&gt;：</span> <span class="monospaced">[1-9][0-9]{2,8}-\d{1,9}</span>
+</dt>
+<dd>
+<p>
+レプリケーション・ジョブID。IDはゲストIDとジョブ番号で構成され、ハイフンで区切られます（<em>&lt;GUEST&gt;-&lt;JOBNUM&gt;）。</em></p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--コメント</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+説明</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--削除</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+削除したい設定のリスト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">-ダイジェスト</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+現在のコンフィギュレーション・ファイルのダイジェストが異なる場合、変更を防止する。これは、同時変更を防ぐために使うことができます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--無効</span> <span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+エントリーを無効化/非活性化するフラグ。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--レート</span> <span class="monospaced">&lt;数値&gt; (1 - N</span>)</dt>
+<dd>
+<p>
+mbps（メガバイト/秒）単位の浮動小数点数でのレート制限。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--remove_job</span> <span class="monospaced">&lt;full | local&gt;</span>.</dt>
+<dd>
+<p>
+レプリケーション・ジョブを削除するようにマークします。このジョブはすべてのローカルレプリケーションスナップショットを削除します。<em>フルに</em>設定すると、ターゲット上のレプリケートされたボリュームも削除しようとします。その後、ジョブは設定ファイルから自身を削除します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--スケジュール</span> <span class="monospaced">&lt;文字列&gt;</span><em>(デフォルト =</em> <span class="monospaced">*/15</span>)</dt>
+<dd>
+<p>
+ストレージのレプリケーションスケジュール。このフォーマットは<span class="monospaced">systemd</span>カレンダーイベントのサブセットです。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--ソース</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+ゲストが盗まれたかどうかを検出するための内部使用。</p>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description">説明</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="monospaced">pvesr</span>コマンドラインツールは Proxmox VE ストレージレプリケーションフレームワークを管理します。ストレージレプリケーションは、ローカルストレージを使用するゲストに冗長性をもたらし、移行時間を短縮します。</p></div>
+<div class="paragraph">
+<p>ゲストボリュームを別のノードにレプリケートし、共有ストレージを使用せずにすべてのデータを利用できるようにします。レプリケーションはスナップショットを使用して、ネットワーク経由で送信されるトラフィックを最小限に抑えます。そのため、最初の完全同期の後、新しいデータは増分的にしか送信されません。ノード障害が発生した場合でも、ゲストデータはレプリケートされたノードで利用可能です。</p></div>
+<div class="paragraph">
+<p>レプリケーションは設定可能な間隔で自動的に行われる。 レプリケーションの間隔は最小で1分、最大で週に1回である。これらの間隔を指定するために使用されるフォーマットは、<span class="monospaced">systemd</span>カレンダーイベントのサブセットです：</p></div>
+<div class="paragraph">
+<p>ゲストを複数のターゲットノードにレプリケートすることは可能ですが、同じターゲットノードに2回レプリケートすることはできません。</p></div>
+<div class="paragraph">
+<p>各レプリケーションの帯域幅は、ストレージやサーバーへの過負荷を避けるために制限することができる。</p></div>
+<div class="paragraph">
+<p>ゲストがすでにレプリケートされているノードに移行する場合は、最後のレプリケーション以降の変更（いわゆる<span class="monospaced">デルタ</span>）のみを転送する必要があります。これにより、所要時間が大幅に短縮されます。ゲストをレプリケーションターゲットノードに移行すると、レプリケーションの方向が自動的に切り替わります。</p></div>
+<div class="paragraph">
+<p>例えばVM100は現在<span class="monospaced">nodeA</span>上にあり、<span class="monospaced">nodeBに</span>レプリケートされている。</p></div>
+<div class="paragraph">
+<p>ゲストがレプリケートされていないノードに移行する場合は、ディスクデータ全体を送信する必要があります。移行後、レプリケーションジョブはこのゲストを設定されたノードにレプリケートし続けます。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Important" src="data:image/png;base64,
+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
+EQn3XQAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">
+<div class="paragraph">
+<p>高可用性はストレージ・レプリケーションとの組み合わせで認められるが、最後に同期された時刻とノードが故障した時刻の間に、何らかのデータ損失が発生する可能性がある。</p></div>
+</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_supported_storage_types">対応ストレージタイプ</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<caption class="title">表1.ストレージの種類</caption>
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<col style="width:25%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">説明    </th>
+<th class="tableblock halign-left valign-top">プラグインタイプ </th>
+<th class="tableblock halign-left valign-top">スナップ写真</th>
+<th class="tableblock halign-left valign-top">安定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ZFS（ローカル）</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ゼットスプール</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">はい</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">はい</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pvesr_schedule_time_format">スケジュール形式</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>レプリケーションはカレンダーのイベントを使ってスケジュールを設定する。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_error_handling">エラー処理</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>この状態では、設定されたレプリケーション間隔は一時的に中断されます。失敗したレプリケーションは、30分間隔で繰り返し再試行されます。 これが成功すると、元のスケジュールが再び有効になります。</p></div>
+<div class="sect2">
+<h3 id="_possible_issues">考えられる問題</h3>
+<div class="paragraph">
+<p>最も一般的な問題のいくつかは、以下のリストにあります。セットアップによっては別の原因があるかもしれません。</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+ネットワークが機能していない。</p>
+</li>
+<li>
+<p>
+レプリケーション先のストレージに空き容量が残っていない。</p>
+</li>
+<li>
+<p>
+ターゲットノードで利用可能な同じストレージIDを持つストレージ</p>
+</li>
+</ul></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">レプリケーション・ログを使えば、いつでも問題の原因を突き止めることができる。</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_migrating_a_guest_in_case_of_error">エラー時のゲストの移行</h3>
+<div class="paragraph">
+<p>重大なエラーが発生した場合、仮想ゲストは障害が発生したノード上でスタックする可能性があります。その場合、手動で再び動作するノードに移動させる必要があります。</p></div>
+</div>
+<div class="sect2">
+<h3 id="_example">例</h3>
+<div class="paragraph">
+<p>ノードAで2つのゲスト（VM 100とCT 200）を実行し、ノードBにレプリケートしているとします。そこで、ゲストを手動でノードBに移行する必要があります。</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+ノードBにsshで接続するか、ウェブUIでシェルを開きます。</p>
+</li>
+<li>
+<p>
+クラスタがクォーレートかどうかをチェックする</p>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># pvecm ステータス</pre>
+</div></div>
+</li>
+<li>
+<p>
+クォーラムがない場合は、まずこれを修正し、ノードを再び操作できるようにすることを強くお勧めします。現時点でこれが不可能な場合に限り、以下のコマンドを使用して現在のノードにクォーラムを適用することができます：</p>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># pvecm 期待値 1</pre>
+</div></div>
+</li>
+</ul></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==" />
+</td>
+<td class="content"><span class="monospaced">期待される票が</span>設定されている場合にクラスタに影響を与えるような変更（ノード、ストレージ、仮想ゲストの追加/削除など）は絶対に避けてください。 重要なゲストを再び稼働させるか、クォーラムの問題そのものを解決する場合にのみ使用してください。</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+両方のゲスト設定ファイルを元のノードAからノードBに移動します：</p>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># mv /etc/pve/nodes/A/qemu-server/100.conf /etc/pve/nodes/B/qemu-server/100.conf # mv /etc/pve/nodes/A/lxc/200.conf /etc/pve/nodes/B/lxc/200.conf</pre>
+</div></div>
+</li>
+<li>
+<p>
+これでゲストを再びスタートさせることができる：</p>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># qm start 100 # pct start 200</pre>
+</div></div>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>VMIDとノード名をそれぞれの値に置き換えることを忘れないでください。</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_managing_jobs">求人管理</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<a class="image" href="images/screenshot/gui-qemu-add-replication-job.png">
+<img src="images/screenshot/gui-qemu-add-replication-job.png" alt="screenshot/gui-qemu-add-replication-job.png" width="250" style="padding: 0 0 0 10px;float:right;" /></a>
+<p>Web GUIを使用して、レプリケーション・ジョブの作成、変更、削除を簡単に行うことができます。さらに、コマンドライン・インターフェイス（CLI）ツールの<span class="monospaced">pvesrを</span>使用することもできます。</p></div>
+<div class="paragraph">
+<p>レプリケーション・パネルは、Web GUIのすべてのレベル（データセンター、ノード、仮想ゲスト）で見つけることができます。どのジョブが表示されるかは、すべてのジョブ、ノード固有のジョブ、ゲスト固有のジョブで異なります。</p></div>
+<div class="paragraph">
+<p>新しいジョブを追加する際、まだ選択されていない場合はゲストとターゲットノードを指定する必要があります。<a href="pvesr.1.html#pvesr_schedule_time_format">レプリケーション・スケジュールは</a>、デフォルトの<span class="monospaced">15分ではなく</span>、設定することができます。レプリケーションジョブにレート制限を課すことができます。レート制限は、ストレージの負荷を許容範囲に保つのに役立ちます。</p></div>
+<div class="paragraph">
+<p>レプリケーション・ジョブはクラスタ全体で一意のIDによって識別されます。このIDは、ジョブ番号に加えてVMIDで構成されます。 このIDは、CLIツールを使用する場合にのみ手動で指定する必要があります。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_command_line_interface_examples">コマンドライン・インターフェースの例</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ID 100のゲストに対して、帯域幅を10Mbps（メガバイト/秒）に制限して5分ごとに実行するレプリケーションジョブを作成します。</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># pvesr create-local-job 100-0 pve1 --schedule "*/5" --rate 10</pre>
+</div></div>
+<div class="paragraph">
+<p>ID<span class="monospaced">100-0</span> のアクティブなジョブを無効にする。</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># pvesr disable 100-0</pre>
+</div></div>
+<div class="paragraph">
+<p>IDが<span class="monospaced">100-</span>0の非活性化ジョブを有効にする。</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># pvesr enable 100-0</pre>
+</div></div>
+<div class="paragraph">
+<p>ID<span class="monospaced">100-</span>0のジョブのスケジュール間隔を1時間に1回に変更する。</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># pvesr update 100-0 --schedule '*/00'</pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_copyright_and_disclaimer">著作権および免責事項</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>著作権 © 2007-2022 Proxmox Server Solutions GmbH</p></div>
+<div class="paragraph">
+<p>このプログラムはフリー・ソフトウェアです。あなたは、Free Software Foundationによって発行されたGNU Affero General Public Licenseのバージョン3、またはそれ以降のバージョンのいずれかに従って、このプログラムを再配布したり、改変したりすることができます。</p></div>
+<div class="paragraph">
+<p>このプログラムは有用であることを期待して配布されていますが、商品性や特定の目的への適合性についての暗黙の保証もなく、いかなる保証もありません。詳細はGNU Affero General Public Licenseをご覧ください。</p></div>
+<div class="paragraph">
+<p>あなたはこのプログラムとともにGNU Affero General Public Licenseのコピーを受け取っているはずです。  そうでない場合は、<a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>をご覧ください。</p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+バージョン8.2.2<br>
+最終更新 Thu Apr 25 09:24:16 CEST 2024</div>
+</div>
+</body>
+</html>
+
+<!-- ***** END FILE ***** -->
+
