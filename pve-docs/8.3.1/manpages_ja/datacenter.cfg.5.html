@@ -1,0 +1,1462 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 10.2.0" />
+<title>datacenter.cfg(5)</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
+  padding: 0;
+  margin: 0;
+}
+pre {
+  white-space: pre-wrap;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; vertical-align: text-bottom; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel0, div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overridden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+</style>
+
+
+<style type="text/css">
+:root {
+    /* pre-defined colors */
+    --pdt-grey-950: hsl(0deg, 0%, 95%);
+    --pdt-grey-750: hsl(0deg, 0%, 75%);
+    --pdt-grey-400: hsl(0deg, 0%, 40%);
+    --pdt-grey-250: hsl(0deg, 0%, 25%);
+    --pdt-grey-150: hsl(0deg, 0%, 15%);
+    --pdt-grey-100: hsl(0deg, 0%, 10%);
+    --pdt-primary-850: hsl(205deg, 100%, 85%);
+    --pdt-primary-800: hsl(205deg, 100%, 80%);
+    --pdt-primary-700: hsl(205deg, 100%, 70%);
+    --pdt-secondary-850: hsl(250deg, 100%, 85%);
+}
+
+/* adjust admonition block spacing. this allows for a background on
+ * admonition blocks that doesn't make the elements look to tightly
+ * spaced.
+ */
+div.admonitionblock {
+    border-radius: 3px;
+    margin: 1.5em 0;
+    padding: 0.5em 10% 0.5em 0.5em;
+}
+
+div.admonitionblock td.icon {
+    padding-right: 0.5em;
+}
+
+div.admonitionblock td.icon > img {
+    box-sizing: border-box;
+    padding: 0.15em;
+}
+
+/* Fine-tune headings a bit */
+h4 {
+  font-size: 1.1em;
+}
+h5 {
+  font-size: 1.05em;
+}
+h6 {
+  font-size: 1.0em;
+}
+
+/* Support for heading anchor links */
+h3 {
+    border-bottom: unset;
+}
+
+h3 > span {
+    display: inline-block;
+    border-bottom: 2px solid silver;
+}
+
+a.headerlink {
+    color: var(--pdt-grey-750);
+    padding: 0 4px;
+    text-decoration: none;
+    visibility: hidden;
+}
+
+/* add it as an pseudo-element, so that it does not show up in the ToC */
+a.headerlink::after {
+    content: '\00b6';
+    text-decoration: none;
+}
+
+h1:hover > a.headerlink,
+h2:hover > a.headerlink,
+h3:hover > a.headerlink,
+h4:hover > a.headerlink,
+h5:hover > a.headerlink,
+h6:hover > a.headerlink {
+  visibility: visible;
+}
+
+/* Dark mode theme */
+@media screen and (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+        --pdt-body-background: var(--pdt-grey-150);
+        --pdt-text: var(--pdt-grey-950);
+        --pdt-headline: var(--pdt-primary-800);
+        --pdt-link: var(--pdt-primary-700);
+        --pdt-link-visited: var(--pdt-secondary-850);
+        --pdt-highlighted-text: var(--pdt-primary-850);
+        --pdt-background-sidebar: var(--pdt-grey-100);
+        --pdt-background-listings: var(--pdt-grey-100);
+        --pdt-border: var(--pdt-grey-400);
+        --pdt-border-alt: var(--pdt-grey-250);
+        --pdt-table-border: var(--pdt-grey-400);
+        --pdt-background-admonition: var(--pdt-grey-250);
+    }
+
+    body {
+        color: var(--pdt-text);
+        background-color: var(--pdt-body-background);
+    }
+
+    a {
+        color: var(--pdt-link);
+    }
+
+    a:visited {
+        color: var(--pdt-link-visited);
+    }
+
+    /* style headlines, titles etc. */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    thead,
+    #author,
+    #toctitle,
+    div.title,
+    td.hdlist1,
+    caption.title,
+    p.tableblock.header {
+        color: var(--pdt-headline);
+    }
+
+    h1,
+    h2,
+    h3,
+    #footer {
+        border-color: var(--pdt-border);
+    }
+
+    /* formatted colored text */
+    dt,
+    em,
+    pre,
+    code,
+    strong,
+    .monospaced {
+        color: var(--pdt-highlighted-text);
+    }
+
+    /* style the table of contents sidebar */
+    div #toc {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-sidebar);
+        border-color: var(--pdt-border-alt);
+    }
+
+    div #toc a:link,
+    div #toc a:visited {
+        color: var(--pdt-text);
+    }
+
+    /* reduce the brigthness of images a bit and make it reversable
+     * through hovering over them.
+     */
+    .image > img {
+        filter: brightness(90%);
+    }
+
+    .image > img:hover {
+        filter: none;
+    }
+
+    /* tables */
+    th.tableblock,
+    td.tableblock,
+    table.tableblock {
+        border-color: var(--pdt-table-border);
+    }
+
+    div.quoteblock,
+    div.verseblock {
+        color: var(--pdt-text);
+        border-color: var(--pdt-border);
+    }
+
+    /* listings (e.g. code snippet blocks) */
+    div.listingblock > div.content {
+        background-color: var(--pdt-background-listings);
+        border-color: var(--pdt-border-alt);
+    }
+
+    /* admonition blocks (e.g. notes, warnings etc.) */
+    div.admonitionblock {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-admonition);
+    }
+
+    div.admonitionblock td.content {
+        border-color: var(--pdt-border);
+    }
+
+    /* makes the admonition icons appear a bit more consistent, by
+     * adding a white background the shadows in the icons look
+     * "correct"
+     */
+    div.admonitionblock td.icon > img {
+        background-color: white;
+        border-radius: 100%;
+        filter: brightness(95%);
+    }
+
+    /* invert the logo */
+    #header > h1 > .image > img {
+        filter: invert(100%) hue-rotate(180deg) brightness(90%);
+    }
+
+    /* fixes the black text on unorderd lists */
+    ul > li > * {
+        color: var(--pdt-text);
+    }
+}
+</style>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install();
+/*]]>*/
+</script>
+</head>
+<body class="article" style="max-width:55em">
+<div id="header">
+<h1>datacenter.cfg(5)</h1>
+<span id="author">Proxmox Server Solutions GmbH</span><br />
+<span id="email" class="monospaced"><a href="mailto:support@proxmox.com">&lt;support@proxmox.com&gt;</a></span><br />
+<span id="revnumber">バージョン8.3.1</span>
+<span id="revdate">2024年11月20日（水）21:19:42 CET</span>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="datacenter_configuration_file">
+名前<a class="headerlink" href="#datacenter_configuration_file" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>datacenter.cfg - Proxmox VE データセンターの設定</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_synopsis">
+SYNOPSIS<a class="headerlink" href="#_synopsis" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="monospaced">/etc/pve/datacenter.cfg</span></p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description">
+説明<a class="headerlink" href="#_description" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="monospaced">etc/pve/datacenter.cfg</span>ファイルはProxmox VEの設定ファイルです。このファイルには、すべてのノードで使用されるクラスタ全体のデフォルト値が含まれています。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_file_format">
+ファイル形式<a class="headerlink" href="#_file_format" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>このファイルでは、コロンで区切られた単純なキー/値形式を使用します。各行の書式は以下の通りです：</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>オプション：値</pre>
+</div></div>
+<div class="paragraph">
+<p>ファイル内の空白行は無視され、<span class="monospaced">#</span>文字で始まる行はコメントとして扱われ、これも無視されます。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_options">
+オプション<a class="headerlink" href="#_options" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">bwlimit</span>:<span class="monospaced">[clone=&lt;LIMIT&gt;] [,default=&lt;LIMIT&gt;] [,migration=&lt;LIMIT&gt;] [,move=&lt;LIMIT&gt;] [,restore=&lt;LIMIT&gt;</span>] です。</dt>
+<dd>
+<p>
+各種操作のI/O帯域幅制限を設定（単位：KiB/s）。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">クローン</span></dt>
+<dd>
+<p>
+クローン作成ディスクの帯域制限（KiB/s単位</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">デフォルト=</span><span class="monospaced">&lt;LIMIT</span></dt>
+<dd>
+<p>
+デフォルトの帯域幅制限（単位：KiB/s</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">マイグレーション=</span><span class="monospaced">&lt;リミット</span></dt>
+<dd>
+<p>
+ゲストの移行（ローカルディスクの移動を含む）の帯域幅制限（KiB/s単位</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">move=</span><span class="monospaced">&lt;リミット</span></dt>
+<dd>
+<p>
+移動ディスクの帯域幅制限（KiB/s単位</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">リストア=</span><span class="monospaced">&lt;リミット</span></dt>
+<dd>
+<p>
+バックアップからゲストをリストアする際の帯域幅の制限（KiB/s単位</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">コンソール</span>:<span class="monospaced">&lt;applet | html5 | vv | xtermjs&gt;</span>.</dt>
+<dd>
+<p>
+デフォルトの Console ビューアを選択します。ビルトインの Java アプレット (VNC。非推奨で html5 にマップされます)、外部の virt-viewer 互換アプリケーション (SPICE)、HTML5 ベースの vnc ビューア (noVNC)、または HTML5 ベースのコンソールクライアント (xtermjs) のいずれかを使用できます。選択したビューアが利用できない場合 (例えば、SPICE が VM に対して有効化されていない場合)、フォールバックは noVNC になります。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">crs</span>：<span class="monospaced">[ha=&lt;基本|静的&gt;] [,ha-rebalance-on-start=&lt;1|0&gt;</span>]。</dt>
+<dd>
+<p>
+クラスタリソースのスケジューリング設定。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">ha=&lt;basic</span><span class="monospaced">| static&gt;</span><em>(デフォルト =</em> <span class="monospaced">basic</span>)</dt>
+<dd>
+<p>
+HAマネージャがサービスを開始または回復するノードを選択する方法を設定します。<em>basicでは</em>、サービスの数のみが使用され、<em>staticでは</em>、サービスの静的なCPUとメモリ構成が考慮されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ha-rebalance-on-start=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+HAサービスの要求状態が停止から開始へ変更された場合に、CRSを使用して対象ノードを選択するように設定します。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">説明</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+データセンターの説明。Webインターフェイスのデータセンター・ノート・パネルに表示されます。これは設定ファイル内のコメントとして保存されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">email_from</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+通知を送信するメールアドレスを指定（デフォルトはroot@$hostname）</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">fencing</span>:<span class="monospaced">&lt;both | hardware | watchdog&gt;</span><em>(デフォルト =</em> <span class="monospaced">watchdog</span>)</dt>
+<dd>
+<p>
+HA クラスタのフェンシング モードを設定します。ハードウェアモードでは、/etc/pve/ha/fence.cfgにフェンスデバイスの有効な設定が必要です。両方では、2つのモードがすべて使用されます。</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==" />
+</td>
+<td class="content"><em>ハードウェアは</em>、<em>どちらも</em>実験的でWIPです。</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ha</span>:<span class="monospaced">shutdown_policy=&lt;enum&gt;</span>です。</dt>
+<dd>
+<p>
+クラスタ全体のHA設定。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">shutdown_policy=&lt;条件付き</span><span class="monospaced">| フェイルオーバー | フリーズ | マイグレーション&gt;</span><em>(デフォルト =</em> <span class="monospaced">条件付き</span>)</dt>
+<dd>
+<p>
+ノードの電源オフまたは再起動時のHAサービスの処理ポリシーを記述します。Freezeは、シャットダウン時にノードに残っているサービスを常にフリーズします。フェイルオーバーは、シャットダウンしたノードがすぐに（1分未満で）復帰しない場合、サービスを凍結としてマークしないため、サービスは他のノードに回復されます。<em>条件付きは</em>、シャットダウンの種類に応じて自動的に選択されます。リブートまたはシャットダウンがトリガーされると、Migrateは実行中のサービスをすべて別のノードに移動しようとします。ノード上に実行中のサービスがなくなると、パワーオフプロセスが続行されます。ノードが再び起動した場合、少なくとも他のマイグレーション、リローアクション、リカバリが行われていなければ、サービスはパワーオフされたノードに戻されます。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">http_proxy</span>:<span class="monospaced">http://.*</span></dt>
+<dd>
+<p>
+ダウンロードに使用する外部 http プロキシを指定します (例<em>: http://username:password@host:port/</em>)</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">キーボード</span>:<span class="monospaced">&lt;da | de | de-ch | en-gb | en-us | es | fi | fr | fr-be | fr-ca | fr-ch | hu | is | it | ja | lt | mk | nl | no | pl | pt | pt-br | sl | sv | tr&gt;</span>.</dt>
+<dd>
+<p>
+vncサーバのデフォルトキーボードレイアウト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">言語</span>:<span class="monospaced">&lt;ar | ca | da | de | en | es | eu | fa | fr | he | hr | it | ja | ka | kr | nb | nl | nn | pl | pt_BR | ru | sl | sv | tr | ukr | zh_CN | zh_TW&gt;.</span></dt>
+<dd>
+<p>
+デフォルトのGUI言語。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mac_prefix</span>:<span class="monospaced">&lt;文字列&gt;</span><em>(デフォルト =</em> <span class="monospaced">BC:24:11</span>)</dt>
+<dd>
+<p>
+仮想ゲストの自動生成 MAC アドレスのプレフィックス。デフォルトの<span class="monospaced">BC:24:</span>11は、MACアドレスブロック大（MA-L）のためにIEEEからProxmox Server Solutions GmbHに割り当てられた組織一意識別子（OUI）です。これはローカルネットワーク、つまり一般ユーザーから直接アクセスできないネットワーク（LANやNAT/マスカレードなど）で使用できます。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p>仮想ゲストのネットワークを(部分的に)共有する複数のクラスタを実行する場合は、デフォルトのMACプレフィックスを拡張するか、カスタムの(有効な)プレフィックスを生成して、MACの衝突の可能性を減らすことを強くお勧めします。たとえば、各クラスタのProxmox OUIに、1番目は<span class="monospaced">BC:24:11:0</span>、2番目は<span class="monospaced">BC:24:11:1という</span>ように、個別の16進数を追加します。 また、VLANを使用するなどして、ゲストのネットワークを論理的に分離することもできます。</p></div>
+<div class="paragraph">
+<p>+ 一般にアクセス可能なゲストの場合は、<a href="https://standards.ieee.org/products-programs/regauth/">IEEEに</a>登録されている<a href="https://standards.ieee.org/products-programs/regauth/">OUIを</a>取得するか、あなたまたはあなたのホスティング・プロバイダーのネットワーク管理者と調整することをお勧めします。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">max_workers</span>:<span class="monospaced">&lt;整数&gt; (1 - N</span>)</dt>
+<dd>
+<p>
+ha-managerからの<em>stopall VMや</em>タスクのようなアクションで、（ノードあたり）最大何人のワーカーが起動するかを定義します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">マイグレーションを</span>使用します：<span class="monospaced">[type=]&lt;secure|insecure&gt;[,network=&lt;CIDR&gt;</span>]です。</dt>
+<dd>
+<p>
+クラスタ全体のマイグレーション設定</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">ネットワーク=</span><span class="monospaced">&lt;CIDR</span></dt>
+<dd>
+<p>
+移行に使用する（サブ）ネットワークのCIDR。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">type=&lt;insecure</span><span class="monospaced">| secure&gt;</span><em>(デフォルト =</em> <span class="monospaced">secure</span>)</dt>
+<dd>
+<p>
+マイグレーショントラフィックはデフォルトでSSHトンネルを使用して暗号化されます。安全で完全にプライベートなネットワークでは、パフォーマンスを上げるためにこれを無効にすることができます。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">migration_unsecure</span>:<span class="monospaced">&lt;論理値</span></dt>
+<dd>
+<p>
+移行はデフォルトでSSHトンネルを使用して安全に行われます。安全なプライベートネットワークでは、マイグレーションを高速化するためにこれを無効にすることができます。非推奨。代わりに<em>マイグレーションプロパティを</em>使用してください！</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">next-id</span>：<span class="monospaced">[lower=&lt;整数&gt;] [,upper=&lt;整数&gt;</span>]。</dt>
+<dd>
+<p>
+フリーVMID自動選択プールの範囲を制御します。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">lower=</span><span class="monospaced">&lt;整数</span><span class="monospaced">&gt;</span><em>(デフォルト =</em> <span class="monospaced">100</span>)</dt>
+<dd>
+<p>
+自由な next-id API 範囲の下限、包含境界。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">upper</span><span class="monospaced">=&lt;</span><span class="monospaced">整数&gt;</span><em>(デフォルト =</em> <span class="monospaced">1000000</span>)</dt>
+<dd>
+<p>
+自由な next-id API 範囲の上限、排他的境界。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+を<span class="monospaced">通知</span>します：[<span class="monospaced">fencing=&lt;always|never&gt;&gt; [,package-updates=&lt;auto|always|never&gt;&gt;] [,replication=&lt;always|never&gt;&gt;] [,target-fencing=&lt;TARGET&gt;] [,target-package-updates=&lt;TARGET&gt;] [,target-replication=&lt;TARGET&gt;&gt;</span>] となります。］</dt>
+<dd>
+<p>
+クラスタ全体の通知設定。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">フェンシング</span></dt>
+<dd>
+<p>
+UNUSED - 代わりにデータセンター通知設定を使用します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">package-updates=&lt;always</span><span class="monospaced">| auto | never&gt;</span><em>(default =</em> <span class="monospaced">auto</span>)</dt>
+<dd>
+<p>
+廃止されました：代わりにデータセンター通知設定を使用します。 毎日の更新ジョブが通知を送信する頻度を制御します：</p>
+<div class="ulist"><ul>
+<li>
+<p>
+有効なサブスクリプションを持つシステムについては、毎日<em>自動更新さ</em>れます。</p>
+</li>
+<li>
+<p>
+新しい保留中の更新がある場合は、更新のたびに<em>常に</em>更新されます。</p>
+</li>
+<li>
+<p>
+新しい保留中の更新の通知を送信する<em>ことはありません</em>。</p>
+</li>
+</ul></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">レプリケーション</span></dt>
+<dd>
+<p>
+UNUSED - 代わりにデータセンター通知設定を使用します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ターゲット</span><span class="monospaced">・フェンシング=&lt;ターゲット</span></dt>
+<dd>
+<p>
+UNUSED - 代わりにデータセンター通知設定を使用します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">target-package-updates=</span><span class="monospaced">&lt;TARGET</span><span class="monospaced">&gt;を指定します。</span></dt>
+<dd>
+<p>
+UNUSED - 代わりにデータセンター通知設定を使用します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ターゲット</span><span class="monospaced">-レプリケーション=&lt;ターゲット</span></dt>
+<dd>
+<p>
+UNUSED - 代わりにデータセンター通知設定を使用します。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">登録タグ</span>:<span class="monospaced">&lt;tag&gt;[;&lt;tag&gt;...].</span></dt>
+<dd>
+<p>
+設定および削除に<span class="monospaced">Sys.Modify</span>on<em>/</em>が必要なタグのリストです。ここで設定されたタグのうち、<em>user-tag-access</em>にあるタグも<span class="monospaced">Sys.Modify が</span>必要です。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">タグスタイル</span> <span class="monospaced">[case-sensitive=&lt;1|0&gt;] [,color-map=&lt;tag&gt;:&lt;hex-color&gt;[:&lt;hex-color-for-text&gt;][;&lt;tag&gt;=...]][,ordering=&lt;config|alphabetical&gt;] [,shape=&lt;enum&gt;</span>].</dt>
+<dd>
+<p>
+タグスタイルのオプション。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">case-sensitive=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+更新時の一意なタグのフィルタリングで、大文字小文字を区別してチェックするかどうかを制御します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">color-map=&lt;tag</span><span class="monospaced">&gt;:&lt;hex-color&gt;[:&lt;hex-color-for-text&gt;][;&lt;tag&gt;=...]。</span></dt>
+<dd>
+<p>
+タグの手動カラーマッピング（セミコロン区切り）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ordering=&lt;alphabetical</span><span class="monospaced">| config&gt;</span><em>(デフォルト=</em> <span class="monospaced">アルファベット順</span>)</dt>
+<dd>
+<p>
+ウェブインタフェースおよびAPIアップデートにおけるタグのソートを制御します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">shape=&lt;circle</span><span class="monospaced">| dense | full | none&gt;</span><em>(デフォルト=</em> <span class="monospaced">circle</span>)</dt>
+<dd>
+<p>
+<em>fullは</em>タグ全体を描画します。<em>circleは</em>背景色のある円のみを描画します。<em>denseは</em>小さな四角形のみを描画します(多くのタグがそれぞれのゲストに割り当てられている場合に便利です)<em>.noneは</em>タグの表示を無効にします。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">u2f</span>です：[<span class="monospaced">appid=&lt;APPID&gt;] [,origin=&lt;URL&gt;</span>] です。</dt>
+<dd>
+<p>
+u2f</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">appid=&lt;APPID&gt;</span></dt>
+<dd>
+<p>
+U2F AppId URLのオーバーライド。デフォルトはオリジン。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">オリジン</span><span class="monospaced">=&lt;</span><span class="monospaced">URL</span></dt>
+<dd>
+<p>
+U2F Originのオーバーライド。主に1つのURLを持つ1つのノードに便利です。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">user-tag-access</span>：<span class="monospaced">[user-allow=&lt;enum&gt;] [,user-allow-list=&lt;tag&gt;[;&lt;tag&gt;...]]。</span>
+</dt>
+<dd>
+<p>
+ユーザー設定可能タグの特権オプション</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">user-allow=&lt;existing</span><span class="monospaced">| free | list | none&gt;</span><em>(デフォルト =</em> <span class="monospaced">free</span>)</dt>
+<dd>
+<p>
+ユーザが制御するリソース (ゲストなど) で設定または削除できるタグを制御します。<span class="monospaced">Sys.Modify</span>権限を持つ<span class="monospaced">ユーザは</span>、常に制限されません。</p>
+<div class="ulist"><ul>
+<li>
+<p>
+タグは使用<em>できません</em>。</p>
+</li>
+<li>
+<p>
+<em>user-allow-list</em>の<em>リスト</em>タグが使用可能です。</p>
+</li>
+<li>
+<p>
+のような<em>既存の</em>リストも使えますが、すでにあるリソースのタグも使えます。</p>
+</li>
+<li>
+<p>
+タグの制限は<em>ありません</em>。</p>
+</li>
+</ul></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">user-allow-list=&lt;タグ</span><span class="monospaced">&gt;[;&lt;タグ&gt;...]を</span><span class="monospaced">指定</span><span class="monospaced">します。</span></dt>
+<dd>
+<p>
+<em>user-allow</em>値<em>list</em>および<em>existingに対して</em>、ユーザが設定および削除を許可されるタグのリスト（セミコロン区切り）。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">webauthn</span>:<span class="monospaced">[allow-subdomains=&lt;1|0&gt;] [,id=&lt;DOMAINNAME&gt;] [,origin=&lt;URL&gt;] [,rp=&lt;RELYING_PARTY&gt;</span>] です。</dt>
+<dd>
+<p>
+webauthnの設定</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">allow-subdomains=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+正確な URL ではなく、サブドメインのオリジンを許可するかどうか。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">id=&lt;DOMAINNAME&gt;</span></dt>
+<dd>
+<p>
+依拠当事者ID。プロトコル、ポート、場所を含まないドメイン名でなければなりません。これを変更<strong>すると、</strong>既存の認証情報が破壊されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">オリジン</span><span class="monospaced">=&lt;</span><span class="monospaced">URL</span></dt>
+<dd>
+<p>
+サイトのオリジン。<span class="monospaced">https://</span>URL (または<span class="monospaced">http://localhost)</span> でなければなりません。ウェブ・インターフェイスにアクセスするためにユーザーがブラウザに入力するアドレスが含まれていなければなりません。これを変更すると、既存の認証情報が壊れる<strong>可能性が</strong>あります。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">rp=&lt;RELYING_PARTY&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+依拠当事者名。任意のテキスト識別子。これを変更すると、既存のクレデンシャルが壊れる<strong>可能性が</strong>あります。</p>
+</dd>
+</dl></div>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_copyright_and_disclaimer">
+著作権および免責事項<a class="headerlink" href="#_copyright_and_disclaimer" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>著作権 © 2007-2022 Proxmox Server Solutions GmbH</p></div>
+<div class="paragraph">
+<p>このプログラムはフリー・ソフトウェアです。あなたは、Free Software Foundationによって発行されたGNU Affero General Public Licenseのバージョン3、またはそれ以降のバージョンのいずれかに従って、このプログラムを再配布したり、変更したりすることができます。</p></div>
+<div class="paragraph">
+<p>このプログラムは有用であることを期待して配布されていますが、商品性や特定の目的への適合性についての暗黙の保証もなく、いかなる保証もありません。詳細はGNU Affero General Public Licenseをご覧ください。</p></div>
+<div class="paragraph">
+<p>あなたはこのプログラムとともにGNU Affero General Public Licenseのコピーを受け取っているはずです。  そうでない場合は、<a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>をご覧ください。</p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+バージョン8.3.1<br>
+最終更新 Wed Nov 20 21:19:42 CET 2024</div>
+</div>
+</body>
+</html>
+
+<!-- ***** END FILE ***** -->
+
