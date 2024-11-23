@@ -1,6 +1,7 @@
 
 ## Proxmox VE Documentation Index
-GitHubリポジトリは[こちら](https://github.com/flathill/ja/tree/main/pve-docs/8.3.1)
+GitHubリポジトリは[こちら](https://github.com/flathill/ja/tree/main/pve-docs/8.3.1/)
+
 ### Proxmox VE Administration Guide
 
 | 形式 | オリジナルURL | 翻訳元ファイル | 日本語訳ファイル |

@@ -2,6 +2,7 @@
 オリジナルURL: https://pve.proxmox.com/pve-docs/
 
 ## Proxmox VE Documentation Index
+GitHubリポジトリは[こちら](https://github.com/flathill/ja/tree/main/pve-docs/8.2.2/)
 
 ### Proxmox VE Administration Guide
 
