@@ -1,0 +1,4301 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 10.2.0" />
+<title>qm.conf(5)</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
+  padding: 0;
+  margin: 0;
+}
+pre {
+  white-space: pre-wrap;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; vertical-align: text-bottom; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel0, div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overridden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+</style>
+
+
+<style type="text/css">
+:root {
+    /* pre-defined colors */
+    --pdt-grey-950: hsl(0deg, 0%, 95%);
+    --pdt-grey-750: hsl(0deg, 0%, 75%);
+    --pdt-grey-400: hsl(0deg, 0%, 40%);
+    --pdt-grey-250: hsl(0deg, 0%, 25%);
+    --pdt-grey-150: hsl(0deg, 0%, 15%);
+    --pdt-grey-100: hsl(0deg, 0%, 10%);
+    --pdt-primary-850: hsl(205deg, 100%, 85%);
+    --pdt-primary-800: hsl(205deg, 100%, 80%);
+    --pdt-primary-700: hsl(205deg, 100%, 70%);
+    --pdt-secondary-850: hsl(250deg, 100%, 85%);
+}
+
+/* adjust admonition block spacing. this allows for a background on
+ * admonition blocks that doesn't make the elements look to tightly
+ * spaced.
+ */
+div.admonitionblock {
+    border-radius: 3px;
+    margin: 1.5em 0;
+    padding: 0.5em 10% 0.5em 0.5em;
+}
+
+div.admonitionblock td.icon {
+    padding-right: 0.5em;
+}
+
+div.admonitionblock td.icon > img {
+    box-sizing: border-box;
+    padding: 0.15em;
+}
+
+/* Fine-tune headings a bit */
+h4 {
+  font-size: 1.1em;
+}
+h5 {
+  font-size: 1.05em;
+}
+h6 {
+  font-size: 1.0em;
+}
+
+/* Support for heading anchor links */
+h3 {
+    border-bottom: unset;
+}
+
+h3 > span {
+    display: inline-block;
+    border-bottom: 2px solid silver;
+}
+
+a.headerlink {
+    color: var(--pdt-grey-750);
+    padding: 0 4px;
+    text-decoration: none;
+    visibility: hidden;
+}
+
+/* add it as an pseudo-element, so that it does not show up in the ToC */
+a.headerlink::after {
+    content: '\00b6';
+    text-decoration: none;
+}
+
+h1:hover > a.headerlink,
+h2:hover > a.headerlink,
+h3:hover > a.headerlink,
+h4:hover > a.headerlink,
+h5:hover > a.headerlink,
+h6:hover > a.headerlink {
+  visibility: visible;
+}
+
+/* Dark mode theme */
+@media screen and (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+        --pdt-body-background: var(--pdt-grey-150);
+        --pdt-text: var(--pdt-grey-950);
+        --pdt-headline: var(--pdt-primary-800);
+        --pdt-link: var(--pdt-primary-700);
+        --pdt-link-visited: var(--pdt-secondary-850);
+        --pdt-highlighted-text: var(--pdt-primary-850);
+        --pdt-background-sidebar: var(--pdt-grey-100);
+        --pdt-background-listings: var(--pdt-grey-100);
+        --pdt-border: var(--pdt-grey-400);
+        --pdt-border-alt: var(--pdt-grey-250);
+        --pdt-table-border: var(--pdt-grey-400);
+        --pdt-background-admonition: var(--pdt-grey-250);
+    }
+
+    body {
+        color: var(--pdt-text);
+        background-color: var(--pdt-body-background);
+    }
+
+    a {
+        color: var(--pdt-link);
+    }
+
+    a:visited {
+        color: var(--pdt-link-visited);
+    }
+
+    /* style headlines, titles etc. */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    thead,
+    #author,
+    #toctitle,
+    div.title,
+    td.hdlist1,
+    caption.title,
+    p.tableblock.header {
+        color: var(--pdt-headline);
+    }
+
+    h1,
+    h2,
+    h3,
+    #footer {
+        border-color: var(--pdt-border);
+    }
+
+    /* formatted colored text */
+    dt,
+    em,
+    pre,
+    code,
+    strong,
+    .monospaced {
+        color: var(--pdt-highlighted-text);
+    }
+
+    /* style the table of contents sidebar */
+    div #toc {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-sidebar);
+        border-color: var(--pdt-border-alt);
+    }
+
+    div #toc a:link,
+    div #toc a:visited {
+        color: var(--pdt-text);
+    }
+
+    /* reduce the brigthness of images a bit and make it reversable
+     * through hovering over them.
+     */
+    .image > img {
+        filter: brightness(90%);
+    }
+
+    .image > img:hover {
+        filter: none;
+    }
+
+    /* tables */
+    th.tableblock,
+    td.tableblock,
+    table.tableblock {
+        border-color: var(--pdt-table-border);
+    }
+
+    div.quoteblock,
+    div.verseblock {
+        color: var(--pdt-text);
+        border-color: var(--pdt-border);
+    }
+
+    /* listings (e.g. code snippet blocks) */
+    div.listingblock > div.content {
+        background-color: var(--pdt-background-listings);
+        border-color: var(--pdt-border-alt);
+    }
+
+    /* admonition blocks (e.g. notes, warnings etc.) */
+    div.admonitionblock {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-admonition);
+    }
+
+    div.admonitionblock td.content {
+        border-color: var(--pdt-border);
+    }
+
+    /* makes the admonition icons appear a bit more consistent, by
+     * adding a white background the shadows in the icons look
+     * "correct"
+     */
+    div.admonitionblock td.icon > img {
+        background-color: white;
+        border-radius: 100%;
+        filter: brightness(95%);
+    }
+
+    /* invert the logo */
+    #header > h1 > .image > img {
+        filter: invert(100%) hue-rotate(180deg) brightness(90%);
+    }
+
+    /* fixes the black text on unorderd lists */
+    ul > li > * {
+        color: var(--pdt-text);
+    }
+}
+</style>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install();
+/*]]>*/
+</script>
+</head>
+<body class="article" style="max-width:55em">
+<div id="header">
+<h1>qm.conf(5)</h1>
+<span id="author">Proxmox Server Solutions GmbH</span><br />
+<span id="email" class="monospaced"><a href="mailto:support@proxmox.com">&lt;support@proxmox.com&gt;</a></span><br />
+<span id="revnumber">バージョン8.4.0</span>
+<span id="revdate">2025年 4月 9日(水) 08:00:00 CEST</span>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_name">
+名前<a class="headerlink" href="#_name" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>qm.conf - Proxmox VE 仮想マシンの設定</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_synopsis">
+SYNOPSIS<a class="headerlink" href="#_synopsis" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><em>/etc/pve/qemu-server/&lt;VMID&gt;.conf</em></p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description">
+説明<a class="headerlink" href="#_description" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="monospaced">etc/pve/qemu-server/&lt;VMID&gt;.conf</span>ファイルにはVMコンフィギュレーションが格納され、「VMID」は指定されたVMの数値IDです。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">ID &lt; 100は内部用に予約されています。</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_file_format">
+ファイル形式<a class="headerlink" href="#_file_format" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>このファイルでは、コロンで区切られた単純なキー/値形式を使用します。各行の書式は以下の通りです：</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>オプション：値</pre>
+</div></div>
+<div class="paragraph">
+<p>ファイル内の空白行は無視され、<span class="monospaced">#</span>文字で始まる行はコメントとして扱われ、これも無視されます。</p></div>
+<div class="paragraph">
+<p><span class="monospaced">qm</span>コマンドを使えば、これらのファイルを生成したり変更したりすることができます。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_options">
+オプション<a class="headerlink" href="#_options" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">acpi</span>:<span class="monospaced">&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+ACPI を有効/無効にします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">親和性</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+ゲストプロセスの実行に使用されるホストコアのリスト（例：0,5,8-11</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">エージェント</span>:<span class="monospaced">[enabled=]&lt;1|0&gt; [,freeze-fs-on-backup=&lt;1|0&gt;] [,fstrim_cloned_disks=&lt;1|0&gt;] [,type=&lt;virtio|isa&gt; ]</span>。</dt>
+<dd>
+<p>
+QEMU ゲストエージェントとそのプロパティとの通信を有効/無効にします。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">enabled=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+VM 内で実行されている QEMU ゲストエージェント (QGA) との通信を有効/無効にします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">freeze-</span><span class="monospaced">fs</span><span class="monospaced">-on-backup=&lt;boolean</span><em>&gt;（デフォルト =</em> <span class="monospaced">1）</span></dt>
+<dd>
+<p>
+一貫性を保つために、バックアップ時にゲストファイルシステムをフリーズ/解凍します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">fstrim_cloned_disks=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+ディスクの移動またはVMの移行後にfstrimを実行します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">type=&lt;isa</span><span class="monospaced">| virtio&gt;</span><em>(デフォルト =</em> <span class="monospaced">virtio</span>)</dt>
+<dd>
+<p>
+エージェントタイプの選択</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">amd-sev</span>:<span class="monospaced">[type=]&lt;sev-type&gt;[,allow-smt=&lt;1|0&gt;][,kernel-hashes=&lt;1|0&gt;][,no-debug=&lt;1|0&gt;][,no-key-sharing=&lt;1|0&gt;]。</span></dt>
+<dd>
+<p>
+AMD CPUによるセキュア暗号化仮想化（SEV）機能</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">allow-smt=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+同時マルチスレッド (SMT) を許可するポリシービットを設定します (SEV-SNP の場合を除き無視されます)。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">kernel-hashes=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+カーネル・ハッシュをゲスト・ファームウェアに追加して、Linuxカーネルの起動を測定します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">no-debug=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+ゲストのデバッグを禁止するポリシービットを設定します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">no-key-sharing=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+他のゲストとの鍵共有を禁止するポリシービットを設定します (SEV-SNP では無視)</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">type=</span><span class="monospaced">&lt;セブ</span><span class="monospaced">タイプ</span></dt>
+<dd>
+<p>
+type<em>=</em>stdで標準的なSEVを有効にするか、<em>es</em>オプションで実験的なSEV-ESを有効にするか、<em>snp</em>オプションで実験的なSEV-SNPを有効にします。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">arch</span>:<span class="monospaced">&lt;aarch64 | x86_64&gt;</span>です。</dt>
+<dd>
+<p>
+仮想プロセッサ・アーキテクチャ。デフォルトはホスト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">引数</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+例えばkvmに渡される任意の引数：</p>
+<div class="paragraph">
+<p>args: -no-reboot -smbios<em>type=0,vendor=FOO</em></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAJhUlEQVRoge2ZWWycVxXHf+fce7/v
+m/GaGCde4pI0aQlJC0kRtE1L00JbLIjY4QkeUB9YHhAIJFCExAsKUkE8IAFFPIDUIqhBRSDRBUqC
+CimFFBCBpCWx02IaZ3G2SdyxPZ7vHh6+mcnSZnFjKIge6Wj8zYzvPf9z/me5d8TM+F8WfbkNuFx5
+BcDLLf/fAEZGRmx4eNh6enqsp6fHhoeHbWRk5D9aFeSlVqHNmzfb6H33sHnT7ZQmD5GfOMax6Sm+
+Pl5h1Yc+xpYtW2SBbX1ReUkRGBkZsdH77mHLW95EOv4Ms3ueJh6YYPHUFF9aljJ63z3cf//9/5FI
+vKQIDA8P293L2yhVjjH7t51ocDiviFecF46n7XzBreChhx4qNhH5t0XjJUVgx44ddGUZ9b/vIpQD
+oRQIWSDJAiFL6B9axo4dO4gxAmANWVDLG+Ln82URMRGhVCqRHxonlAPqFXWKC4r6IhI6OMjMzBN4
+/4LlTUQQEZxzZ32QJAlpmrb+p16vU6vVOHXq1AWjN18AnDj0F971vrs4OnmYJVkoDA4FCPUO172I
+Cgnt7SV++4vvsGhRJx3tJbIsRVVpsUnOBBABBVFEClKYwbKr7sTM7EIUnBcA7z21k7t49x1X8JXv
+bOWra7rw5QRtcN8PLCfvvZJvb9vJycpJpg4/hp/N0I4SMQs4Jw0A5zBXHGiCaIZIKABgpGlKjPEF
+0TpT5pUDRXiVt99+Le03r+WzuytM1gO6pB/3+o0cbxvk8yOPMjW6i2iR2lxOjJDHSDMFogmGwzQ7
+rRJAUpAENAGXIZq2AFzQpvkACCEQcahP+cRH3sKHn9zHXU+MM7rtGeD33NDXzaZynZU9gcezpUw9
+X6OzIyOakkfF4QEpPG6nDRNNEA2FSgKimETSNCXPc0II57VpXhEolUqoOrxPSLOMT330Dv5SqfKD
+NR388Y2L+caQsjITNv3pMBs3rOT56ZyZGaM+J0QUxDc0INrWUgggoRGBAOIRAt77hY1AmqaoeJxP
+cN645jVDbNn8Hj73o8fZ/af9mEE9j9y2YRXt5YzZWmRmzjj1/BwhTXAKzitOHEbeWlc0AVwDnCv8
+KoZzjotV33lTSL1HNKAuEtKM1169jM98/E6mTk3x4Nbd7Bk7TEdHRvAeVY+hmDqmZwx1kIkiqrhz
+S2zL+AbNMC6l/80LgHMOEY9oQvBCks5RKpXo7JhFxbhz42pet2aQet1YtLiDJAkIDq8BHwJmwlwO
+UaD0ojsrNKuUReIZyb9gABCHcwWFgg+0lTPyvIRToVzKWLpkMfV6REQplYvmZCj1uuBUSdJwTg8A
+XBdoCZMOsBkQBeGi/J83gBgjmABC8AlJGsjzFLMyaXDM1etEA0VR50iCx6mSZhkiijpPjEpQD+SF
+4WdJrTAewdCFB1CtVlFVVATnhMQnWJqC5aTBk+c5IIgWRoTgSZJAmiZAo1s7hwsppglI+fTiljeY
+nyHkLQotKIAYI4igzpFHISQOiwEnKTEG8hhRVZw6YjRQLfJGHcF7jleqTBw8znXr12MABnv37efY
+iSnesG4tiUsRUQwD7JIAzKsPqCqiRbVwweM04XdPjhJN+dvTBxgbn6G9q59yZx9/3HWEb33vN+zc
+/RzOJ+w/eJLtO8Z5ZNtT7PvHIUQTvvv9X/Lc/mN0d3by3fseRLQwvWh0Fy+h8wbQ2VFG1KM+xfuA
+qufo8So/fejPPD/rqJys8pvf7eLAoeNMHqnw2U9+kH3jVQ5MClMzKUla5obr13HliiEMmDx6gltv
+uY7Vr1nBQF8PJopQ9AFTt/AROFfMjCW9XTy19xB33Hodb924jr1j+/nDk3/nzTdei4jw3nfeyCOP
+bufa1y5jzeoVrcHM8HR3dfHlr/2Q+x94jFtuuh44/9B2PplXDryYLF3STXd3e+t5UXcHY89OsOH6
+NS2Qed7wpM1Rm50G4MGHH2P961Zy3bqreXrPP5mrzwLt5y6/cACq1eoLCKm+TN/SAebmfn8aUG83
+PYs7+cnPH+eqKwd5as8/edc7bi02847pmVkATk1VWbF8AOcca1Yv59DkqcYK0tCL02deACqVCldc
+0YdIwLmEPM9RV6NnUZlPf3wT6oqJcePN6wHhzTeu4/CRCrfctJ4sSxBRli7pYfHEMUSU97/7Th75
+1RP8eec+Yp5zzTVXM9DfDyogBvHS6HTJACYmJnjVoq5GFw0454gCEOnoaMfiNGZFFRFxJGkbywZ6
+i1NWoy9kWYmbb1gHKCHApuGbisVFGyoYUswa5OR5ftF56JIBjI6OMtDfWwAQ35jnc8AVpRXBohVq
+UowECKqK4RBxoE0W6gvGCcEjaOEAwEQWdpgbGxujt7erOLO2mk3R8i0Wz9EiuUGz+qlKEQEUaJbI
+4lTHmTVePKgWzpDGJGpc8CDTlEsuo88++wxXDA0UIUbAOP23KGZKjI48KnkuhcbiPbPCOBoeBikO
+Lk2VxjqNRilaAEqSZGEAbN261bZt+zW33XY7IAXXm6Ou0YhIMamaaUOl5WRrzg00viuKWWxpQUOH
+NAZFQRpD48Xlkig0MTHBB95zG+VSylz1KCbWyDOh2XyK+56IqjWMKigkUnzWnPPFFFRRLZ29SQRU
+ELOGY4pZ6LKOlM07mZ07d/KOtw1TcB4sGkTDiDQ9K1IkrKeYmQC08d7pZLSiRBpE5s7aS0XAHFEK
+AGY51Wr18g80Zmb33nsvX/z8XdSmj2AWOXhwkrxe46+79jB55Dh/3T2GxUhHextdXW2sXN7PNWtW
+IQKDA71FFBoAjIgQkVg/a5+oHrU5zIznDhxk964xKpXKggAoTlWW8+OfPorlOQ//cjsDy1bS2dFO
+W+diVly1iL6+Pqanpzl5qsL4pPHwN3/G1InDlMsZ7Z1tDA30cfWqIa5dexV9fb2YnT7UTxw4xsHJ
+o4yOjfOP8QOMjx/k4OQx7r777lY0zycXvJ02M4sxMjg4SL1eR0TYsGEDw8PD9PX10d7ejogUN3a1
+GqpKCIE8z5mdnUVVqVarbN++nba2Nvbu3csDDzyAqrJ8+atb+zjn6e/vZ/Xq1axatYq1a9fS29tL
+lmUMDQ1RKpXOm9EXvV6v1+tWr9eZnp5mZmaGWq1GjLHF62aiNZ+bnPfe45xrvTZzxMyYmZk56+LX
+zKjX661DvHOOJElIkoRSqYT3/vLvRlW15eHCa4VxzdvmpjZDfubzuXeb3vuzqCEixBhbo0NTkyS5
+PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">このオプションはエキスパート専用です。</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">audio0</span>:<span class="monospaced">device=&lt;ich9-intel-hda|intel-hda|AC97&gt; [,driver=&lt;spice|none&gt;</span>].</dt>
+<dd>
+<p>
+QXL/Spiceと組み合わせると便利です。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">device=&lt;AC97</span><span class="monospaced">| ich9-intel-hda | intel-hda&gt; です</span>。</dt>
+<dd>
+<p>
+オーディオデバイスを設定します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">driver=&lt;none</span><span class="monospaced">| spice&gt;</span><em>(デフォルト =</em> <span class="monospaced">spice</span>)</dt>
+<dd>
+<p>
+オーディオデバイスのドライババックエンド。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">autostart</span>:<span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+クラッシュ後の自動再起動（現在は無視されています）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">バルーン</span>:<span class="monospaced">&lt;整数&gt; (0 - N</span>)</dt>
+<dd>
+<p>
+VM のターゲット RAM の量 (MiB 単位)。ゼロを使用すると、バロンドライバが無効になります。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bios</span>:<span class="monospaced">&lt;ovmf | seabios&gt;</span><em>(デフォルト =</em> <span class="monospaced">seabios</span>)</dt>
+<dd>
+<p>
+BIOSの実装を選択します。</p>
+</dd>
+<dt class="hdlist1">
+を<span class="monospaced">起動</span>します：<span class="monospaced">[[legacy=]&lt;[acdn]{1,4}&gt;]ブート: [,order=&lt;デバイス[;デバイス...]&gt;]]。</span>
+</dt>
+<dd>
+<p>
+ゲストの起動順序を指定します。<em>order=</em>サブプロパティを使用してください。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">legacy=</span><span class="monospaced">&lt;[acdn]{1,4}&gt;</span><em>(デフォルト =</em> <span class="monospaced">cdn</span>)</dt>
+<dd>
+<p>
+フロッピー(a)、ハードディスク(c)、CD-ROM(d)、ネットワーク(n)で起動。非推奨。代わりに<em>order=</em>を使ってください。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">order=&lt;デバイス</span><span class="monospaced">[;デバイス...]&gt;</span>です。</dt>
+<dd>
+<p>
+ゲストは、ここに表示されている順番でデバイスからの起動を試みます。</p>
+<div class="paragraph">
+<p>ディスク、光学ドライブ、パススルー・ストレージ USBデバイスは直接起動し、NICはPXEをロードし、PCIeデバイスはディスクのように動作するか（NVMeなど）、オプションROMをロードします（RAIDコントローラ、ハードウェアNICなど）。</p></div>
+<div class="paragraph">
+<p>このリストにあるデバイスだけがブート可能としてマークされ、ゲストファームウェア (BIOS/UEFI) によってロードされることに注意してください。ブートに複数のディスクが必要な場合 (例: ソフトウェアレイド)、ここで全てのディスクを指定する必要があります。</p></div>
+<div class="paragraph">
+<p>指定された場合、非推奨の<em>legacy=[acdn]*</em>値を上書きします。</p></div>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bootdisk</span>:<span class="monospaced">(ide|sata|scsi|virtio) \d+.</span></dt>
+<dd>
+<p>
+指定したディスクからの起動を有効にします。非推奨：代わりに<em>boot: order=foo;bar</em>を使用してください。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">CDROM</span>:<span class="monospaced">&lt;ボリューム</span></dt>
+<dd>
+<p>
+これは -ide2 オプションのエイリアスです。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">カスタム</span>[<span class="monospaced">meta=&lt;volume&gt;] [,network=&lt;volume&gt;] [,user=&lt;volume&gt;] [,vendor=&lt;volume&gt;</span>] です。</dt>
+<dd>
+<p>
+cloud-init：開始時に自動生成されるファイルを置き換えるカスタムファイルを指定します。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">meta</span><span class="monospaced">=&lt;</span><span class="monospaced">ボリューム</span></dt>
+<dd>
+<p>
+cloud-init経由でVMに渡されるすべてのメタデータを含むカスタムファイルを指定します。これはプロバイダ固有で、configdrive2とnocloudは異なります。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ネットワーク</span><span class="monospaced">=&lt;</span><span class="monospaced">ボリューム</span></dt>
+<dd>
+<p>
+すべてのネットワークデータを含むカスタムファイルをcloud-init経由でVMに渡す場合。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ユーザー</span><span class="monospaced">=&lt;</span><span class="monospaced">ボリューム</span></dt>
+<dd>
+<p>
+すべてのユーザーデータを含むカスタムファイルをcloud-init経由でVMに渡す場合。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ベンダー</span><span class="monospaced">=&lt;</span><span class="monospaced">ボリューム</span></dt>
+<dd>
+<p>
+すべてのベンダーデータを含むカスタムファイルをcloud-init経由でVMに渡すには。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cipassword</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+cloud-init：ユーザーに割り当てるパスワード。一般的に、これを使うことは推奨されません。代わりに ssh 鍵を使います。また、古いバージョンの cloud-init はハッシュ化されたパスワードをサポートしていないことに注意しましょう。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">citype</span>:<span class="monospaced">&lt;configdrive2 | nocloud | opennebula&gt;</span>です。</dt>
+<dd>
+<p>
+cloud-init設定フォーマットを指定します。デフォルトは、設定されているオペレーティングシステムの種類<span class="monospaced">（ostype</span>.Linuxでは<span class="monospaced">nocloud</span>形式、Windowsでは<span class="monospaced">configdrive2を</span>使用します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ciupgrade</span>:<span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+cloud-init: 最初の起動後にパッケージの自動アップグレードを行います。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ciuser</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+cloud-init：イメージに設定されているデフォルトユーザーの代わりに、sshキーとパスワードを変更するユーザー名。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">core</span>:<span class="monospaced">&lt;整数&gt; (1 - N)</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+ソケットあたりのコア数。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cpu</span>:<span class="monospaced">[[cputype=]&lt;string&gt;] ]</span>。<span class="monospaced">[,flags=&lt;+FLAG[;-FLAG...]&gt;] [,hidden=&lt;1|0&gt;] [,hv-vendorid=&lt;vendor-id&gt;] [,phys-bits=&lt;vendor-id&gt;] [[cputype=]&lt;string[,hidden=&lt;1|0&gt;] [,hv-vendor-id=&lt;vendor-id&gt;] [,phys-bits=&lt;8-64|host&gt;] [,reported-model=&lt;enum&gt;</span>]。</dt>
+<dd>
+<p>
+エミュレートされたCPUタイプ。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">cputype=&lt;string&gt;</span><em>(デフォルト =</em> <span class="monospaced">kvm64</span>)</dt>
+<dd>
+<p>
+エミュレートされたCPUタイプ。デフォルトまたはカスタム名（カスタムモデル名の前に<em>custom-を</em>付ける必要があります）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">flags=&lt;+FLAG</span><span class="monospaced">[;-FLAG...]&gt;</span>です。</dt>
+<dd>
+<p>
+<em>で</em>区切られた追加CPUフラグのリスト。フラグを有効にするには<em>+FLAG を</em>、無効にするには<em>-FLAG を</em>使用します。カスタム CPU モデルは、QEMU/KVM でサポートされる任意のフラグを指定できます。VM 固有のフラグは、セキュリティ上の理由から以下のセットから選択する必要があります: pcid、spec-ctrl、ibpb、ssbd、virt-ssbd、amd-ssbd、amd-no-ssb、pdpe1gb、md-clear、hv-tlbflush、hv-evmcs、aes</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">hidden=</span><span class="monospaced">&lt;boolean</span><em>&gt;（デフォルト =</em> <span class="monospaced">0）</span></dt>
+<dd>
+<p>
+KVM仮想マシンとして識別しないでください。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">hv-</span><span class="monospaced">vendor</span><span class="monospaced">-id=&lt;ベンダーID&gt;です。</span></dt>
+<dd>
+<p>
+Hyper-VのベンダーID。Windows ゲスト内の一部のドライバーまたはプログラムには、特定の ID が必要です。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">phys-bits=&lt;8</span><span class="monospaced">-</span><span class="monospaced">64|host&gt;です。</span></dt>
+<dd>
+<p>
+ゲスト OS に報告される物理メモリアドレスビット。ホストの値より小さいか等しくなければなりません。ホスト CPU の値を使用するには<em>ホストに</em>設定しますが、そうすると他の値を持つ CPU へのライブマイグレーションが壊れることに注意してください。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">reported-model=&lt;486 | Broadwell | Broadwell-IBRS | Broadwell-noTSX | Broadwell-noTSX-IBRS | Cascadelake-Server | Cascadelake-Server-noTSX | Cascadelake-Server-v2 | Cascadelake-Server-v4 | Cascadelake-Server-v5 | Conroe | Cooperlake | Cooperlake-v2 | EPYC | EPYC-Genoa | EPYC-IBPB | EPYC-Milan | EPYC-Milan-EPYC-Rome｜EPYC-Rome-v2｜EPYC-Rome-v3｜EPYC-Rome-v4｜EPYC-v3｜EPYC-v4｜GraniteRapids｜Haswell｜Haswell-IBRS｜Haswell-noTSX｜Haswell-noTSX-IBRS｜Icelake-Client｜Icelake-Client-noTSX｜Icelake-Server｜Icelake-Server-noTSX｜Icelake-Server-v3｜Icelake-Server-v4｜Icelake-Server-v5｜Icelake-Server-v6｜IvyBridge｜IvyBridge-IBRS｜KnightsMill｜Nehalem｜Nehalem-IBRS｜Opteron_G1｜Opteron_G2｜Opteron_G3｜Opteron_G4｜Opteron_G5｜Penryn｜SandyBridge｜SandyBridge-IBRS｜SapphireRapids｜SapphireRapids-v2｜Skylake-Client｜Skylake-Client-IBRS｜Skylake-Skylake-Client｜Skylake-Client-v4｜Skylake-Server｜Skylake-Server-IBRS｜Skylake-Server-noTSX-IBRS｜Skylake-Server-v4｜Skylake-Server-v5｜Westmere｜Westmere-IBRS｜athlon｜core2duo｜coreduo｜host｜kvm32｜kvm64｜max｜pentium｜pentium2｜pentium3｜phenom｜qemu32｜qemu64＞。</span><em>(デフォルト =</em> <span class="monospaced">kvm64</span>)</dt>
+<dd>
+<p>
+ゲストに報告する CPU モデルとベンダー。QEMU/KVM がサポートするモデルである必要があります。カスタム CPU モデル定義に対してのみ有効で、デフォルトモデルは常にゲスト OS に自分自身を報告します。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cpulimit</span>:<span class="monospaced">&lt;数値&gt; (0 - 128)</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+CPU使用量の上限。</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAJhUlEQVRoge2ZWWycVxXHf+fce7/v
+m/GaGCde4pI0aQlJC0kRtE1L00JbLIjY4QkeUB9YHhAIJFCExAsKUkE8IAFFPIDUIqhBRSDRBUqC
+CimFFBCBpCWx02IaZ3G2SdyxPZ7vHh6+mcnSZnFjKIge6Wj8zYzvPf9z/me5d8TM+F8WfbkNuFx5
+BcDLLf/fAEZGRmx4eNh6enqsp6fHhoeHbWRk5D9aFeSlVqHNmzfb6H33sHnT7ZQmD5GfOMax6Sm+
+Pl5h1Yc+xpYtW2SBbX1ReUkRGBkZsdH77mHLW95EOv4Ms3ueJh6YYPHUFF9aljJ63z3cf//9/5FI
+vKQIDA8P293L2yhVjjH7t51ocDiviFecF46n7XzBreChhx4qNhH5t0XjJUVgx44ddGUZ9b/vIpQD
+oRQIWSDJAiFL6B9axo4dO4gxAmANWVDLG+Ln82URMRGhVCqRHxonlAPqFXWKC4r6IhI6OMjMzBN4
+/4LlTUQQEZxzZ32QJAlpmrb+p16vU6vVOHXq1AWjN18AnDj0F971vrs4OnmYJVkoDA4FCPUO172I
+Cgnt7SV++4vvsGhRJx3tJbIsRVVpsUnOBBABBVFEClKYwbKr7sTM7EIUnBcA7z21k7t49x1X8JXv
+bOWra7rw5QRtcN8PLCfvvZJvb9vJycpJpg4/hp/N0I4SMQs4Jw0A5zBXHGiCaIZIKABgpGlKjPEF
+0TpT5pUDRXiVt99+Le03r+WzuytM1gO6pB/3+o0cbxvk8yOPMjW6i2iR2lxOjJDHSDMFogmGwzQ7
+rRJAUpAENAGXIZq2AFzQpvkACCEQcahP+cRH3sKHn9zHXU+MM7rtGeD33NDXzaZynZU9gcezpUw9
+X6OzIyOakkfF4QEpPG6nDRNNEA2FSgKimETSNCXPc0II57VpXhEolUqoOrxPSLOMT330Dv5SqfKD
+NR388Y2L+caQsjITNv3pMBs3rOT56ZyZGaM+J0QUxDc0INrWUgggoRGBAOIRAt77hY1AmqaoeJxP
+cN645jVDbNn8Hj73o8fZ/af9mEE9j9y2YRXt5YzZWmRmzjj1/BwhTXAKzitOHEbeWlc0AVwDnCv8
+KoZzjotV33lTSL1HNKAuEtKM1169jM98/E6mTk3x4Nbd7Bk7TEdHRvAeVY+hmDqmZwx1kIkiqrhz
+S2zL+AbNMC6l/80LgHMOEY9oQvBCks5RKpXo7JhFxbhz42pet2aQet1YtLiDJAkIDq8BHwJmwlwO
+UaD0ojsrNKuUReIZyb9gABCHcwWFgg+0lTPyvIRToVzKWLpkMfV6REQplYvmZCj1uuBUSdJwTg8A
+XBdoCZMOsBkQBeGi/J83gBgjmABC8AlJGsjzFLMyaXDM1etEA0VR50iCx6mSZhkiijpPjEpQD+SF
+4WdJrTAewdCFB1CtVlFVVATnhMQnWJqC5aTBk+c5IIgWRoTgSZJAmiZAo1s7hwsppglI+fTiljeY
+nyHkLQotKIAYI4igzpFHISQOiwEnKTEG8hhRVZw6YjRQLfJGHcF7jleqTBw8znXr12MABnv37efY
+iSnesG4tiUsRUQwD7JIAzKsPqCqiRbVwweM04XdPjhJN+dvTBxgbn6G9q59yZx9/3HWEb33vN+zc
+/RzOJ+w/eJLtO8Z5ZNtT7PvHIUQTvvv9X/Lc/mN0d3by3fseRLQwvWh0Fy+h8wbQ2VFG1KM+xfuA
+qufo8So/fejPPD/rqJys8pvf7eLAoeNMHqnw2U9+kH3jVQ5MClMzKUla5obr13HliiEMmDx6gltv
+uY7Vr1nBQF8PJopQ9AFTt/AROFfMjCW9XTy19xB33Hodb924jr1j+/nDk3/nzTdei4jw3nfeyCOP
+bufa1y5jzeoVrcHM8HR3dfHlr/2Q+x94jFtuuh44/9B2PplXDryYLF3STXd3e+t5UXcHY89OsOH6
+NS2Qed7wpM1Rm50G4MGHH2P961Zy3bqreXrPP5mrzwLt5y6/cACq1eoLCKm+TN/SAebmfn8aUG83
+PYs7+cnPH+eqKwd5as8/edc7bi02847pmVkATk1VWbF8AOcca1Yv59DkqcYK0tCL02deACqVCldc
+0YdIwLmEPM9RV6NnUZlPf3wT6oqJcePN6wHhzTeu4/CRCrfctJ4sSxBRli7pYfHEMUSU97/7Th75
+1RP8eec+Yp5zzTVXM9DfDyogBvHS6HTJACYmJnjVoq5GFw0454gCEOnoaMfiNGZFFRFxJGkbywZ6
+i1NWoy9kWYmbb1gHKCHApuGbisVFGyoYUswa5OR5ftF56JIBjI6OMtDfWwAQ35jnc8AVpRXBohVq
+UowECKqK4RBxoE0W6gvGCcEjaOEAwEQWdpgbGxujt7erOLO2mk3R8i0Wz9EiuUGz+qlKEQEUaJbI
+4lTHmTVePKgWzpDGJGpc8CDTlEsuo88++wxXDA0UIUbAOP23KGZKjI48KnkuhcbiPbPCOBoeBikO
+Lk2VxjqNRilaAEqSZGEAbN261bZt+zW33XY7IAXXm6Ou0YhIMamaaUOl5WRrzg00viuKWWxpQUOH
+NAZFQRpD48Xlkig0MTHBB95zG+VSylz1KCbWyDOh2XyK+56IqjWMKigkUnzWnPPFFFRRLZ29SQRU
+ELOGY4pZ6LKOlM07mZ07d/KOtw1TcB4sGkTDiDQ9K1IkrKeYmQC08d7pZLSiRBpE5s7aS0XAHFEK
+AGY51Wr18g80Zmb33nsvX/z8XdSmj2AWOXhwkrxe46+79jB55Dh/3T2GxUhHextdXW2sXN7PNWtW
+IQKDA71FFBoAjIgQkVg/a5+oHrU5zIznDhxk964xKpXKggAoTlWW8+OfPorlOQ//cjsDy1bS2dFO
+W+diVly1iL6+Pqanpzl5qsL4pPHwN3/G1InDlMsZ7Z1tDA30cfWqIa5dexV9fb2YnT7UTxw4xsHJ
+o4yOjfOP8QOMjx/k4OQx7r777lY0zycXvJ02M4sxMjg4SL1eR0TYsGEDw8PD9PX10d7ejogUN3a1
+GqpKCIE8z5mdnUVVqVarbN++nba2Nvbu3csDDzyAqrJ8+atb+zjn6e/vZ/Xq1axatYq1a9fS29tL
+lmUMDQ1RKpXOm9EXvV6v1+tWr9eZnp5mZmaGWq1GjLHF62aiNZ+bnPfe45xrvTZzxMyYmZk56+LX
+zKjX661DvHOOJElIkoRSqYT3/vLvRlW15eHCa4VxzdvmpjZDfubzuXeb3vuzqCEixBhbo0NTkyS5
+PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">コンピュータに2つのCPUがある場合、合計<em>2つの</em>CPU時間を持ちます。値<em>0は</em>CPU制限なしを示します。</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cpuunits</span>:<span class="monospaced">&lt;整数&gt; (1 - 262144)</span><em>(デフォルト =</em> <span class="monospaced">cgroup v1: 1024, cgroup v2: 100</span>)</dt>
+<dd>
+<p>
+VMのCPUウェイト。引数はカーネルのフェア・スケジューラで使用されます。この数値が大きいほど、このVMはより多くのCPU時間を得ます。数値は、他のすべての実行中のVMのウェイトに対する相対値です。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">説明</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+VM の説明。WebインターフェイスのVMのサマリーに表示されます。コンフィギュレーション・ファイルのコメントとして保存されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">efidisk0</span>:<span class="monospaced">[file=]&lt;volume&gt; [,efitype=&lt;2m|4m&gt;] [,format=&lt;enum&gt;] [,pre-enrolled-keys=&lt;1|0&gt;] [,size=&lt;DiskSize&gt;].</span></dt>
+<dd>
+<p>
+EFIバーを保存するディスクを設定します。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">efitype=&lt;2m</span><span class="monospaced">| 4m&gt;</span><em>(デフォルト =</em> <span class="monospaced">2m</span>)</dt>
+<dd>
+<p>
+OVMF EFIバーのサイズとタイプ。<em>4mが</em>新しく推奨され、セキュアブートには必須です。後方互換性のため、特に指定がない場合は<em>2mが</em>使用されます。arch=aarch64 (ARM)のVMでは無視されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ファイル</span><span class="monospaced">=&lt;</span><span class="monospaced">ボリューム</span></dt>
+<dd>
+<p>
+ドライブのバックアップ・ボリューム。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">フォーマット=&lt;cloop</span><span class="monospaced">｜qcow｜qcow2｜qed｜raw｜vmdk&gt;。</span></dt>
+<dd>
+<p>
+ドライブのバックアップ・ファイルのデータ形式。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">pre-</span><span class="monospaced">enrolled</span><span class="monospaced">-keys=&lt;boolean</span><em>&gt;（デフォルト =</em> <span class="monospaced">0）</span></dt>
+<dd>
+<p>
+<em>efitype=4m</em> とともに使用する場合は、ディストリビューション固有および Microsoft Standard キーが登録された am EFI vars テンプレートを使用します。この場合、デフォルトでセキュアブートが有効になりますが、VM 内からオフにすることも可能です。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">size=</span><span class="monospaced">&lt;ディスク</span><span class="monospaced">サイズ</span></dt>
+<dd>
+<p>
+ディスクサイズ。これは単なる情報提供であり、何の効果もありません。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">freeze</span>:<span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+起動時にCPUをフリーズ（<em>c</em>monitorコマンドで実行開始）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">フックスクリプト</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+vmsのライフタイムの様々なステップで実行されるスクリプト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">hostpci[n]：</span> <span class="monospaced">[[host=]&lt;HOSTPCIID[;HOSTPCIID2...]&gt;] [,deviceid=&lt;hex id&gt;] [,legacy-igd=&lt;1|0&gt;] [,mapping=&lt;mapping-id[,device-id=&lt;hex id&gt;] [,legacy-igd=&lt;1|0&gt;] [,mapping=&lt;mapping-id&gt;] [,mdev=&lt;string&gt;] [,pcie=&lt;1|0&gt;] [,rombar=&lt;1|0&gt; ] [,romfile=&lt;string&gt;] [,sub-devpci[n] [,romfile=&lt;string&gt;] [,sub-device-id=&lt;hex id&gt;] [,sub-vendor-id=&lt;hex id&gt;] [,vendor-id=&lt;hex id&gt;] [,x-vga=&lt;1|0&gt;</span>] となります。</dt>
+<dd>
+<p>
+ホストのPCIデバイスをゲストにマッピングします。</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAJhUlEQVRoge2ZWWycVxXHf+fce7/v
+m/GaGCde4pI0aQlJC0kRtE1L00JbLIjY4QkeUB9YHhAIJFCExAsKUkE8IAFFPIDUIqhBRSDRBUqC
+CimFFBCBpCWx02IaZ3G2SdyxPZ7vHh6+mcnSZnFjKIge6Wj8zYzvPf9z/me5d8TM+F8WfbkNuFx5
+BcDLLf/fAEZGRmx4eNh6enqsp6fHhoeHbWRk5D9aFeSlVqHNmzfb6H33sHnT7ZQmD5GfOMax6Sm+
+Pl5h1Yc+xpYtW2SBbX1ReUkRGBkZsdH77mHLW95EOv4Ms3ueJh6YYPHUFF9aljJ63z3cf//9/5FI
+vKQIDA8P293L2yhVjjH7t51ocDiviFecF46n7XzBreChhx4qNhH5t0XjJUVgx44ddGUZ9b/vIpQD
+oRQIWSDJAiFL6B9axo4dO4gxAmANWVDLG+Ln82URMRGhVCqRHxonlAPqFXWKC4r6IhI6OMjMzBN4
+/4LlTUQQEZxzZ32QJAlpmrb+p16vU6vVOHXq1AWjN18AnDj0F971vrs4OnmYJVkoDA4FCPUO172I
+Cgnt7SV++4vvsGhRJx3tJbIsRVVpsUnOBBABBVFEClKYwbKr7sTM7EIUnBcA7z21k7t49x1X8JXv
+bOWra7rw5QRtcN8PLCfvvZJvb9vJycpJpg4/hp/N0I4SMQs4Jw0A5zBXHGiCaIZIKABgpGlKjPEF
+0TpT5pUDRXiVt99+Le03r+WzuytM1gO6pB/3+o0cbxvk8yOPMjW6i2iR2lxOjJDHSDMFogmGwzQ7
+rRJAUpAENAGXIZq2AFzQpvkACCEQcahP+cRH3sKHn9zHXU+MM7rtGeD33NDXzaZynZU9gcezpUw9
+X6OzIyOakkfF4QEpPG6nDRNNEA2FSgKimETSNCXPc0II57VpXhEolUqoOrxPSLOMT330Dv5SqfKD
+NR388Y2L+caQsjITNv3pMBs3rOT56ZyZGaM+J0QUxDc0INrWUgggoRGBAOIRAt77hY1AmqaoeJxP
+cN645jVDbNn8Hj73o8fZ/af9mEE9j9y2YRXt5YzZWmRmzjj1/BwhTXAKzitOHEbeWlc0AVwDnCv8
+KoZzjotV33lTSL1HNKAuEtKM1169jM98/E6mTk3x4Nbd7Bk7TEdHRvAeVY+hmDqmZwx1kIkiqrhz
+S2zL+AbNMC6l/80LgHMOEY9oQvBCks5RKpXo7JhFxbhz42pet2aQet1YtLiDJAkIDq8BHwJmwlwO
+UaD0ojsrNKuUReIZyb9gABCHcwWFgg+0lTPyvIRToVzKWLpkMfV6REQplYvmZCj1uuBUSdJwTg8A
+XBdoCZMOsBkQBeGi/J83gBgjmABC8AlJGsjzFLMyaXDM1etEA0VR50iCx6mSZhkiijpPjEpQD+SF
+4WdJrTAewdCFB1CtVlFVVATnhMQnWJqC5aTBk+c5IIgWRoTgSZJAmiZAo1s7hwsppglI+fTiljeY
+nyHkLQotKIAYI4igzpFHISQOiwEnKTEG8hhRVZw6YjRQLfJGHcF7jleqTBw8znXr12MABnv37efY
+iSnesG4tiUsRUQwD7JIAzKsPqCqiRbVwweM04XdPjhJN+dvTBxgbn6G9q59yZx9/3HWEb33vN+zc
+/RzOJ+w/eJLtO8Z5ZNtT7PvHIUQTvvv9X/Lc/mN0d3by3fseRLQwvWh0Fy+h8wbQ2VFG1KM+xfuA
+qufo8So/fejPPD/rqJys8pvf7eLAoeNMHqnw2U9+kH3jVQ5MClMzKUla5obr13HliiEMmDx6gltv
+uY7Vr1nBQF8PJopQ9AFTt/AROFfMjCW9XTy19xB33Hodb924jr1j+/nDk3/nzTdei4jw3nfeyCOP
+bufa1y5jzeoVrcHM8HR3dfHlr/2Q+x94jFtuuh44/9B2PplXDryYLF3STXd3e+t5UXcHY89OsOH6
+NS2Qed7wpM1Rm50G4MGHH2P961Zy3bqreXrPP5mrzwLt5y6/cACq1eoLCKm+TN/SAebmfn8aUG83
+PYs7+cnPH+eqKwd5as8/edc7bi02847pmVkATk1VWbF8AOcca1Yv59DkqcYK0tCL02deACqVCldc
+0YdIwLmEPM9RV6NnUZlPf3wT6oqJcePN6wHhzTeu4/CRCrfctJ4sSxBRli7pYfHEMUSU97/7Th75
+1RP8eec+Yp5zzTVXM9DfDyogBvHS6HTJACYmJnjVoq5GFw0454gCEOnoaMfiNGZFFRFxJGkbywZ6
+i1NWoy9kWYmbb1gHKCHApuGbisVFGyoYUswa5OR5ftF56JIBjI6OMtDfWwAQ35jnc8AVpRXBohVq
+UowECKqK4RBxoE0W6gvGCcEjaOEAwEQWdpgbGxujt7erOLO2mk3R8i0Wz9EiuUGz+qlKEQEUaJbI
+4lTHmTVePKgWzpDGJGpc8CDTlEsuo88++wxXDA0UIUbAOP23KGZKjI48KnkuhcbiPbPCOBoeBikO
+Lk2VxjqNRilaAEqSZGEAbN261bZt+zW33XY7IAXXm6Ou0YhIMamaaUOl5WRrzg00viuKWWxpQUOH
+NAZFQRpD48Xlkig0MTHBB95zG+VSylz1KCbWyDOh2XyK+56IqjWMKigkUnzWnPPFFFRRLZ29SQRU
+ELOGY4pZ6LKOlM07mZ07d/KOtw1TcB4sGkTDiDQ9K1IkrKeYmQC08d7pZLSiRBpE5s7aS0XAHFEK
+AGY51Wr18g80Zmb33nsvX/z8XdSmj2AWOXhwkrxe46+79jB55Dh/3T2GxUhHextdXW2sXN7PNWtW
+IQKDA71FFBoAjIgQkVg/a5+oHrU5zIznDhxk964xKpXKggAoTlWW8+OfPorlOQ//cjsDy1bS2dFO
+W+diVly1iL6+Pqanpzl5qsL4pPHwN3/G1InDlMsZ7Z1tDA30cfWqIa5dexV9fb2YnT7UTxw4xsHJ
+o4yOjfOP8QOMjx/k4OQx7r777lY0zycXvJ02M4sxMjg4SL1eR0TYsGEDw8PD9PX10d7ejogUN3a1
+GqpKCIE8z5mdnUVVqVarbN++nba2Nvbu3csDDzyAqrJ8+atb+zjn6e/vZ/Xq1axatYq1a9fS29tL
+lmUMDQ1RKpXOm9EXvV6v1+tWr9eZnp5mZmaGWq1GjLHF62aiNZ+bnPfe45xrvTZzxMyYmZk56+LX
+zKjX661DvHOOJElIkoRSqYT3/vLvRlW15eHCa4VxzdvmpjZDfubzuXeb3vuzqCEixBhbo0NTkyS5
+PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">このオプションは、ホストハードウェアへの直接アクセスを可能にします。そのため、このようなマシンの移行はもはや不可能です。</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Caution" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">実験的！このオプションに関する問題が報告されました。</td>
+</tr></table>
+</div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">デバイスID=&lt;16進数</span><span class="monospaced">ID</span></dt>
+<dd>
+<p>
+ゲストから見えるPCIデバイスIDを上書き</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">host=&lt;HOSTPCIID</span><span class="monospaced">[;HOSTPCIID2...]&gt;</span>です。</dt>
+<dd>
+<p>
+ホストPCIデバイス・パススルー。ホストのPCIデバイスのPCI ID、またはホストのPCI仮想ファンクションのリスト。HOSTPCIID の構文は次のとおりです：</p>
+<div class="paragraph">
+<p><em>bus:dev.func</em>(16進数)</p></div>
+<div class="paragraph">
+<p><em>lspci</em>コマンドを使用すると、既存の PCI デバイスを一覧表示できます。</p></div>
+<div class="paragraph">
+<p>このキーまたは<em>マッピング・</em>キーのどちらかを設定する必要があります。</p></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">legacy</span><span class="monospaced">-</span><span class="monospaced">igd=&lt;boolean</span><em>&gt;（デフォルト =</em> <span class="monospaced">0）</span></dt>
+<dd>
+<p>
+このデバイスをレガシーIGDモードで渡すと、VMのプライマリで排他的なグラフィックデバイスになります。<em>pc-i440fx</em>マシンタイプとVGAが<em>noneに</em>設定されている必要があります。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">マッピング=</span><span class="monospaced">&lt;マッピング</span><span class="monospaced">ID</span></dt>
+<dd>
+<p>
+クラスタ全体のマッピングのID。このホストかdefault-key<em>ホストの</em>どちらかを設定する必要があります。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mdev</span><span class="monospaced">=&lt;文字列</span></dt>
+<dd>
+<p>
+このタイプのインスタンスはVMの起動時に作成され、VMの停止時にクリーンアップされます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">pcie=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+PCI-expressバスを選択してください（<em>q35</em>マシンモデルが必要です）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">rombar=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+デバイスの ROM をゲストのメモリーマップに表示するかどうかを指定します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">romfile</span><span class="monospaced">=&lt;文字列</span></dt>
+<dd>
+<p>
+カスタム pci デバイス rom ファイル名 (/usr/share/kvm/ にある必要があります)。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">サブデバイスID=&lt;16進数</span><span class="monospaced">ID</span></dt>
+<dd>
+<p>
+ゲストから見えるPCIサブシステムのデバイスIDを上書きします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">サブベンダーID=&lt;16進数</span><span class="monospaced">ID</span></dt>
+<dd>
+<p>
+ゲストから見えるPCIサブシステムのベンダーIDを上書きします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ベンダーID=&lt;16進数</span><span class="monospaced">ID</span></dt>
+<dd>
+<p>
+ゲストに見えるPCIベンダーIDの上書き</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">x-vga=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+vfio-vgaデバイスのサポートを有効にします。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">hotplug</span>:<span class="monospaced">&lt;文字列&gt;</span><em>(デフォルト =</em> <span class="monospaced">ネットワーク,ディスク,USB</span>)</dt>
+<dd>
+<p>
+ホットプラグ機能を選択的に有効にします。これはカンマ区切りのホットプラグ機能のリストです：<em>ネットワーク</em>、<em>ディスク</em>、<em>CPU</em>、<em>メモリ</em>、<em>USB</em>、<em>cloudinit</em>。ホットプラグを完全に無効にするには<em>0を</em>使用します。値として<em>1 を</em>使用すると、デフォルトの<span class="monospaced">network、disk、usb</span> のエイリアスになります。USB ホットプラグは、マシンのバージョンが &gt;= 7.1 で、ostype l26 または windows &gt; 7 のゲストで可能です。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">hugepages</span>:<span class="monospaced">&lt;1024 | 2 | any&gt;</span>.</dt>
+<dd>
+<p>
+hugepagesメモリの有効/無効。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ide[n]</span>：<span class="monospaced">[ファイル=]&lt;ボリューム&gt; [,aio=&lt;native|threads|io_uring&gt;] [,backup=&lt;1|0&gt;] [,bps=&lt;bps&gt;] [,bps_max_length=&lt;seconds&gt;] [,bps_rd=&lt;bps&gt;] [,bps_rd_max_length=&lt;seconds&gt;] [,bps_wr=&lt;bps&gt;] [,bps_wr_max_length=&lt;seconds&gt;] [,cache=&lt;enum&gt;] [,cyls=&lt;integer&gt;] [,detect_zeroes=&lt;1|0&gt;] [,discard=&lt;ignore|on&gt;] [,format=&lt;enum&gt;] [,heads=&lt;integer&gt;] [,iops=&lt;iops] [,iops_max=&lt;iops&gt;] [,iops_max_length=&lt;seconds&gt;] [,iops_rd=&lt;iops&gt;] [,iops_rd_max=&lt;iops&gt;] [,iops_rd_max_length=&lt;seconds&gt;] [,iops_wr=&lt;iops&gt;] [,iops_wr_max=&lt;iops&gt;] [,iops_wr_max_length=&lt;seconds&gt;] [,mbps=&lt;mbps&gt;] [,mbps_max=&lt;mbps] [,mbps_rd=&lt;mbps&gt;] [,mbps_rd_max=&lt;mbps&gt;] [,mbps_wr=&lt;mbps&gt;] [,mbps_wr_max=&lt;mbps&gt;] [,media=&lt;cdrom|disk&gt;] [,model=&lt;model&gt;] [,replicate=&lt;1|0&gt;] [,rerror=&lt;ignore|report|stop&gt;] [,secs=&lt;integer&gt;] [,serial=&lt;serial&gt;] [,shared=&lt;1|0&gt; ] [,size=&lt;Disk] [,size=&lt;DiskSize&gt;] [,snapshot=&lt;1|0&gt;] [,ssd=&lt;1|0&gt;] [,trans=&lt;none|lba|auto&gt;] [,werror=&lt;enum&gt;] [,wwn=&lt;wwn&gt;</span>]。</dt>
+<dd>
+<p>
+ボリュームをIDEハードディスクまたはCD-ROMとして使用します（nは0～3）。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">aio=&lt;io_uring</span><span class="monospaced">｜ネイティブ｜スレッド&gt;。</span></dt>
+<dd>
+<p>
+使用するAIOタイプ。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">backup=</span><span class="monospaced">&lt;ブール</span><span class="monospaced">値</span></dt>
+<dd>
+<p>
+バックアップ作成時にドライブを含めるかどうか。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps=&lt;bps&gt;</span></dt>
+<dd>
+<p>
+最大r/w速度（バイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+I/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_rd=&lt;bps&gt;</span></dt>
+<dd>
+<p>
+最大読み取り速度（バイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_rd_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+読み取りI/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_wr=&lt;bps&gt;</span></dt>
+<dd>
+<p>
+最大書き込み速度（バイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_wr_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+書き込みI/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cache=&lt;directsync</span><span class="monospaced">| none | unsafe | writeback | writethrough&gt;</span>です<span class="monospaced">。</span></dt>
+<dd>
+<p>
+ドライブのキャッシュ・モード</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cys</span><span class="monospaced">=&lt;整数</span></dt>
+<dd>
+<p>
+ドライブの物理ジオメトリを特定のシリンダ数に強制します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">detect_</span><span class="monospaced">zeroes</span><span class="monospaced">=&lt;ブール値</span></dt>
+<dd>
+<p>
+ゼロの書き込みを検出し、最適化を試みるかどうかを制御します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">discard=&lt;無視</span><span class="monospaced">｜オン</span></dt>
+<dd>
+<p>
+破棄/トリム要求を基礎となるストレージに渡すかどうかを制御します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ファイル</span><span class="monospaced">=&lt;</span><span class="monospaced">ボリューム</span></dt>
+<dd>
+<p>
+ドライブのバックアップ・ボリューム。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">フォーマット=&lt;cloop</span><span class="monospaced">｜qcow｜qcow2｜qed｜raw｜vmdk&gt;。</span></dt>
+<dd>
+<p>
+ドライブのバックアップ・ファイルのデータ形式。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">heads</span><span class="monospaced">=&lt;整数</span></dt>
+<dd>
+<p>
+ドライブの物理ジオメトリが特定のヘッド数を持つように強制します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops=&lt;iops&gt;</span></dt>
+<dd>
+<p>
+最大r/w I/O（オペレーション毎秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_max=&lt;iops&gt;</span></dt>
+<dd>
+<p>
+スロットルされていないr/w I/Oプールの最大オペレーション/秒。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+I/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd=&lt;iops&gt;</span></dt>
+<dd>
+<p>
+1秒あたりの最大読み取りI/O。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd_max=&lt;iops&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+スロットルされていない最大読み取りI/Oプール（1秒あたりの処理数）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+読み取りI/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_</span><span class="monospaced">wr</span><span class="monospaced">=&lt;アイオプス&gt;。</span></dt>
+<dd>
+<p>
+最大書き込みI/O（オペレーション/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr_max=&lt;iops&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+スロットルなしの最大書き込みI/Oプール（1秒あたりの操作数）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+書き込みI/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps=&lt;mbps&gt;</span></dt>
+<dd>
+<p>
+最大R/W速度（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_max=&lt;mbps&gt;</span></dt>
+<dd>
+<p>
+最大スロットルなしR/Wプール（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_rd=&lt;mbps&gt;</span></dt>
+<dd>
+<p>
+最大読み取り速度（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_rd_max=&lt;mbps&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+スロットルのない最大読み取りプール（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_wr=&lt;mbps&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+最大書き込み速度（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_wr_max=&lt;mbps&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+スロットルなしの最大書き込みプール（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">media=&lt;cdrom</span><span class="monospaced">| disk&gt;</span><em>(デフォルト =</em> <span class="monospaced">disk</span>)</dt>
+<dd>
+<p>
+ドライブのメディア・タイプ。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">model</span><span class="monospaced">=&lt;モデル</span></dt>
+<dd>
+<p>
+ドライブのモデル名（URLエンコード、最大40バイト）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">replicate=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+ドライブをレプリケーション・ジョブの対象とするかどうか。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">rerror=&lt;ignore</span><span class="monospaced">| report | stop&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+読み取りエラー。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">secs</span><span class="monospaced">=&lt;整数</span></dt>
+<dd>
+<p>
+ドライブの物理ジオメトリを特定のセクタ数に強制します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">シリアル=</span><span class="monospaced">&lt;シリアル</span></dt>
+<dd>
+<p>
+報告されたドライブのシリアル・ナンバー（URLエンコード、最大20バイト）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">shared=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+このローカル管理ボリュームをすべてのノードで使用可能としてマークします。</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAMVUlEQVRogdWZeXDVVZbHP7/f27JB
+wtJIiCERRFlbx5FuHRrRBgtBsRIwCCOrFmGmiDBjYVNlQlgiQjU6IjI4xLJxGf5QGp0Cbaftsu3R
+hu6aYXqgLZoWEsjyyDP7S972e7/l3vnj5cW3Ji9M/zOn6lRS997fvd/vueece+59ipSS/89iv5mP
+ZEQQQsS23RQARVEAUFUVRVFQog0ZyogJSClld3c327Ztw7IsLMuKto90KgBsNhtVVVXMnj2bvLw8
+7Ha7HBEJKWXGKoSQXV1dcsuWLfLSpUsyKkKIIdWyrLTqdrvlU089Jc+cOSM9Ho8Mh8NSCCEzxTRi
+8JWVlbKtre0vAt6yLGmapmxtbZXr1q2TZ86ckW1tbSMikTH4GzduyKqqqkHwsSA1TZOhUChOg8Hg
+oBqGIQ3DSAk+VleuXDliEspwviullD09PbzwwgscO3Yszt91XScQCNDZ2YlhGIPfuFwu7Pb48FJV
+lZycnEG/z8/PRwiBqqqDYzweD88//zyrV69m7ty5jBs3DofDMWRgD0lASik9Hg979uzh2LFjcYEa
+CoVob2/n2q9+hbZ585BGSCWltbVMr61NtSYbN25k7dq1zJkzZ1gSaqrGWPD79+9PAh8MBuns7OTi
+e+8R2rwZCYOaqTTt3cuf6+qSwAMcP36co0eP8vXXX9Pd3Y1hGMg0lk65A1HwdXV1vPHGG0mW7+jo
+4A8/+xn2BAAAI0riQOnu3cyork7Zt3btWtavX89dd92VdieSCEgppdvt5sCBAxw5ciSuLxQK0dTU
+RMOHHyJ37hwh1NSiAKU7djDzxRdT9q9YsYJt27YxY8aMlCTiCEgp5eXLl6mvr+fVV1+NmygYDNLW
+1sY3J09ipLEYQDPw2sBfCTwMLARKgKwhiNxWU8OsXbvi2qLYnnzySSorK1PvRGyqvH79uty6dWtS
+Lg8EAvLKlSvyo1275M8hSV8H+eMBvRPkP9Vslp0tV6W3u12+c7hOTgT5NyAXgtwE8gTIUyn0D9XV
+0jAMqet6klZUVMjPP/88KcWqUcs3NjZy+PBhDh06FGeFqNtcOnECY8+euICVwDWgFtj/m1/wD+8f
+5xtg6uy5ZI+5BSkkU6fexgu7tvLWhd/x1tXL5P/905wAggnzSODavn388Sc/SblDL7/8Mq+99hqX
+L1+OC2zb7t27uX79+u7Dhw+ndJvW1lYaP/qI0EDKS1z0XeDjC7/l9llz+d6EWxjv0imdcgeFRcVo
+fR46vm1Cx8ndP5hP3qjR/GDuX/GbC5/iberl1qirxGjv73+PYRjc8tBDcVhGjRpFRUUF27dvp7i4
+mPz8fFwuV2QHVq1aldLyDQ0NXDt5En91NRIQCRqNHld2HsLUCfu6GD9mNIoVQggDy9RQpYLTbkdV
+7Vh6CH9vJ/fcfz/vALsAN2AlzHv1wAEu1tTExUI0Hl555RXq6upobm4mEAhECEyePDkOvK7rtLS0
+cOP0aby1tUnAo2oNkFAUSTjoRfN+ix7wgjRBShACVVFQRGSkHvTypwtnmXHPQhrbb3D0k1McAdpi
+DBLVhp/+lIvV1UlV7oQJE8jNzcXtduPz+ZIPMtM0aWhooPH99+mtrU1ymVRqUxUQFlJYSBFGCivG
+OSyEaSCFAGlhd+Vy7w/n43BmM3POXWx69hl8AyMTDXTl4EEu7t2bCBGAQCCAruupCdjtdrp3705r
++ViN22YhsUwdyzRBCpACyzIRMnpngCxXNjYlMk4L+ggoYXxp5pbAlX37cDgcSQSEEAxmoVgQg/9n
+AP67bVdAUcFmQ3W6IgtIiWUKLCGwLGvQj69e+m+EsBB6iGB/N/3e9oyNlIgRYm5kiR2JH0L6MkFY
+Ei0UQKAycdJUbIodT3Mjpu6n3xfCptoRlomQCqZpRkhLCykMhLBQSV1HJbalKnvSF3MpNO0OSIEw
+DWyuPCaVzCRv7ER8Ph+mtJM35lZsdjvuxktYhobDkYOCgqJEDWLLaAfSVc1p78SJO2AAvUBggLUN
+KIx2Kgqjv3crY2wOiqaqKKoKihKJCctCC/npbW+jq7sbS7UjkGCZCCkQQkdJsV6mRWHGBH4HLHpx
+F3LcGDq6u7nw2S85++V/4gb0kB9hFoAZwuZwgc2BqjpQVRWbzYXd4cDlysHn7WJi0W2EfH24XA6E
+jKySqhTPtDRPIjB4XUtoPw3sKV/O+KJipJT4V63mq3/7Obu21/LN/5xl9l/PIys7G2fOaBS7E5vN
+QrU7UW0KNlUFp5P8MeO5/8HFhPo7CXr7MMIaQW8neSkMlqnEEYj1s8QJbwXaWpopmDgJh93OqHGF
+LFy9jjunTeHNo2uAvUy54/uMuaUYV24BUpVYpoVEwaY4UVUbitNJ9ugxOBw2tEAPfX29QCjuVB9O
+EmNBTdeRGEj3A56OdkwtgDDCCKFjz8ql6N55/G3VcRouX+SXH72Ht6udcCg4cJiJSPIn8oCloIKU
+KAhURUUIiVCjx128pjtrEiVtFkrMNNOBA+s34XG3YIRDSMtAkSbOrDzuvOchHnmiklEFY3n76G7O
+f/nv9Ht7EMJCSjGoljCxjOBAnaSjhYPowevDZrx04FMSGLwnJEzmAOYCn33wAUYoiGXoSMsEoeNw
+ZTO2aDrzFpWxck0VJVOn4fd2E/T7oneNyOFlGkjLwNTD6FoILRQEa/hDcyhJIuB0OlFVNeVE04B3
+XjnC+d9+hRYKYJlhpDBBGDidDiaUfp/xk24nJ3c0eaPzsKsgzEhtZJkGIuzDNDRCAR99fb309XYh
+NAYPsnQ6IgJSSgoKCihavDilJZ4Aajf8HVf/fAnLCCNNAyktECaqIsgbV8So0WMHrn2RGLBMHREO
+YBg6eiiIFgzQ7/US8vmYoEDuENa/u6oqcwJRPysoKOC+N9+kcNGiJGvkAQuADY+twn3tCuFg/4CV
+DbB0VKHhzHbhdGVhs6kgDKTuR9f86KEAWtBHd0c73p52pB5Av5KewJxnnmHeoUOEw+EkjHEEYi8M
+EHlFKyws5IfHjlG4cGHSxJOA1cATPy7nT388j+73YoYDCEuP1DhSRrKOlFhmmLAWQNMCBHw9tHtu
+8K2nBcsI8uGxf8HoiRBINNTtjz7KQ/X1xL6iRDHGvubZAfr7+1Nuz+TJk6G+nv/atInmX/86rq8A
+WAlUrahk/Fio/8XHjM4fi93pHCgRFCzLQtd1tFAQLeCjs9NNb4cHxdL44J8PozfD7XyXRqNy97p1
+PPz220gp0XU9zriKogw+SaqqGtmB48ePU15enkRASklRURH31tcz6cEHk1JrAfAUcEcPLLjvMU69
+/694uzsI+X3093TS5blBl8eNt72VHk8Tfd9eR+vv4MQ/HkZpiJwttgTL3/Hoo2nBNzY2smjRIhYs
+WEBBQQEulyvyLuT3+2VTUxM7d+7k5MmTKXNuS0sL555+mtYvv0zqE0A7kavhqFL4oAlCCWOygGIi
+qTiHyMnuTBgz/bHHKDt9GillnN8D+P1+ysrKWLJkCdOmTWPWrFmUlpZGCAghpN/vp7m5mZqaGl5/
+/XUKCwtJFLfbzX+sX8+Nr75K6rtZiXr49KVLKf/4Y4QQ6LqeBP6RRx6hvLycadOmMXPmTEpKSsjN
+zf3uZS6WRHV1NadOnUpaTEpJa2sr5zZupOkmSaQqk2csWcLyTz4BQNO0uL7GxkbWr1+fErzNZlMG
+w1lVVSUvL4+SkhL27dvH8uXL8Xg8ceABiouLue+ttyieN2+IK2Z6TRx/5+LFacE3NDRQWVmZFjwk
+nAOxJF566SW2bNnChQsXkmKipKSEB959l9vmzcvo1pZOpz/8ME98+mla8Bs2bGDZsmVpwUOa5/VE
+d0oXE319fXxWXs43Z88m9Q0n03/0I1YPJIRE8OfOnWPHjh2UlZUNCT4tgUQSO3fupKqqigceeGCw
+P/a7VM8emUg0VcbK+fPn2bp1KytWrBgW/JAEEknU1NTw7LPPMn/+/GFBZQI8lZw/f57nnnuO5cuX
+M2XKlGHBD0sgkURdXR2PP/44FRUVNwV+qP7Tp09z8ODBjNxmRAQSSRw4cIBly5axdOnSvwh4RVH4
+4osv2L9/P2VlZRlbfkQEEkls376djo4OQqHE83bk4nK5EEKwZs0aSktLRwR+RATgOxItLS1cu3aN
+vr6+wTfK/4tEfzeeMmUKkydPzhg8jJAAREgEg0H6+vrQNC2pFL8ZUVWVrKws8vPzycnJQVXVjH/s
+/F/lgJiyQFHragAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">このオプションは、ボリュームを自動的に共有しません！</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">size=</span><span class="monospaced">&lt;ディスク</span><span class="monospaced">サイズ</span></dt>
+<dd>
+<p>
+ディスクサイズ。これは単なる情報提供であり、何の効果もありません。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">snapshot=&lt;boolean&gt;</span></dt>
+<dd>
+<p>
+qemu のスナップショットモード機能を制御します。有効な場合、ディスクに加えられた変更は一時的なもので、VM がシャットダウンされると破棄されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ssd=</span><span class="monospaced">&lt;ブール</span><span class="monospaced">値</span></dt>
+<dd>
+<p>
+このドライブを回転式ハードディスクではなくSSDとして公開するかどうか。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">trans=&lt;自動</span><span class="monospaced">| lba | なし&gt;。</span></dt>
+<dd>
+<p>
+強制ディスクジオメトリバイオス変換モード。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">werror=&lt;enospc</span><span class="monospaced">｜無視｜報告｜停止&gt;。</span></dt>
+<dd>
+<p>
+書き込みエラーアクション。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">wwn=&lt;wwn&gt;</span></dt>
+<dd>
+<p>
+16バイトの16進文字列としてエンコードされたドライブのワールドワイド名で、先頭に<em>0xが</em>付きます。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ipconfig[n]</span>：[<span class="monospaced">gw=&lt;GatewayIPv4&gt;] [,gw6=&lt;GatewayIPv6&gt;] [,ip=&lt;IPv4Format/CIDR&gt;] [,ip6=&lt;IPv6Format/CIDR&gt;</span>] となります。</dt>
+<dd>
+<p>
+cloud-init：対応するインターフェースのIPアドレスとゲートウェイを指定します。</p>
+<div class="paragraph">
+<p>IPアドレスはCIDR表記を使用し、ゲートウェイはオプションですが、同じタイプのIPを指定する必要があります。</p></div>
+<div class="paragraph">
+<p>特別な文字列<em>dhcpは</em>、DHCPを使用するIPアドレスに使用することができ、その場合、明示的なゲートウェイを提供する必要はありません。 IPv6の場合、特別な文字列<em>autoは</em>、ステートレス自動設定を使用するために使用することができます。これにはcloud-init 19.4以降が必要です。</p></div>
+<div class="paragraph">
+<p>cloud-initが有効で、IPv4アドレスもIPv6アドレスも指定されていない場合、デフォルトでIPv4のdhcpを使用します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">gw=&lt;ゲートウェイ</span><span class="monospaced">IPv</span><span class="monospaced">4</span></dt>
+<dd>
+<p>
+IPv4トラフィックのデフォルトゲートウェイ。</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">必要なオプション:<span class="monospaced">ip</span></td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">gw</span><span class="monospaced">6=&lt;ゲートウェイIPv6</span></dt>
+<dd>
+<p>
+IPv6トラフィックのデフォルトゲートウェイ。</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">必要なオプション:<span class="monospaced">ip6</span></td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ip=&lt;IPv4Format/CIDR&gt;</span><em>(デフォルト =</em> <span class="monospaced">dhcp</span>)</dt>
+<dd>
+<p>
+CIDR形式のIPv4アドレス。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ip6=&lt;IPv6Format/CIDR&gt;</span><em>(デフォルト =</em> <span class="monospaced">dhcp</span>)</dt>
+<dd>
+<p>
+CIDR形式のIPv6アドレス。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ivshmem</span>:<span class="monospaced">size=&lt;整数&gt; [,name=&lt;文字列&gt;</span>] です。</dt>
+<dd>
+<p>
+VM間共有メモリ。VM間やホストとの直接通信に便利。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">name</span><span class="monospaced">=&lt;文字列</span></dt>
+<dd>
+<p>
+ファイル名。先頭に<em>pve-shm-</em> が付きます。デフォルトは VMID です。VM の停止時に削除されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">size=&lt;integer&gt;</span><span class="monospaced">(1 - N</span>)</dt>
+<dd>
+<p>
+MB単位のファイルサイズ。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">keephugepages</span>:<span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+hugepagesと一緒に使用します。有効にすると、hugepagesはVMシャットダウン後も削除されず、その後の起動に使用できます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">キーボード</span>:<span class="monospaced">&lt;da | de | de-ch | en-gb | en-us | es | fi | fr | fr-be | fr-ca | fr-ch | hu | is | it | ja | lt | mk | nl | no | pl | pt | pt-br | sl | sv | tr&gt;</span>.</dt>
+<dd>
+<p>
+VNC サーバーのキーボードレイアウト。このオプションは一般的には必要なく、ゲストOS内で処理した方が良い場合が多いです。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">kvm</span>:<span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+KVMハードウェア仮想化の有効/無効を設定します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">localtime</span>:<span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+リアルタイムクロック（RTC）をローカルタイムに設定します。<span class="monospaced">ostypeが</span>Microsoft Windows OSの場合、デフォルトで有効になります。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">lock</span>:<span class="monospaced">&lt;バックアップ|クローン|作成|マイグレーション|ロールバック|スナップショット|スナップショット削除|中断|サスペンド&gt;。</span></dt>
+<dd>
+<p>
+VMをロック/アンロックします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">マシン</span> <span class="monospaced">[タイプ=]&lt;マシンタイプ[,enable-s3=&lt;1|0&gt;] [,enable-s4=&lt;1|0&gt;] [,viommu=&lt;intel|virtio&gt;</span>]。</dt>
+<dd>
+<p>
+QEMUマシンを指定します。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">enable-</span><span class="monospaced">s</span><span class="monospaced">3=&lt;ブール値</span></dt>
+<dd>
+<p>
+S3 電源状態を有効にします。マシンタイプ 9.2+pve1 以降は false、それ以前は true。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">enable-</span><span class="monospaced">s</span><span class="monospaced">4=&lt;ブール値</span></dt>
+<dd>
+<p>
+S4 電源状態を有効にします。デフォルトは、マシンタイプ 9.2+pve1 以降は false、それ以前は true。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">type=&lt;マシン</span><span class="monospaced">タイプ</span></dt>
+<dd>
+<p>
+QEMUのマシンタイプを指定します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">viommu=&lt;intel</span><span class="monospaced">| virtio&gt; です</span><span class="monospaced">。</span></dt>
+<dd>
+<p>
+ゲストの vIOMMU バリアントを有効にして設定します (Intel vIOMMU はマシンタイプとして q35 を設定する必要があります)。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">メモリを</span>使用します：<span class="monospaced">[カレント=]&lt;整数</span></dt>
+<dd>
+<p>
+メモリ特性。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">current=&lt;integer&gt;</span><span class="monospaced">(16 - N)</span><em>(デフォルト =</em> <span class="monospaced">512</span>)</dt>
+<dd>
+<p>
+VM の現在のオンライン RAM 量 (MiB 単位)。これは、バルーン デバイスを使用する際に使用可能な最大メモリです。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">migrate_downtime</span>:<span class="monospaced">&lt;数値&gt; (0 - N)</span><em>(デフォルト =</em> <span class="monospaced">0.1</span>)</dt>
+<dd>
+<p>
+マイグレーションの最大許容ダウンタイム（秒）を設定します。新しく汚れたRAMを転送する必要があるため、マイグレーションが最後まで収束しない場合、マイグレーションが収束するまで、この上限は自動的に段階的に増加します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">migrate_speed</span>:<span class="monospaced">&lt;整数&gt; (0 - N)</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+マイグレーションの最大速度（MB/s）を設定します。値 0 は制限なしです。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">name</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+VM の名前を設定します。コンフィギュレーションWebインターフェイスでのみ使用します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ネームサーバー</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+cloud-init：コンテナの DNS サーバー IP アドレスを設定します。searchdomain も nameserver も設定されていない場合、Create は自動的にホストからの設定を使用します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">net[n]</span>：<span class="monospaced">[model=]&lt;enum&gt; [,bridge=&lt;bridge&gt;] [,firewall=&lt;1|0&gt;] [,link_down=&lt;1|0&gt;] [,macaddr=&lt;XX:XX:XX:XX:XX：XX&gt;] [,mtu=&lt;integer&gt;] [,queues=&lt;integer&gt;] [,rate=&lt;number&gt;] [,tag=&lt;integer&gt;] [,trunks=&lt;vlanid[;vlanid...]&gt;][,&lt;model&gt;=&lt;macaddr&gt;] [,&lt;model&gt;=&lt;macaddr&gt;] [,&lt;model&gt;=&lt;macaddr</span></dt>
+<dd>
+<p>
+ネットワーク機器を指定します。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">ブリッジ</span></dt>
+<dd>
+<p>
+ネットワークデバイスを接続するブリッジ。Proxmox VE標準ブリッジは<em>vmbr0と</em>呼ばれます。</p>
+<div class="paragraph">
+<p>ブリッジを指定しない場合は、DHCPとDNSサービスを提供するkvmユーザー（NAT）ネットワークデバイスを作成します。以下のアドレスが使用されます：</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>10.0.2.2 ゲートウェイ 10.0.2.3 DNSサーバ 10.0.2.4 SMBサーバ</pre>
+</div></div>
+<div class="paragraph">
+<p>DHCPサーバーは、10.0.2.15から始まるアドレスをゲストに割り当てます。</p></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">firewall=&lt;boolean&gt;</span></dt>
+<dd>
+<p>
+このインターフェイスをファイアウォールで保護するかどうか。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">link_</span><span class="monospaced">down</span><span class="monospaced">=&lt;ブール値</span></dt>
+<dd>
+<p>
+このインターフェイスを切断するかどうか（プラグを抜くように）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">macaddr=&lt;XX</span><span class="monospaced">:XX:XX:XX:XX&gt;となります。</span></dt>
+<dd>
+<p>
+I/G（Individual/Group）ビットが設定されていない共通のMACアドレス。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">model=&lt;e1000</span><span class="monospaced">｜e1000-82540em｜e1000-82544gc｜e1000-82545em｜e1000e｜i82551｜i82557b｜i82559er｜ne2k_isa｜ne2k_pci｜pcnet｜rtl8139｜virtio｜vmxnet3&gt;</span>です<span class="monospaced">。</span></dt>
+<dd>
+<p>
+ネットワークカードモデル。<em>virtio</em>モデルは、非常に低い CPU オーバーヘッドで最高のパフォーマンスを提供します。ゲストがこのドライバをサポートしていない場合、通常は<em>e1000</em> を使用するのが最善です。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mtu=&lt;整数&gt;</span><span class="monospaced">(1 - 65520</span>)</dt>
+<dd>
+<p>
+MTUを強制します。ブリッジMTUを使用するには<em>1を</em>設定します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">キュー=&lt;整数&gt;</span><span class="monospaced">(0 - 64</span>)</dt>
+<dd>
+<p>
+デバイスで使用するパケットキューの数。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">rate=&lt;数値&gt;</span><span class="monospaced">(0 - N</span>)</dt>
+<dd>
+<p>
+mbps（メガバイト/秒）単位のレート制限（浮動小数点数）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">タグ=&lt;整数&gt;</span><span class="monospaced">(1 - 4094</span>)</dt>
+<dd>
+<p>
+このインターフェイスのパケットに適用するVLANタグ。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">trunks=&lt;vlanid</span><span class="monospaced">[;vlanid...]&gt;</span>です。</dt>
+<dd>
+<p>
+このインターフェイスを通過する VLAN トランク。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">numa</span>:<span class="monospaced">&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+NUMAの有効/無効。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">numa[n]</span>:<span class="monospaced">cpus=&lt;id[-id];...&gt; [,hostnodes=&lt;id[-id];...&gt;] [,policy=&lt;</span>優先|バインド|インターリーブ&gt;]<span class="monospaced">[,policy</span>=&lt;優先|バインド<span class="monospaced">|</span>インターリーブ<span class="monospaced">[,メモリ=&lt;数&gt;] [,ポリシー=&lt;preferred|bind|interleave&gt;</span>]。</dt>
+<dd>
+<p>
+NUMAトポロジー。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">cpus=&lt;id</span><span class="monospaced">[-id];...&gt;</span>です。</dt>
+<dd>
+<p>
+このNUMAノードにアクセスするCPU。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">hostnodes=&lt;id</span><span class="monospaced">[-id];...&gt;</span><span class="monospaced">です</span>。</dt>
+<dd>
+<p>
+使用するホストNUMAノード。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">メモリ</span><span class="monospaced">=&lt;数字</span></dt>
+<dd>
+<p>
+このNUMAノードが提供するメモリ量。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">policy=&lt;バインド</span><span class="monospaced">｜インターリーブ｜プリファード&gt;。</span></dt>
+<dd>
+<p>
+NUMA割り当てポリシー。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">onboot</span>:<span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+システム起動時に VM を起動するかどうかを指定します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ostype</span>:<span class="monospaced">&lt;l24 | l26 | other | solaris | w2k | w2k3 | w2k8 | win10 | win11 | win7 | win8 | wvista | wxp&gt;</span>.</dt>
+<dd>
+<p>
+ゲストオペレーティングシステムを指定します。これは、特定のオペレーティングシステム用の特別な最適化/機能を有効にするために使用されます：</p>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+その他<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+不特定OS</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+ダブルエックスピー<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Microsoft Windows XP</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+ダブリューツーケー<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Microsoft Windows 2000</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+w2k3<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Microsoft Windows 2003</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+w2k8<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Microsoft Windows 2008</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+ウエビスタ<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Microsoft Windows Vista</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+ウインセブン<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Microsoft Windows 7</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+ウインエイト<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Microsoft Windows 8/2012/2012r2</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+ウインテン<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Microsoft Windows 10/2016/2019</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+ウィンナップ<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+マイクロソフト Windows 11/2022/2025</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+l24<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Linux 2.4 カーネル</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+l26<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Linux 2.6 - 6.X カーネル</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+ソラリス<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Solaris/OpenSolaris/OpenIndian カーネル</p>
+</td>
+</tr>
+</table></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">parallel[n]：</span>/<span class="monospaced">dev/parportd+|/dev/usb/lpd+</span></dt>
+<dd>
+<p>
+ホスト・パラレル・デバイスをマップします（nは0～2）。</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">このオプションは、ホストハードウェアへの直接アクセスを可能にします。そのため、このようなマシンのマイグレーションはもはや不可能です。</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Caution" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">実験的！このオプションに関する問題が報告されました。</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">protection</span>:<span class="monospaced">&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+VM の保護フラグを設定します。これにより、VM の削除とディスクの削除操作が無効になります。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">reboot</span>:<span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+再起動を許可。<em>0</em>に設定すると、VM は再起動時に終了します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">rng0</span>:<span class="monospaced">[source=]&lt;/dev/urandom|/dev/random|/dev/hwrng&gt; [,max_bytes=&lt;integer&gt;] [,period=&lt;integer&gt;]</span>です。</dt>
+<dd>
+<p>
+VirtIO ベースの乱数ジェネレータを設定します。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">max</span><span class="monospaced">_bytes=&lt;整数&gt;</span><em>(デフォルト =</em> <span class="monospaced">1024</span>)</dt>
+<dd>
+<p>
+<em>ミリ</em>秒ごとにゲストに注入されるエントロピーの最大バイト数。制限を無効にするには<span class="monospaced">0 を</span>使用します (潜在的に危険です!)。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">period=&lt;integer&gt;</span><em>(デフォルト=</em> <span class="monospaced">1000</span>)</dt>
+<dd>
+<p>
+<em>周期</em>ミリ秒ごとにエントロピー注入クォータがリセットされ、ゲストは別の<em>max_bytes</em>のエントロピーを取得できるようになります。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">source=&lt;/dev/hwrng</span><span class="monospaced">｜/dev/random｜/dev/urandom&gt;。</span></dt>
+<dd>
+<p>
+エントロピーを収集するホスト上のファイル。urandomを使用しても、実際のエントロピーからシードされることに変わりはなく、提供されるバイトはゲスト上の実際のエントロピーと混合される可能性が高いので、意味のある方法でセキュリティを低下させる<strong>ことは</strong>ありません。<em>/dev/hwrngは</em>ホストからハードウェアRNGを渡すために使用できます。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">sata[n]</span>：<span class="monospaced">[ファイル=]&lt;ボリューム&gt; [,aio=&lt;native|threads|io_uring&gt;] [,backup=&lt;1|0&gt;] [,bps=&lt;bps&gt;] [,bps_max_length=&lt;seconds&gt;] [,bps_rd=&lt;bps&gt;] [,bps_rd_max_length=&lt;seconds&gt;] [,bps_wr=&lt;bps&gt;] [,bps_wr_max_length=&lt;seconds&gt;] [,cache=&lt;enum&gt;] [,cyls=&lt;integer&gt;] [,detect_zeroes=&lt;1|0&gt;] [,discard=&lt;ignore|on&gt;] [,format=&lt;enum&gt;] [,heads=&lt;integer&gt;] [,iops=&lt;iops] [,iops_max=&lt;iops&gt;] [,iops_max_length=&lt;seconds&gt;] [,iops_rd=&lt;iops&gt;] [,iops_rd_max=&lt;iops&gt;] [,iops_rd_max_length=&lt;秒&gt;] [,iops_wr=&lt;iops&gt;] [,iops_wr_max=&lt;iops&gt;] [,iops_wr_max_length=&lt;seconds&gt;] [,mbps=&lt;mbps&gt;] [,mbps_max=&lt;mbps&gt;] [,mbps_rd=&lt;mbps&gt;] [,mbps_rd_max=&lt;mbps&gt;] [,mbps_wr=&lt;mbps&gt;] [,mbps_wr_max=&lt;mbps&gt;] [,media=&lt;cdrom|disk&gt;] [,replicate=&lt;1|0&gt;] [,rerror=&lt;ignore|report|stop&gt;] [,secs=&lt;integer&gt;] [,serial=&lt;serial&gt;] [,shared=&lt;1|0&gt;] [,size=&lt;DiskSize&gt;] [,snapshot=&lt;1|0&gt;] [,ssd=&lt;1|0&gt;] [,trans=&lt;none|lba|auto&gt;] [,werror=&lt;enum&gt;] [,wwn=&lt;wwn&gt;</span>]。</dt>
+<dd>
+<p>
+ボリュームをSATAハードディスクまたはCD-ROMとして使用します（nは0～5）。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">aio=&lt;io_uring</span><span class="monospaced">｜ネイティブ｜スレッド&gt;。</span></dt>
+<dd>
+<p>
+使用するAIOタイプ。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">backup=</span><span class="monospaced">&lt;ブール</span><span class="monospaced">値</span></dt>
+<dd>
+<p>
+バックアップ作成時にドライブを含めるかどうか。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps=&lt;bps&gt;</span></dt>
+<dd>
+<p>
+最大r/w速度（バイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+I/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_rd=&lt;bps&gt;</span></dt>
+<dd>
+<p>
+最大読み取り速度（バイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_rd_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+読み取りI/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_wr=&lt;bps&gt;</span></dt>
+<dd>
+<p>
+最大書き込み速度（バイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_wr_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+書き込みI/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cache=&lt;directsync</span><span class="monospaced">| none | unsafe | writeback | writethrough&gt;</span>です<span class="monospaced">。</span></dt>
+<dd>
+<p>
+ドライブのキャッシュ・モード</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cys</span><span class="monospaced">=&lt;整数</span></dt>
+<dd>
+<p>
+ドライブの物理ジオメトリを特定のシリンダ数に強制します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">detect_</span><span class="monospaced">zeroes</span><span class="monospaced">=&lt;ブール値</span></dt>
+<dd>
+<p>
+ゼロの書き込みを検出し、最適化を試みるかどうかを制御します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">discard=&lt;無視</span><span class="monospaced">｜オン</span></dt>
+<dd>
+<p>
+破棄/トリム要求を基礎となるストレージに渡すかどうかを制御します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ファイル</span><span class="monospaced">=&lt;</span><span class="monospaced">ボリューム</span></dt>
+<dd>
+<p>
+ドライブのバックアップ・ボリューム。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">フォーマット=&lt;cloop</span><span class="monospaced">｜qcow｜qcow2｜qed｜raw｜vmdk&gt;。</span></dt>
+<dd>
+<p>
+ドライブのバックアップ・ファイルのデータ形式。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">heads</span><span class="monospaced">=&lt;整数</span></dt>
+<dd>
+<p>
+ドライブの物理ジオメトリが特定のヘッド数を持つように強制します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops=&lt;iops&gt;</span></dt>
+<dd>
+<p>
+最大r/w I/O（オペレーション毎秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_max=&lt;iops&gt;</span></dt>
+<dd>
+<p>
+スロットルされていないr/w I/Oプールの最大オペレーション/秒。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+I/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd=&lt;iops&gt;</span></dt>
+<dd>
+<p>
+1秒あたりの最大読み取りI/O。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd_max=&lt;iops&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+スロットルされていない最大読み取りI/Oプール（1秒あたりの処理数）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+読み取りI/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_</span><span class="monospaced">wr</span><span class="monospaced">=&lt;アイオプス&gt;。</span></dt>
+<dd>
+<p>
+最大書き込みI/O（オペレーション/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr_max=&lt;iops&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+スロットルなしの最大書き込みI/Oプール（1秒あたりの操作数）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+書き込みI/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps=&lt;mbps&gt;</span></dt>
+<dd>
+<p>
+最大R/W速度（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_max=&lt;mbps&gt;</span></dt>
+<dd>
+<p>
+最大スロットルなしR/Wプール（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_rd=&lt;mbps&gt;</span></dt>
+<dd>
+<p>
+最大読み取り速度（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_rd_max=&lt;mbps&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+スロットルのない最大読み取りプール（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_wr=&lt;mbps&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+最大書き込み速度（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_wr_max=&lt;mbps&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+スロットルなしの最大書き込みプール（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">media=&lt;cdrom</span><span class="monospaced">| disk&gt;</span><em>(デフォルト =</em> <span class="monospaced">disk</span>)</dt>
+<dd>
+<p>
+ドライブのメディア・タイプ。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">replicate=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+ドライブをレプリケーション・ジョブの対象とするかどうか。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">rerror=&lt;ignore</span><span class="monospaced">| report | stop&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+読み取りエラー。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">secs</span><span class="monospaced">=&lt;整数</span></dt>
+<dd>
+<p>
+ドライブの物理ジオメトリを特定のセクタ数に強制します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">シリアル=</span><span class="monospaced">&lt;シリアル</span></dt>
+<dd>
+<p>
+報告されたドライブのシリアル・ナンバー（URLエンコード、最大20バイト）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">shared=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+このローカル管理ボリュームをすべてのノードで使用可能としてマークします。</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAMVUlEQVRogdWZeXDVVZbHP7/f27JB
+wtJIiCERRFlbx5FuHRrRBgtBsRIwCCOrFmGmiDBjYVNlQlgiQjU6IjI4xLJxGf5QGp0Cbaftsu3R
+hu6aYXqgLZoWEsjyyDP7S972e7/l3vnj5cW3Ji9M/zOn6lRS997fvd/vueece+59ipSS/89iv5mP
+ZEQQQsS23RQARVEAUFUVRVFQog0ZyogJSClld3c327Ztw7IsLMuKto90KgBsNhtVVVXMnj2bvLw8
+7Ha7HBEJKWXGKoSQXV1dcsuWLfLSpUsyKkKIIdWyrLTqdrvlU089Jc+cOSM9Ho8Mh8NSCCEzxTRi
+8JWVlbKtre0vAt6yLGmapmxtbZXr1q2TZ86ckW1tbSMikTH4GzduyKqqqkHwsSA1TZOhUChOg8Hg
+oBqGIQ3DSAk+VleuXDliEspwviullD09PbzwwgscO3Yszt91XScQCNDZ2YlhGIPfuFwu7Pb48FJV
+lZycnEG/z8/PRwiBqqqDYzweD88//zyrV69m7ty5jBs3DofDMWRgD0lASik9Hg979uzh2LFjcYEa
+CoVob2/n2q9+hbZ585BGSCWltbVMr61NtSYbN25k7dq1zJkzZ1gSaqrGWPD79+9PAh8MBuns7OTi
+e+8R2rwZCYOaqTTt3cuf6+qSwAMcP36co0eP8vXXX9Pd3Y1hGMg0lk65A1HwdXV1vPHGG0mW7+jo
+4A8/+xn2BAAAI0riQOnu3cyork7Zt3btWtavX89dd92VdieSCEgppdvt5sCBAxw5ciSuLxQK0dTU
+RMOHHyJ37hwh1NSiAKU7djDzxRdT9q9YsYJt27YxY8aMlCTiCEgp5eXLl6mvr+fVV1+NmygYDNLW
+1sY3J09ipLEYQDPw2sBfCTwMLARKgKwhiNxWU8OsXbvi2qLYnnzySSorK1PvRGyqvH79uty6dWtS
+Lg8EAvLKlSvyo1275M8hSV8H+eMBvRPkP9Vslp0tV6W3u12+c7hOTgT5NyAXgtwE8gTIUyn0D9XV
+0jAMqet6klZUVMjPP/88KcWqUcs3NjZy+PBhDh06FGeFqNtcOnECY8+euICVwDWgFtj/m1/wD+8f
+5xtg6uy5ZI+5BSkkU6fexgu7tvLWhd/x1tXL5P/905wAggnzSODavn388Sc/SblDL7/8Mq+99hqX
+L1+OC2zb7t27uX79+u7Dhw+ndJvW1lYaP/qI0EDKS1z0XeDjC7/l9llz+d6EWxjv0imdcgeFRcVo
+fR46vm1Cx8ndP5hP3qjR/GDuX/GbC5/iberl1qirxGjv73+PYRjc8tBDcVhGjRpFRUUF27dvp7i4
+mPz8fFwuV2QHVq1aldLyDQ0NXDt5En91NRIQCRqNHld2HsLUCfu6GD9mNIoVQggDy9RQpYLTbkdV
+7Vh6CH9vJ/fcfz/vALsAN2AlzHv1wAEu1tTExUI0Hl555RXq6upobm4mEAhECEyePDkOvK7rtLS0
+cOP0aby1tUnAo2oNkFAUSTjoRfN+ix7wgjRBShACVVFQRGSkHvTypwtnmXHPQhrbb3D0k1McAdpi
+DBLVhp/+lIvV1UlV7oQJE8jNzcXtduPz+ZIPMtM0aWhooPH99+mtrU1ymVRqUxUQFlJYSBFGCivG
+OSyEaSCFAGlhd+Vy7w/n43BmM3POXWx69hl8AyMTDXTl4EEu7t2bCBGAQCCAruupCdjtdrp3705r
++ViN22YhsUwdyzRBCpACyzIRMnpngCxXNjYlMk4L+ggoYXxp5pbAlX37cDgcSQSEEAxmoVgQg/9n
+AP67bVdAUcFmQ3W6IgtIiWUKLCGwLGvQj69e+m+EsBB6iGB/N/3e9oyNlIgRYm5kiR2JH0L6MkFY
+Ei0UQKAycdJUbIodT3Mjpu6n3xfCptoRlomQCqZpRkhLCykMhLBQSV1HJbalKnvSF3MpNO0OSIEw
+DWyuPCaVzCRv7ER8Ph+mtJM35lZsdjvuxktYhobDkYOCgqJEDWLLaAfSVc1p78SJO2AAvUBggLUN
+KIx2Kgqjv3crY2wOiqaqKKoKihKJCctCC/npbW+jq7sbS7UjkGCZCCkQQkdJsV6mRWHGBH4HLHpx
+F3LcGDq6u7nw2S85++V/4gb0kB9hFoAZwuZwgc2BqjpQVRWbzYXd4cDlysHn7WJi0W2EfH24XA6E
+jKySqhTPtDRPIjB4XUtoPw3sKV/O+KJipJT4V63mq3/7Obu21/LN/5xl9l/PIys7G2fOaBS7E5vN
+QrU7UW0KNlUFp5P8MeO5/8HFhPo7CXr7MMIaQW8neSkMlqnEEYj1s8QJbwXaWpopmDgJh93OqHGF
+LFy9jjunTeHNo2uAvUy54/uMuaUYV24BUpVYpoVEwaY4UVUbitNJ9ugxOBw2tEAPfX29QCjuVB9O
+EmNBTdeRGEj3A56OdkwtgDDCCKFjz8ql6N55/G3VcRouX+SXH72Ht6udcCg4cJiJSPIn8oCloIKU
+KAhURUUIiVCjx128pjtrEiVtFkrMNNOBA+s34XG3YIRDSMtAkSbOrDzuvOchHnmiklEFY3n76G7O
+f/nv9Ht7EMJCSjGoljCxjOBAnaSjhYPowevDZrx04FMSGLwnJEzmAOYCn33wAUYoiGXoSMsEoeNw
+ZTO2aDrzFpWxck0VJVOn4fd2E/T7oneNyOFlGkjLwNTD6FoILRQEa/hDcyhJIuB0OlFVNeVE04B3
+XjnC+d9+hRYKYJlhpDBBGDidDiaUfp/xk24nJ3c0eaPzsKsgzEhtZJkGIuzDNDRCAR99fb309XYh
+NAYPsnQ6IgJSSgoKCihavDilJZ4Aajf8HVf/fAnLCCNNAyktECaqIsgbV8So0WMHrn2RGLBMHREO
+YBg6eiiIFgzQ7/US8vmYoEDuENa/u6oqcwJRPysoKOC+N9+kcNGiJGvkAQuADY+twn3tCuFg/4CV
+DbB0VKHhzHbhdGVhs6kgDKTuR9f86KEAWtBHd0c73p52pB5Av5KewJxnnmHeoUOEw+EkjHEEYi8M
+EHlFKyws5IfHjlG4cGHSxJOA1cATPy7nT388j+73YoYDCEuP1DhSRrKOlFhmmLAWQNMCBHw9tHtu
+8K2nBcsI8uGxf8HoiRBINNTtjz7KQ/X1xL6iRDHGvubZAfr7+1Nuz+TJk6G+nv/atInmX/86rq8A
+WAlUrahk/Fio/8XHjM4fi93pHCgRFCzLQtd1tFAQLeCjs9NNb4cHxdL44J8PozfD7XyXRqNy97p1
+PPz220gp0XU9zriKogw+SaqqGtmB48ePU15enkRASklRURH31tcz6cEHk1JrAfAUcEcPLLjvMU69
+/694uzsI+X3093TS5blBl8eNt72VHk8Tfd9eR+vv4MQ/HkZpiJwttgTL3/Hoo2nBNzY2smjRIhYs
+WEBBQQEulyvyLuT3+2VTUxM7d+7k5MmTKXNuS0sL555+mtYvv0zqE0A7kavhqFL4oAlCCWOygGIi
+qTiHyMnuTBgz/bHHKDt9GillnN8D+P1+ysrKWLJkCdOmTWPWrFmUlpZGCAghpN/vp7m5mZqaGl5/
+/XUKCwtJFLfbzX+sX8+Nr75K6rtZiXr49KVLKf/4Y4QQ6LqeBP6RRx6hvLycadOmMXPmTEpKSsjN
+zf3uZS6WRHV1NadOnUpaTEpJa2sr5zZupOkmSaQqk2csWcLyTz4BQNO0uL7GxkbWr1+fErzNZlMG
+w1lVVSUvL4+SkhL27dvH8uXL8Xg8ceABiouLue+ttyieN2+IK2Z6TRx/5+LFacE3NDRQWVmZFjwk
+nAOxJF566SW2bNnChQsXkmKipKSEB959l9vmzcvo1pZOpz/8ME98+mla8Bs2bGDZsmVpwUOa5/VE
+d0oXE319fXxWXs43Z88m9Q0n03/0I1YPJIRE8OfOnWPHjh2UlZUNCT4tgUQSO3fupKqqigceeGCw
+P/a7VM8emUg0VcbK+fPn2bp1KytWrBgW/JAEEknU1NTw7LPPMn/+/GFBZQI8lZw/f57nnnuO5cuX
+M2XKlGHBD0sgkURdXR2PP/44FRUVNwV+qP7Tp09z8ODBjNxmRAQSSRw4cIBly5axdOnSvwh4RVH4
+4osv2L9/P2VlZRlbfkQEEkls376djo4OQqHE83bk4nK5EEKwZs0aSktLRwR+RATgOxItLS1cu3aN
+vr6+wTfK/4tEfzeeMmUKkydPzhg8jJAAREgEg0H6+vrQNC2pFL8ZUVWVrKws8vPzycnJQVXVjH/s
+/F/lgJiyQFHragAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">このオプションは、ボリュームを自動的に共有しません！</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">size=</span><span class="monospaced">&lt;ディスク</span><span class="monospaced">サイズ</span></dt>
+<dd>
+<p>
+ディスクサイズ。これは単なる情報提供であり、何の効果もありません。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">snapshot=&lt;boolean&gt;</span></dt>
+<dd>
+<p>
+qemu のスナップショットモード機能を制御します。有効な場合、ディスクに加えられた変更は一時的なもので、VM がシャットダウンされると破棄されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ssd=</span><span class="monospaced">&lt;ブール</span><span class="monospaced">値</span></dt>
+<dd>
+<p>
+このドライブを回転式ハードディスクではなくSSDとして公開するかどうか。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">trans=&lt;自動</span><span class="monospaced">| lba | なし&gt;。</span></dt>
+<dd>
+<p>
+強制ディスクジオメトリバイオス変換モード。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">werror=&lt;enospc</span><span class="monospaced">｜無視｜報告｜停止&gt;。</span></dt>
+<dd>
+<p>
+書き込みエラーアクション。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">wwn=&lt;wwn&gt;</span></dt>
+<dd>
+<p>
+16バイトの16進文字列としてエンコードされたドライブのワールドワイド名で、先頭に<em>0xが</em>付きます。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">scsi[n]</span>：<span class="monospaced">[ファイル=]&lt;ボリューム&gt; [,aio=&lt;native|threads|io_uring&gt;] [,backup=&lt;1|0&gt;] [,bps=&lt;bps&gt;] [,bps_max_length=&lt;seconds&gt;] [,bps_rd=&lt;bps&gt;] [,bps_rd_max_length=&lt;seconds&gt;] [,bps_wr=&lt;bps&gt;] [,bps_wr_max_length=&lt;seconds&gt;] [,cache=&lt;enum&gt;] [,cyls=&lt;integer&gt;] [,detect_zeroes=&lt;1|0&gt;] [,discard=&lt;ignore|on&gt;] [,format=&lt;enum&gt;] [,heads=&lt;integer&gt;] [,iops=&lt;iops&gt;] [,iops_max=&lt;iops&gt;] [,iops_max_length=&lt;秒&gt;] [,iops_rd=&lt;iops&gt;] [,iops_rd_max=&lt;iops&gt;] [,iops_rd_max_length=&lt;seconds&gt;] [,iops_wr=&lt;iops&gt;] [,iops_wr_max=&lt;iops] [,iops_wr_max_length=&lt;seconds&gt;] [,iothread=&lt;1|0&gt;] [,mbps=&lt;mbps&gt;] [,mbps_max=&lt;mbps&gt;] [,mbps_rd=&lt;mbps&gt;] [,mbps_rd_max=&lt;mbps&gt; ]。] [,mbps_wr=&lt;mbps&gt;] [,mbps_wr_max=&lt;mbps&gt;] [,media=&lt;cdrom|disk&gt;] [,product=&lt;product&gt;] [,queues=&lt;integer&gt;] [,replicate=&lt;1|0] [,rerror=&lt;ignore|report|stop&gt;] [,ro=&lt;1|0&gt;] [,scsiblock=&lt;1|0&gt;] [,secs=&lt;integer&gt;] [,serial=&lt;serial&gt;] [,shared=&lt;1|0&gt;] [,size=&lt;DiskSize&gt;] [,snapshot=&lt;1|0&gt;] [,ssd=&lt;1|0&gt;] [,trans=&lt;none|lba|auto&gt;] [,vendor=&lt;vendor&gt;] [,werror=&lt;enum&gt;] [,wwn=&lt;wwn&gt;</span>] となります。</dt>
+<dd>
+<p>
+ボリュームをSCSIハードディスクまたはCD-ROMとして使用します（nは0～30）。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">aio=&lt;io_uring</span><span class="monospaced">｜ネイティブ｜スレッド&gt;。</span></dt>
+<dd>
+<p>
+使用するAIOタイプ。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">backup=</span><span class="monospaced">&lt;ブール</span><span class="monospaced">値</span></dt>
+<dd>
+<p>
+バックアップ作成時にドライブを含めるかどうか。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps=&lt;bps&gt;</span></dt>
+<dd>
+<p>
+最大r/w速度（バイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+I/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_rd=&lt;bps&gt;</span></dt>
+<dd>
+<p>
+最大読み取り速度（バイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_rd_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+読み取りI/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_wr=&lt;bps&gt;</span></dt>
+<dd>
+<p>
+最大書き込み速度（バイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_wr_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+書き込みI/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cache=&lt;directsync</span><span class="monospaced">| none | unsafe | writeback | writethrough&gt;</span>です<span class="monospaced">。</span></dt>
+<dd>
+<p>
+ドライブのキャッシュ・モード</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cys</span><span class="monospaced">=&lt;整数</span></dt>
+<dd>
+<p>
+ドライブの物理ジオメトリを特定のシリンダ数に強制します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">detect_</span><span class="monospaced">zeroes</span><span class="monospaced">=&lt;ブール値</span></dt>
+<dd>
+<p>
+ゼロの書き込みを検出し、最適化を試みるかどうかを制御します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">discard=&lt;無視</span><span class="monospaced">｜オン</span></dt>
+<dd>
+<p>
+破棄/トリム要求を基礎となるストレージに渡すかどうかを制御します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ファイル</span><span class="monospaced">=&lt;</span><span class="monospaced">ボリューム</span></dt>
+<dd>
+<p>
+ドライブのバックアップ・ボリューム。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">フォーマット=&lt;cloop</span><span class="monospaced">｜qcow｜qcow2｜qed｜raw｜vmdk&gt;。</span></dt>
+<dd>
+<p>
+ドライブのバックアップ・ファイルのデータ形式。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">heads</span><span class="monospaced">=&lt;整数</span></dt>
+<dd>
+<p>
+ドライブの物理ジオメトリが特定のヘッド数を持つように強制します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops=&lt;iops&gt;</span></dt>
+<dd>
+<p>
+最大r/w I/O（オペレーション毎秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_max=&lt;iops&gt;</span></dt>
+<dd>
+<p>
+スロットルされていないr/w I/Oプールの最大オペレーション/秒。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+I/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd=&lt;iops&gt;</span></dt>
+<dd>
+<p>
+1秒あたりの最大読み取りI/O。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd_max=&lt;iops&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+スロットルされていない最大読み取りI/Oプール（1秒あたりの処理数）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+読み取りI/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_</span><span class="monospaced">wr</span><span class="monospaced">=&lt;アイオプス&gt;。</span></dt>
+<dd>
+<p>
+最大書き込みI/O（オペレーション/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr_max=&lt;iops&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+スロットルなしの最大書き込みI/Oプール（1秒あたりの操作数）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+書き込みI/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iothread</span><span class="monospaced">=&lt;ブール値</span></dt>
+<dd>
+<p>
+このドライブにiothreadsを使用するかどうか</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps=&lt;mbps&gt;</span></dt>
+<dd>
+<p>
+最大R/W速度（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_max=&lt;mbps&gt;</span></dt>
+<dd>
+<p>
+最大スロットルなしR/Wプール（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_rd=&lt;mbps&gt;</span></dt>
+<dd>
+<p>
+最大読み取り速度（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_rd_max=&lt;mbps&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+スロットルのない最大読み取りプール（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_wr=&lt;mbps&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+最大書き込み速度（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_wr_max=&lt;mbps&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+スロットルなしの最大書き込みプール（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">media=&lt;cdrom</span><span class="monospaced">| disk&gt;</span><em>(デフォルト =</em> <span class="monospaced">disk</span>)</dt>
+<dd>
+<p>
+ドライブのメディア・タイプ。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">product</span><span class="monospaced">=&lt;</span><span class="monospaced">商品</span></dt>
+<dd>
+<p>
+ドライブの製品名（最大16バイト）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">キュー=&lt;整数&gt;</span><span class="monospaced">(2 - N</span>)</dt>
+<dd>
+<p>
+キューの数。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">replicate=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+ドライブをレプリケーション・ジョブの対象とするかどうか。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">rerror=&lt;ignore</span><span class="monospaced">| report | stop&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+読み取りエラー。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ro=</span><span class="monospaced">&lt;ブール</span><span class="monospaced">値</span></dt>
+<dd>
+<p>
+ドライブが読み取り専用かどうか。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">scsiblock=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+ホストブロックデバイスのフルパススルーに scsi-block を使用するかどうか</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">ホストのメモリ不足やメモリの断片化が進むと、I/O エラーが発生する可能性があります。</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">secs</span><span class="monospaced">=&lt;整数</span></dt>
+<dd>
+<p>
+ドライブの物理ジオメトリを特定のセクタ数に強制します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">シリアル=</span><span class="monospaced">&lt;シリアル</span></dt>
+<dd>
+<p>
+報告されたドライブのシリアル・ナンバー（URLエンコード、最大20バイト）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">shared=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+このローカル管理ボリュームをすべてのノードで使用可能としてマークします。</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">このオプションは、ボリュームを自動的に共有しません！</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">size=</span><span class="monospaced">&lt;ディスク</span><span class="monospaced">サイズ</span></dt>
+<dd>
+<p>
+ディスクサイズ。これは単なる情報提供であり、何の効果もありません。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">snapshot=&lt;boolean&gt;</span></dt>
+<dd>
+<p>
+qemu のスナップショットモード機能を制御します。有効な場合、ディスクに加えられた変更は一時的なもので、VM がシャットダウンされると破棄されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ssd=</span><span class="monospaced">&lt;ブール</span><span class="monospaced">値</span></dt>
+<dd>
+<p>
+このドライブを回転式ハードディスクではなくSSDとして公開するかどうか。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">trans=&lt;自動</span><span class="monospaced">| lba | なし&gt;。</span></dt>
+<dd>
+<p>
+強制ディスクジオメトリバイオス変換モード。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ベンダー</span></dt>
+<dd>
+<p>
+ドライブのベンダー名（最大8バイト）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">werror=&lt;enospc</span><span class="monospaced">｜無視｜報告｜停止&gt;。</span></dt>
+<dd>
+<p>
+書き込みエラーアクション。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">wwn=&lt;wwn&gt;</span></dt>
+<dd>
+<p>
+16バイトの16進文字列としてエンコードされたドライブのワールドワイド名で、先頭に<em>0xが</em>付きます。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">scsihw</span>:<span class="monospaced">&lt;lsi | lsi53c810 | megasas | pvscsi | virtio-scsi-pci | virtio-scsi-single&gt;</span><em>(デフォルト =</em> <span class="monospaced">lsi</span>)</dt>
+<dd>
+<p>
+SCSIコントローラモデル</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">searchdomain</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+cloud-init：コンテナのDNS検索ドメインを設定します。searchdomainもnameserverも設定されていない場合、Createはホストからの設定を自動的に使用します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">serial[n]</span>:<span class="monospaced">(/dev/.+|socket)</span></dt>
+<dd>
+<p>
+VM内部でシリアル・デバイスを作成し（nは0～3）、ホストのシリアル・デバイス（例：/dev/ttyS0）を通すか、ホスト側でunixソケットを作成します（<em>qm terminalを使って</em>ターミナル接続を開きます）。</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">ホストシリアルデバイスを経由すると、そのようなマシンの移行はできなくなります。</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Caution" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">実験的！このオプションに関する問題が報告されました。</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">shares</span>:<span class="monospaced">&lt;整数&gt; (0 - 50000)</span><em>(デフォルト =</em> <span class="monospaced">1000</span>)</dt>
+<dd>
+<p>
+オート・バルーニングのメモリ・シェア量。この数値が大きいほど、このVMはより多くのメモリを取得します。数値は、他のすべての実行中のVMの重みに対する相対値です。ゼロを使用すると、オートバルーニングは無効になります。オートバルーニングはpvestatdによって実行されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">smbios1</span>：[<span class="monospaced">base64=&lt;1|0&gt;] [,family=&lt;Base64 エンコードされた文字列&gt;] [,manufacturer=&lt;Base64 エンコードされた文字列&gt;] [,product=&lt;Base64 エンコードされた文字列&gt;] [,serial=&lt;Base64 エンコードされた文字列&gt;] [,sku=&lt;Base64 エンコードされた文字列&gt;] [,uuid=&lt;UUID&gt;] [,version=&lt;Base64 エンコードされた文字列&gt;</span>].</dt>
+<dd>
+<p>
+SMBIOSタイプ1のフィールドを指定します。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">base</span><span class="monospaced">64=&lt;ブール値</span></dt>
+<dd>
+<p>
+SMBIOSの値がbase64エンコードされていることを示すフラグ</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">family=&lt;Base</span><span class="monospaced">64でエンコードされた文字列</span></dt>
+<dd>
+<p>
+SMBIOS1 ファミリ文字列を設定します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">メーカー=&lt;Base64</span><span class="monospaced">エンコード文字列</span></dt>
+<dd>
+<p>
+SMBIOS1 メーカーを設定します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">product=&lt;Base</span><span class="monospaced">64でエンコードされた文字列</span></dt>
+<dd>
+<p>
+SMBIOS1のプロダクトIDを設定します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">serial=&lt;Base</span><span class="monospaced">64でエンコードされた文字列</span></dt>
+<dd>
+<p>
+SMBIOS1のシリアル番号を設定します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">sku=&lt;Base</span><span class="monospaced">64でエンコードされた文字列</span></dt>
+<dd>
+<p>
+SMBIOS1 SKU文字列を設定します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">uuid=&lt;UUID&gt;</span></dt>
+<dd>
+<p>
+SMBIOS1 の UUID を設定します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">バージョン=&lt;Base64</span><span class="monospaced">エンコード文字列</span></dt>
+<dd>
+<p>
+SMBIOS1のバージョンを設定します。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">smp</span>:<span class="monospaced">&lt;整数&gt; (1 - N)</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+CPU数。代わりに -sockets オプションを使用してください。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">sockets</span>:<span class="monospaced">&lt;整数&gt; (1 - N)</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+CPUソケットの数。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">spice_enhancements</span>：[<span class="monospaced">foldersharing=&lt;1|0&gt;] [,videostreaming=&lt;off|all|filter&gt;</span>]。</dt>
+<dd>
+<p>
+SPICE の追加機能拡張を設定します。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">フォルダ共有=</span><span class="monospaced">&lt;ブール</span><span class="monospaced">値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+SPICE 経由でのフォルダ共有を有効にします。VMにSpice-WebDAVデーモンがインストールされている必要があります。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">videostreaming=&lt;all</span><span class="monospaced">| filter | off&gt;</span><em>(デフォルト =</em> <span class="monospaced">off</span>)</dt>
+<dd>
+<p>
+ビデオストリーミングを有効にします。検出されたビデオストリームに圧縮を使用します。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">sshkeys</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+cloud-init：公開 SSH 鍵を設定します (1 行に 1 つの鍵、OpenSSH 形式)。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">startdate</span>:<span class="monospaced">(now | YYYY-MM-DD | YYYY-MM-DDTHH:MM:SS)</span><em>(デフォルト =</em> <span class="monospaced">now</span>)</dt>
+<dd>
+<p>
+リアルタイムクロックの初期日付を設定します。有効な日付のフォーマットは'now'または<em>2006-06-17T16:01:21</em>または<em>2006-06-17</em>です。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">を起動</span>します：order=]♪ [,up=♪] [,down=♪ `)</dt>
+<dd>
+<p>
+スタートアップとシャットダウンの動作。Orderは一般的な起動順序を定義する非負の数値です。シャットダウンは逆の順序で行われます。さらに、次のVMが起動または<em>停止</em>するまでの待ち時間を秒単位で設定できます<em>。</em></p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">tablet</span>:<span class="monospaced">&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+USBタブレットデバイスを有効/無効にします。このデバイスは通常、VNCで絶対的なマウスポジショニングを可能にするために必要です。そうしないと、マウスは通常のVNCクライアントと同期しません。1つのホスト上で多くのコンソールオンリーゲストを実行している場合、コンテキストスイッチを節約するために、これを無効にすることを検討することができます。spice<span class="monospaced">(qm set &lt;vmid&gt; --vga qxl</span>) を使用すると、デフォルトでオフになります。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">タグ</span>:<span class="monospaced">&lt;string</span></dt>
+<dd>
+<p>
+VM のタグ。これは単なるメタ情報です。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">tdf</span>:<span class="monospaced">&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+時間ドリフト修正の有効/無効。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">テンプレート</span>:<span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+テンプレートの有効/無効。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">tpmstate0</span>:<span class="monospaced">[file=]&lt;volume&gt; [,size=&lt;DiskSize&gt;] [,version=&lt;v1.2|v2.0&gt;].</span></dt>
+<dd>
+<p>
+TPMの状態を保存するDiskを設定します。フォーマットは<em>raw</em>固定。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">ファイル</span><span class="monospaced">=&lt;</span><span class="monospaced">ボリューム</span></dt>
+<dd>
+<p>
+ドライブのバックアップ・ボリューム。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">size=</span><span class="monospaced">&lt;ディスク</span><span class="monospaced">サイズ</span></dt>
+<dd>
+<p>
+ディスクサイズ。これは単なる情報提供であり、何の効果もありません。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">version=&lt;v1</span><span class="monospaced">.2 | v2.0&gt;</span><em>(デフォルト =</em> <span class="monospaced">v1.2</span>)</dt>
+<dd>
+<p>
+TPMインターフェースのバージョン。v2.0の方が新しいので、そちらを優先してください。これは後で変更できないことに注意してください。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">unused[n]</span>です：<span class="monospaced">[ファイル=]&lt;ボリューム</span></dt>
+<dd>
+<p>
+未使用ボリュームへの参照。これは内部的に使用されるので、手動で変更しないでください。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">ファイル</span><span class="monospaced">=&lt;</span><span class="monospaced">ボリューム</span></dt>
+<dd>
+<p>
+ドライブのバックアップ・ボリューム。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">usb[n]</span>：<span class="monospaced">[[host=]&lt;HOSTUSBDEVICE|spice&gt;] [,mapping=&lt;mappingid&gt;] [,usb3=&lt;1|0[,mapping=&lt;mapping-id&gt;] [,usb3=&lt;1|0&gt;</span>] となります。</dt>
+<dd>
+<p>
+USBデバイスを設定します（nは0～4、マシンのバージョンが7.1以上、かつostype l26またはwindows &gt; 7の場合、nは最大14まで）。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">host=</span><span class="monospaced">&lt;HOSTUSBDEVICE</span><span class="monospaced">|spice&gt;です。</span></dt>
+<dd>
+<p>
+ホスト USB デバイスまたはポート、または値の<em>スパイス</em>。HOSTUSBDEVICE 構文は次のとおりです：</p>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>'bus-port(.port)*'（10進数）または'vendor_id:product_id'（16進数）または'spice'</pre>
+</div></div>
+<div class="paragraph">
+<p><em>lsusb -t</em>コマンドを使えば、既存の usb デバイスをリストアップできます。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAJhUlEQVRoge2ZWWycVxXHf+fce7/v
+m/GaGCde4pI0aQlJC0kRtE1L00JbLIjY4QkeUB9YHhAIJFCExAsKUkE8IAFFPIDUIqhBRSDRBUqC
+CimFFBCBpCWx02IaZ3G2SdyxPZ7vHh6+mcnSZnFjKIge6Wj8zYzvPf9z/me5d8TM+F8WfbkNuFx5
+BcDLLf/fAEZGRmx4eNh6enqsp6fHhoeHbWRk5D9aFeSlVqHNmzfb6H33sHnT7ZQmD5GfOMax6Sm+
+Pl5h1Yc+xpYtW2SBbX1ReUkRGBkZsdH77mHLW95EOv4Ms3ueJh6YYPHUFF9aljJ63z3cf//9/5FI
+vKQIDA8P293L2yhVjjH7t51ocDiviFecF46n7XzBreChhx4qNhH5t0XjJUVgx44ddGUZ9b/vIpQD
+oRQIWSDJAiFL6B9axo4dO4gxAmANWVDLG+Ln82URMRGhVCqRHxonlAPqFXWKC4r6IhI6OMjMzBN4
+/4LlTUQQEZxzZ32QJAlpmrb+p16vU6vVOHXq1AWjN18AnDj0F971vrs4OnmYJVkoDA4FCPUO172I
+Cgnt7SV++4vvsGhRJx3tJbIsRVVpsUnOBBABBVFEClKYwbKr7sTM7EIUnBcA7z21k7t49x1X8JXv
+bOWra7rw5QRtcN8PLCfvvZJvb9vJycpJpg4/hp/N0I4SMQs4Jw0A5zBXHGiCaIZIKABgpGlKjPEF
+0TpT5pUDRXiVt99+Le03r+WzuytM1gO6pB/3+o0cbxvk8yOPMjW6i2iR2lxOjJDHSDMFogmGwzQ7
+rRJAUpAENAGXIZq2AFzQpvkACCEQcahP+cRH3sKHn9zHXU+MM7rtGeD33NDXzaZynZU9gcezpUw9
+X6OzIyOakkfF4QEpPG6nDRNNEA2FSgKimETSNCXPc0II57VpXhEolUqoOrxPSLOMT330Dv5SqfKD
+NR388Y2L+caQsjITNv3pMBs3rOT56ZyZGaM+J0QUxDc0INrWUgggoRGBAOIRAt77hY1AmqaoeJxP
+cN645jVDbNn8Hj73o8fZ/af9mEE9j9y2YRXt5YzZWmRmzjj1/BwhTXAKzitOHEbeWlc0AVwDnCv8
+KoZzjotV33lTSL1HNKAuEtKM1169jM98/E6mTk3x4Nbd7Bk7TEdHRvAeVY+hmDqmZwx1kIkiqrhz
+S2zL+AbNMC6l/80LgHMOEY9oQvBCks5RKpXo7JhFxbhz42pet2aQet1YtLiDJAkIDq8BHwJmwlwO
+UaD0ojsrNKuUReIZyb9gABCHcwWFgg+0lTPyvIRToVzKWLpkMfV6REQplYvmZCj1uuBUSdJwTg8A
+XBdoCZMOsBkQBeGi/J83gBgjmABC8AlJGsjzFLMyaXDM1etEA0VR50iCx6mSZhkiijpPjEpQD+SF
+4WdJrTAewdCFB1CtVlFVVATnhMQnWJqC5aTBk+c5IIgWRoTgSZJAmiZAo1s7hwsppglI+fTiljeY
+nyHkLQotKIAYI4igzpFHISQOiwEnKTEG8hhRVZw6YjRQLfJGHcF7jleqTBw8znXr12MABnv37efY
+iSnesG4tiUsRUQwD7JIAzKsPqCqiRbVwweM04XdPjhJN+dvTBxgbn6G9q59yZx9/3HWEb33vN+zc
+/RzOJ+w/eJLtO8Z5ZNtT7PvHIUQTvvv9X/Lc/mN0d3by3fseRLQwvWh0Fy+h8wbQ2VFG1KM+xfuA
+qufo8So/fejPPD/rqJys8pvf7eLAoeNMHqnw2U9+kH3jVQ5MClMzKUla5obr13HliiEMmDx6gltv
+uY7Vr1nBQF8PJopQ9AFTt/AROFfMjCW9XTy19xB33Hodb924jr1j+/nDk3/nzTdei4jw3nfeyCOP
+bufa1y5jzeoVrcHM8HR3dfHlr/2Q+x94jFtuuh44/9B2PplXDryYLF3STXd3e+t5UXcHY89OsOH6
+NS2Qed7wpM1Rm50G4MGHH2P961Zy3bqreXrPP5mrzwLt5y6/cACq1eoLCKm+TN/SAebmfn8aUG83
+PYs7+cnPH+eqKwd5as8/edc7bi02847pmVkATk1VWbF8AOcca1Yv59DkqcYK0tCL02deACqVCldc
+0YdIwLmEPM9RV6NnUZlPf3wT6oqJcePN6wHhzTeu4/CRCrfctJ4sSxBRli7pYfHEMUSU97/7Th75
+1RP8eec+Yp5zzTVXM9DfDyogBvHS6HTJACYmJnjVoq5GFw0454gCEOnoaMfiNGZFFRFxJGkbywZ6
+i1NWoy9kWYmbb1gHKCHApuGbisVFGyoYUswa5OR5ftF56JIBjI6OMtDfWwAQ35jnc8AVpRXBohVq
+UowECKqK4RBxoE0W6gvGCcEjaOEAwEQWdpgbGxujt7erOLO2mk3R8i0Wz9EiuUGz+qlKEQEUaJbI
+4lTHmTVePKgWzpDGJGpc8CDTlEsuo88++wxXDA0UIUbAOP23KGZKjI48KnkuhcbiPbPCOBoeBikO
+Lk2VxjqNRilaAEqSZGEAbN261bZt+zW33XY7IAXXm6Ou0YhIMamaaUOl5WRrzg00viuKWWxpQUOH
+NAZFQRpD48Xlkig0MTHBB95zG+VSylz1KCbWyDOh2XyK+56IqjWMKigkUnzWnPPFFFRRLZ29SQRU
+ELOGY4pZ6LKOlM07mZ07d/KOtw1TcB4sGkTDiDQ9K1IkrKeYmQC08d7pZLSiRBpE5s7aS0XAHFEK
+AGY51Wr18g80Zmb33nsvX/z8XdSmj2AWOXhwkrxe46+79jB55Dh/3T2GxUhHextdXW2sXN7PNWtW
+IQKDA71FFBoAjIgQkVg/a5+oHrU5zIznDhxk964xKpXKggAoTlWW8+OfPorlOQ//cjsDy1bS2dFO
+W+diVly1iL6+Pqanpzl5qsL4pPHwN3/G1InDlMsZ7Z1tDA30cfWqIa5dexV9fb2YnT7UTxw4xsHJ
+o4yOjfOP8QOMjx/k4OQx7r777lY0zycXvJ02M4sxMjg4SL1eR0TYsGEDw8PD9PX10d7ejogUN3a1
+GqpKCIE8z5mdnUVVqVarbN++nba2Nvbu3csDDzyAqrJ8+atb+zjn6e/vZ/Xq1axatYq1a9fS29tL
+lmUMDQ1RKpXOm9EXvV6v1+tWr9eZnp5mZmaGWq1GjLHF62aiNZ+bnPfe45xrvTZzxMyYmZk56+LX
+zKjX661DvHOOJElIkoRSqYT3/vLvRlW15eHCa4VxzdvmpjZDfubzuXeb3vuzqCEixBhbo0NTkyS5
+PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">このオプションは、ホストハードウェアへの直接アクセスを可能にします。そのため、このようなマシンのマイグレーションはもはや不可能です。</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p><em>spiceの</em>値は、spice用のusbリダイレクトデバイスを追加するために使用できます。</p></div>
+<div class="paragraph">
+<p>このキーまたは<em>マッピング・</em>キーのどちらかを設定する必要があります。</p></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">マッピング</span><span class="monospaced">=&lt;マッピングID</span></dt>
+<dd>
+<p>
+クラスタ全体のマッピングのID。このホストかdefault-key<em>ホストの</em>どちらかを設定する必要があります。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">usb3=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+与えられたホストオプションが USB3 デバイスかポートかを指定します。最近のゲスト (マシンのバージョン &gt;= 7.1 および ostype l26 と Windows &gt; 7) では、このフラグは無関係です (すべてのデバイスは xhci コントローラに接続されています)。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">vcpus</span>:<span class="monospaced">&lt;整数&gt; (1 - N)</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+ホットプラグされたvcpusの数。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">vga</span>:<span class="monospaced">[[タイプ=]&lt;enum&gt;] ]</span>。<span class="monospaced">[クリップボード=&lt;vnc&gt;] [,メモリ=&lt;整数］</span></dt>
+<dd>
+<p>
+VGAハードウェアを設定します。高解像度モード（&gt;= 1280x1024x16）を使用したい場合は、VGAメモリオプションを増やす必要があるかもしれません。QEMU 2.9以降、デフォルトのVGAディスプレイタイプは、<em>cirrusを</em>使用する一部のWindowsバージョン（XPおよびそれ以前）以外のすべてのOSタイプで<em>標準となって</em>います。<em>qxl</em>オプションは SPICE ディスプレイサーバーを有効にします。また、シリアルデバイスを端末として使用し、グラフィックカードなしで実行することもできます。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">クリップボード=</span><span class="monospaced">&lt;vnc</span></dt>
+<dd>
+<p>
+特定のクリップボードを有効にします。設定されていない場合、ディスプレイの種類に応じて SPICE のものが追加されます。VNCクリップボードとの移行はまだサポートされていません！</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">メモリ=&lt;整数&gt;</span><span class="monospaced">(4 - 512</span>)</dt>
+<dd>
+<p>
+VGA メモリ（MiB）を設定します。シリアル表示には影響しません。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">type=&lt;cirrus</span><span class="monospaced">| none | qxl | qxl2 | qxl3 | qxl4 | serial0 | serial1 | serial2 | serial3 | std | virtio | virtio-gl | vmware&gt;</span><em>(デフォルト =</em> <span class="monospaced">std</span>)</dt>
+<dd>
+<p>
+VGA タイプを選択します。<em>cirrus</em>タイプの使用はお勧めしません。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">virtio[n]</span>です：<span class="monospaced">[file=]&lt;volume&gt; [,aio=&lt;native|threads|io_uring&gt;] [,backup=&lt;1|0&gt;] [,bps=&lt;bps&gt;] [,bps_max_length=&lt;seconds&gt;] [,bps_rd=&lt;bps&gt;] [,bps_rd_max_length=&lt;seconds&gt;] [,bps_wr=&lt;bps&gt;] [,bps_wr_max_length=&lt;seconds&gt;] [,cache=&lt;enum&gt;] [,cyls=&lt;integer&gt;] [,detect_zeroes=&lt;1|0&gt;] [,discard=&lt;ignore|on&gt;] [,format=&lt;enum&gt;] [,heads=&lt;integer&gt;] [,iops=&lt;iops] [,iops_max=&lt;iops&gt;] [,iops_max_length=&lt;seconds&gt;] [,iops_rd=&lt;iops&gt;] [,iops_rd_max=&lt;iops&gt;] [,iops_rd_max_length=&lt;秒&gt;] [,iops_wr=&lt;iops&gt;] [,iops_wr_max=&lt;iops&gt;] [,iops_wr_max_length=&lt;seconds&gt;] [,iothread=&lt;1|0&gt;] [,mbps=&lt;mbps&gt;] [,mbps_max=&lt;mbps&gt;] [,mbps_rd=&lt;mbps&gt;] [,mbps_rd_max=&lt;mbps&gt;] [,mbps_wr=&lt;mbps&gt;] [,mbps_wr_max=&lt;mbps&gt; ]。] [,media=&lt;cdrom|disk&gt;] [,replicate=&lt;1|0&gt;] [,rerror=&lt;ignore|report|stop&gt;] [,ro=&lt;1|0&gt;] [,secs=&lt;integer&gt;] [,serial=&lt;serial&gt;] [,shared=&lt;1|0&gt;] [,size=&lt;DiskSize&gt;] [,snapshot=&lt;1|0&gt;] [,trans=&lt;none|lba|auto&gt;] [,werror=&lt;enum&gt;</span>] となります。</dt>
+<dd>
+<p>
+ボリュームを VIRTIO ハード ディスクとして使用します (n は 0 ～ 15)。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">aio=&lt;io_uring</span><span class="monospaced">｜ネイティブ｜スレッド&gt;。</span></dt>
+<dd>
+<p>
+使用するAIOタイプ。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">backup=</span><span class="monospaced">&lt;ブール</span><span class="monospaced">値</span></dt>
+<dd>
+<p>
+バックアップ作成時にドライブを含めるかどうか。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps=&lt;bps&gt;</span></dt>
+<dd>
+<p>
+最大r/w速度（バイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+I/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_rd=&lt;bps&gt;</span></dt>
+<dd>
+<p>
+最大読み取り速度（バイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_rd_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+読み取りI/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_wr=&lt;bps&gt;</span></dt>
+<dd>
+<p>
+最大書き込み速度（バイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_wr_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+書き込みI/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cache=&lt;directsync</span><span class="monospaced">| none | unsafe | writeback | writethrough&gt;</span>です<span class="monospaced">。</span></dt>
+<dd>
+<p>
+ドライブのキャッシュ・モード</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cys</span><span class="monospaced">=&lt;整数</span></dt>
+<dd>
+<p>
+ドライブの物理ジオメトリを特定のシリンダ数に強制します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">detect_</span><span class="monospaced">zeroes</span><span class="monospaced">=&lt;ブール値</span></dt>
+<dd>
+<p>
+ゼロの書き込みを検出し、最適化を試みるかどうかを制御します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">discard=&lt;無視</span><span class="monospaced">｜オン</span></dt>
+<dd>
+<p>
+破棄/トリム要求を基礎となるストレージに渡すかどうかを制御します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ファイル</span><span class="monospaced">=&lt;</span><span class="monospaced">ボリューム</span></dt>
+<dd>
+<p>
+ドライブのバックアップ・ボリューム。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">フォーマット=&lt;cloop</span><span class="monospaced">｜qcow｜qcow2｜qed｜raw｜vmdk&gt;。</span></dt>
+<dd>
+<p>
+ドライブのバックアップ・ファイルのデータ形式。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">heads</span><span class="monospaced">=&lt;整数</span></dt>
+<dd>
+<p>
+ドライブの物理ジオメトリが特定のヘッド数を持つように強制します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops=&lt;iops&gt;</span></dt>
+<dd>
+<p>
+最大r/w I/O（オペレーション毎秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_max=&lt;iops&gt;</span></dt>
+<dd>
+<p>
+スロットルされていないr/w I/Oプールの最大オペレーション/秒。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+I/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd=&lt;iops&gt;</span></dt>
+<dd>
+<p>
+1秒あたりの最大読み取りI/O。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd_max=&lt;iops&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+スロットルされていない最大読み取りI/Oプール（1秒あたりの処理数）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+読み取りI/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_</span><span class="monospaced">wr</span><span class="monospaced">=&lt;アイオプス&gt;。</span></dt>
+<dd>
+<p>
+最大書き込みI/O（オペレーション/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr_max=&lt;iops&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+スロットルなしの最大書き込みI/Oプール（1秒あたりの操作数）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr_max_length=&lt;seconds&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+書き込みI/Oバーストの最大長（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iothread</span><span class="monospaced">=&lt;ブール値</span></dt>
+<dd>
+<p>
+このドライブにiothreadsを使用するかどうか</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps=&lt;mbps&gt;</span></dt>
+<dd>
+<p>
+最大R/W速度（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_max=&lt;mbps&gt;</span></dt>
+<dd>
+<p>
+最大スロットルなしR/Wプール（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_rd=&lt;mbps&gt;</span></dt>
+<dd>
+<p>
+最大読み取り速度（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_rd_max=&lt;mbps&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+スロットルのない最大読み取りプール（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_wr=&lt;mbps&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+最大書き込み速度（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_wr_max=&lt;mbps&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+スロットルなしの最大書き込みプール（メガバイト/秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">media=&lt;cdrom</span><span class="monospaced">| disk&gt;</span><em>(デフォルト =</em> <span class="monospaced">disk</span>)</dt>
+<dd>
+<p>
+ドライブのメディア・タイプ。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">replicate=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+ドライブをレプリケーション・ジョブの対象とするかどうか。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">rerror=&lt;ignore</span><span class="monospaced">| report | stop&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+読み取りエラー。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ro=</span><span class="monospaced">&lt;ブール</span><span class="monospaced">値</span></dt>
+<dd>
+<p>
+ドライブが読み取り専用かどうか。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">secs</span><span class="monospaced">=&lt;整数</span></dt>
+<dd>
+<p>
+ドライブの物理ジオメトリを特定のセクタ数に強制します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">シリアル=</span><span class="monospaced">&lt;シリアル</span></dt>
+<dd>
+<p>
+報告されたドライブのシリアル・ナンバー（URLエンコード、最大20バイト）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">shared=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+このローカル管理ボリュームをすべてのノードで使用可能としてマークします。</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">このオプションは、ボリュームを自動的に共有しません！</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">size=</span><span class="monospaced">&lt;ディスク</span><span class="monospaced">サイズ</span></dt>
+<dd>
+<p>
+ディスクサイズ。これは単なる情報提供であり、何の効果もありません。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">snapshot=&lt;boolean&gt;</span></dt>
+<dd>
+<p>
+qemu のスナップショットモード機能を制御します。有効にすると、ディスクに加えられた変更は一時的で、VM がシャットダウンされると破棄されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">trans=&lt;自動</span><span class="monospaced">| lba | なし&gt;。</span></dt>
+<dd>
+<p>
+強制ディスクジオメトリバイオス変換モード。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">werror=&lt;enospc</span><span class="monospaced">｜無視｜報告｜停止&gt;。</span></dt>
+<dd>
+<p>
+書き込みエラーアクション。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">virtiofs[n]：</span>[<span class="monospaced">dirid=]&lt;mapping-id&gt; [,cache=&lt;enum&gt;] [,direct-io=&lt;1|0&gt;] [,expose-acl=&lt;1|0&gt;] [,expose-xattr=&lt;1|0&gt;</span>].</dt>
+<dd>
+<p>
+Virtio-fs を使用してホストとゲスト間でディレクトリを共有するための設定。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">cache=&lt;always</span><span class="monospaced">| auto | metadata | never&gt;</span><em>(デフォルト =</em> <span class="monospaced">auto</span>)</dt>
+<dd>
+<p>
+ファイル・システムが使用するキャッシュ・ポリシー（auto、always、metadata、never）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">direct-</span><span class="monospaced">io</span><span class="monospaced">=&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+ゲストアプリケーションから渡された O_DIRECT フラグを尊重します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">dirid</span><span class="monospaced">=&lt;マッピングID</span></dt>
+<dd>
+<p>
+ゲストと共有するディレクトリマッピングのマッピング識別子。VM 内のマウントタグとしても使用されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">expose</span><span class="monospaced">-</span><span class="monospaced">acl=&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+このマウントで POSIX ACL のサポートを有効にします（有効な ACL は xattr を意味します）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">expose-</span><span class="monospaced">xattr</span><span class="monospaced">=&lt;boolean</span><em>&gt;（デフォルト =</em> <span class="monospaced">0）</span></dt>
+<dd>
+<p>
+このマウントの拡張属性のサポートを有効にします。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">vmgenid</span>:<span class="monospaced">&lt;UUID&gt;</span><em>(デフォルト =</em> <span class="monospaced">1 (自動生成</span>))</dt>
+<dd>
+<p>
+VM generation ID (vmgenid) デバイスは、128 ビットの整数値識別子をゲスト OS に公開します。これにより、仮想マシンが異なるコンフィギュレーション（スナップショットの実行やテンプレートからの作成など）で実行された場合に、ゲストOSに通知することができます。ゲスト OS はこの変更に気付き、分散データベースのコピーをダーティとしてマークしたり、乱数ジェネレーターを再初期化したりするなど、適切に対応することができます。自動作成は、API/CLI の作成または更新メソッドによって実行される場合にのみ機能し、設定ファイルを手動で編集する場合には機能しないことに注意してください。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">vmstatestorage</span>:<span class="monospaced">&lt;ストレージID&gt;。</span></dt>
+<dd>
+<p>
+VM 状態ボリューム/ファイルのデフォルトストレージ。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">watchdog</span>:<span class="monospaced">[[model=]&lt;i6300esb|ib700&gt;][アクション］</span></dt>
+<dd>
+<p>
+仮想ハードウェアウォッチドッグデバイスを作成します。いったん (ゲストのアクションによって) 有効になると、ウォッチドッグはゲスト内部のエージェントによって定期的にポーリングされる必要があります。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">action=&lt;debug</span><span class="monospaced">| none | pause | poweroff | reset | shutdown&gt;</span><span class="monospaced">です。</span></dt>
+<dd>
+<p>
+アクティブ化後、ゲストが時間内にウォッチドッグのポーリングに失敗した場合に実行するアクション。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">model=&lt;i6300esb</span><span class="monospaced">| ib700&gt;</span><em>(デフォルト =</em> <span class="monospaced">i6300esb</span>)</dt>
+<dd>
+<p>
+エミュレートするウォッチドッグ・タイプ。</p>
+</dd>
+</dl></div>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_copyright_and_disclaimer">
+著作権および免責事項<a class="headerlink" href="#_copyright_and_disclaimer" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>著作権 © 2007-2022 Proxmox Server Solutions GmbH</p></div>
+<div class="paragraph">
+<p>このプログラムはフリー・ソフトウェアです。あなたは、Free Software Foundationによって発行されたGNU Affero General Public Licenseのバージョン3、またはそれ以降のバージョンのいずれかに従って、このプログラムを再配布したり、変更したりすることができます。</p></div>
+<div class="paragraph">
+<p>このプログラムは有用であることを期待して配布されていますが、商品性や特定の目的への適合性についての暗黙の保証もなく、いかなる保証もありません。詳細はGNU Affero General Public Licenseをご覧ください。</p></div>
+<div class="paragraph">
+<p>あなたはこのプログラムとともにGNU Affero General Public Licenseのコピーを受け取っているはずです。  そうでない場合は、<a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>をご覧ください。</p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+バージョン8.4.0<br>
+最終更新 Wed Apr 9 08:00:00 CEST 2025</div>
+</div>
+</body>
+</html>
+
+<!-- ***** END FILE ***** -->
+

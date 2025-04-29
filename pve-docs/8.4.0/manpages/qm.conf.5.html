@@ -1,0 +1,5073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="AsciiDoc 10.2.0">
+<title>qm.conf(5)</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
+  padding: 0;
+  margin: 0;
+}
+pre {
+  white-space: pre-wrap;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; vertical-align: text-bottom; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel0, div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overridden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+</style>
+
+
+<style type="text/css">
+:root {
+    /* pre-defined colors */
+    --pdt-grey-950: hsl(0deg, 0%, 95%);
+    --pdt-grey-750: hsl(0deg, 0%, 75%);
+    --pdt-grey-400: hsl(0deg, 0%, 40%);
+    --pdt-grey-250: hsl(0deg, 0%, 25%);
+    --pdt-grey-150: hsl(0deg, 0%, 15%);
+    --pdt-grey-100: hsl(0deg, 0%, 10%);
+    --pdt-primary-850: hsl(205deg, 100%, 85%);
+    --pdt-primary-800: hsl(205deg, 100%, 80%);
+    --pdt-primary-700: hsl(205deg, 100%, 70%);
+    --pdt-secondary-850: hsl(250deg, 100%, 85%);
+}
+
+/* adjust admonition block spacing. this allows for a background on
+ * admonition blocks that doesn't make the elements look to tightly
+ * spaced.
+ */
+div.admonitionblock {
+    border-radius: 3px;
+    margin: 1.5em 0;
+    padding: 0.5em 10% 0.5em 0.5em;
+}
+
+div.admonitionblock td.icon {
+    padding-right: 0.5em;
+}
+
+div.admonitionblock td.icon > img {
+    box-sizing: border-box;
+    padding: 0.15em;
+}
+
+/* Fine-tune headings a bit */
+h4 {
+  font-size: 1.1em;
+}
+h5 {
+  font-size: 1.05em;
+}
+h6 {
+  font-size: 1.0em;
+}
+
+/* Support for heading anchor links */
+h3 {
+    border-bottom: unset;
+}
+
+h3 > span {
+    display: inline-block;
+    border-bottom: 2px solid silver;
+}
+
+a.headerlink {
+    color: var(--pdt-grey-750);
+    padding: 0 4px;
+    text-decoration: none;
+    visibility: hidden;
+}
+
+/* add it as an pseudo-element, so that it does not show up in the ToC */
+a.headerlink::after {
+    content: '\00b6';
+    text-decoration: none;
+}
+
+h1:hover > a.headerlink,
+h2:hover > a.headerlink,
+h3:hover > a.headerlink,
+h4:hover > a.headerlink,
+h5:hover > a.headerlink,
+h6:hover > a.headerlink {
+  visibility: visible;
+}
+
+/* Dark mode theme */
+@media screen and (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+        --pdt-body-background: var(--pdt-grey-150);
+        --pdt-text: var(--pdt-grey-950);
+        --pdt-headline: var(--pdt-primary-800);
+        --pdt-link: var(--pdt-primary-700);
+        --pdt-link-visited: var(--pdt-secondary-850);
+        --pdt-highlighted-text: var(--pdt-primary-850);
+        --pdt-background-sidebar: var(--pdt-grey-100);
+        --pdt-background-listings: var(--pdt-grey-100);
+        --pdt-border: var(--pdt-grey-400);
+        --pdt-border-alt: var(--pdt-grey-250);
+        --pdt-table-border: var(--pdt-grey-400);
+        --pdt-background-admonition: var(--pdt-grey-250);
+    }
+
+    body {
+        color: var(--pdt-text);
+        background-color: var(--pdt-body-background);
+    }
+
+    a {
+        color: var(--pdt-link);
+    }
+
+    a:visited {
+        color: var(--pdt-link-visited);
+    }
+
+    /* style headlines, titles etc. */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    thead,
+    #author,
+    #toctitle,
+    div.title,
+    td.hdlist1,
+    caption.title,
+    p.tableblock.header {
+        color: var(--pdt-headline);
+    }
+
+    h1,
+    h2,
+    h3,
+    #footer {
+        border-color: var(--pdt-border);
+    }
+
+    /* formatted colored text */
+    dt,
+    em,
+    pre,
+    code,
+    strong,
+    .monospaced {
+        color: var(--pdt-highlighted-text);
+    }
+
+    /* style the table of contents sidebar */
+    div #toc {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-sidebar);
+        border-color: var(--pdt-border-alt);
+    }
+
+    div #toc a:link,
+    div #toc a:visited {
+        color: var(--pdt-text);
+    }
+
+    /* reduce the brigthness of images a bit and make it reversable
+     * through hovering over them.
+     */
+    .image > img {
+        filter: brightness(90%);
+    }
+
+    .image > img:hover {
+        filter: none;
+    }
+
+    /* tables */
+    th.tableblock,
+    td.tableblock,
+    table.tableblock {
+        border-color: var(--pdt-table-border);
+    }
+
+    div.quoteblock,
+    div.verseblock {
+        color: var(--pdt-text);
+        border-color: var(--pdt-border);
+    }
+
+    /* listings (e.g. code snippet blocks) */
+    div.listingblock > div.content {
+        background-color: var(--pdt-background-listings);
+        border-color: var(--pdt-border-alt);
+    }
+
+    /* admonition blocks (e.g. notes, warnings etc.) */
+    div.admonitionblock {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-admonition);
+    }
+
+    div.admonitionblock td.content {
+        border-color: var(--pdt-border);
+    }
+
+    /* makes the admonition icons appear a bit more consistent, by
+     * adding a white background the shadows in the icons look
+     * "correct"
+     */
+    div.admonitionblock td.icon > img {
+        background-color: white;
+        border-radius: 100%;
+        filter: brightness(95%);
+    }
+
+    /* invert the logo */
+    #header > h1 > .image > img {
+        filter: invert(100%) hue-rotate(180deg) brightness(90%);
+    }
+
+    /* fixes the black text on unorderd lists */
+    ul > li > * {
+        color: var(--pdt-text);
+    }
+}
+</style>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install();
+/*]]>*/
+</script>
+</head>
+<body class="article" style="max-width:55em">
+<div id="header">
+<h1>qm.conf(5)</h1>
+<span id="author">Proxmox Server Solutions GmbH</span><br>
+<span id="email" class="monospaced">&lt;<a href="mailto:support@proxmox.com">support@proxmox.com</a>&gt;</span><br>
+<span id="revnumber">version 8.4.0,</span>
+<span id="revdate">Wed Apr  9 08:00:00 CEST 2025</span>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_name">
+NAME
+ <a class="headerlink" href="#_name" title="Permalink to this heading"></a>
+</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>qm.conf - Proxmox VE Virtual Machine Configuration</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_synopsis">
+SYNOPSIS
+ <a class="headerlink" href="#_synopsis" title="Permalink to this heading"></a>
+</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><em>/etc/pve/qemu-server/&lt;VMID&gt;.conf</em></p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description">
+DESCRIPTION
+ <a class="headerlink" href="#_description" title="Permalink to this heading"></a>
+</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <span class="monospaced">/etc/pve/qemu-server/&lt;VMID&gt;.conf</span> files stores VM configuration,
+where "VMID" is the numeric ID of the given VM.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAJhUlEQVRoge2ZWWycVxXHf+fce7/v
+m/GaGCde4pI0aQlJC0kRtE1L00JbLIjY4QkeUB9YHhAIJFCExAsKUkE8IAFFPIDUIqhBRSDRBUqC
+CimFFBCBpCWx02IaZ3G2SdyxPZ7vHh6+mcnSZnFjKIge6Wj8zYzvPf9z/me5d8TM+F8WfbkNuFx5
+BcDLLf/fAEZGRmx4eNh6enqsp6fHhoeHbWRk5D9aFeSlVqHNmzfb6H33sHnT7ZQmD5GfOMax6Sm+
+Pl5h1Yc+xpYtW2SBbX1ReUkRGBkZsdH77mHLW95EOv4Ms3ueJh6YYPHUFF9aljJ63z3cf//9/5FI
+vKQIDA8P293L2yhVjjH7t51ocDiviFecF46n7XzBreChhx4qNhH5t0XjJUVgx44ddGUZ9b/vIpQD
+oRQIWSDJAiFL6B9axo4dO4gxAmANWVDLG+Ln82URMRGhVCqRHxonlAPqFXWKC4r6IhI6OMjMzBN4
+/4LlTUQQEZxzZ32QJAlpmrb+p16vU6vVOHXq1AWjN18AnDj0F971vrs4OnmYJVkoDA4FCPUO172I
+Cgnt7SV++4vvsGhRJx3tJbIsRVVpsUnOBBABBVFEClKYwbKr7sTM7EIUnBcA7z21k7t49x1X8JXv
+bOWra7rw5QRtcN8PLCfvvZJvb9vJycpJpg4/hp/N0I4SMQs4Jw0A5zBXHGiCaIZIKABgpGlKjPEF
+0TpT5pUDRXiVt99+Le03r+WzuytM1gO6pB/3+o0cbxvk8yOPMjW6i2iR2lxOjJDHSDMFogmGwzQ7
+rRJAUpAENAGXIZq2AFzQpvkACCEQcahP+cRH3sKHn9zHXU+MM7rtGeD33NDXzaZynZU9gcezpUw9
+X6OzIyOakkfF4QEpPG6nDRNNEA2FSgKimETSNCXPc0II57VpXhEolUqoOrxPSLOMT330Dv5SqfKD
+NR388Y2L+caQsjITNv3pMBs3rOT56ZyZGaM+J0QUxDc0INrWUgggoRGBAOIRAt77hY1AmqaoeJxP
+cN645jVDbNn8Hj73o8fZ/af9mEE9j9y2YRXt5YzZWmRmzjj1/BwhTXAKzitOHEbeWlc0AVwDnCv8
+KoZzjotV33lTSL1HNKAuEtKM1169jM98/E6mTk3x4Nbd7Bk7TEdHRvAeVY+hmDqmZwx1kIkiqrhz
+S2zL+AbNMC6l/80LgHMOEY9oQvBCks5RKpXo7JhFxbhz42pet2aQet1YtLiDJAkIDq8BHwJmwlwO
+UaD0ojsrNKuUReIZyb9gABCHcwWFgg+0lTPyvIRToVzKWLpkMfV6REQplYvmZCj1uuBUSdJwTg8A
+XBdoCZMOsBkQBeGi/J83gBgjmABC8AlJGsjzFLMyaXDM1etEA0VR50iCx6mSZhkiijpPjEpQD+SF
+4WdJrTAewdCFB1CtVlFVVATnhMQnWJqC5aTBk+c5IIgWRoTgSZJAmiZAo1s7hwsppglI+fTiljeY
+nyHkLQotKIAYI4igzpFHISQOiwEnKTEG8hhRVZw6YjRQLfJGHcF7jleqTBw8znXr12MABnv37efY
+iSnesG4tiUsRUQwD7JIAzKsPqCqiRbVwweM04XdPjhJN+dvTBxgbn6G9q59yZx9/3HWEb33vN+zc
+/RzOJ+w/eJLtO8Z5ZNtT7PvHIUQTvvv9X/Lc/mN0d3by3fseRLQwvWh0Fy+h8wbQ2VFG1KM+xfuA
+qufo8So/fejPPD/rqJys8pvf7eLAoeNMHqnw2U9+kH3jVQ5MClMzKUla5obr13HliiEMmDx6gltv
+uY7Vr1nBQF8PJopQ9AFTt/AROFfMjCW9XTy19xB33Hodb924jr1j+/nDk3/nzTdei4jw3nfeyCOP
+bufa1y5jzeoVrcHM8HR3dfHlr/2Q+x94jFtuuh44/9B2PplXDryYLF3STXd3e+t5UXcHY89OsOH6
+NS2Qed7wpM1Rm50G4MGHH2P961Zy3bqreXrPP5mrzwLt5y6/cACq1eoLCKm+TN/SAebmfn8aUG83
+PYs7+cnPH+eqKwd5as8/edc7bi02847pmVkATk1VWbF8AOcca1Yv59DkqcYK0tCL02deACqVCldc
+0YdIwLmEPM9RV6NnUZlPf3wT6oqJcePN6wHhzTeu4/CRCrfctJ4sSxBRli7pYfHEMUSU97/7Th75
+1RP8eec+Yp5zzTVXM9DfDyogBvHS6HTJACYmJnjVoq5GFw0454gCEOnoaMfiNGZFFRFxJGkbywZ6
+i1NWoy9kWYmbb1gHKCHApuGbisVFGyoYUswa5OR5ftF56JIBjI6OMtDfWwAQ35jnc8AVpRXBohVq
+UowECKqK4RBxoE0W6gvGCcEjaOEAwEQWdpgbGxujt7erOLO2mk3R8i0Wz9EiuUGz+qlKEQEUaJbI
+4lTHmTVePKgWzpDGJGpc8CDTlEsuo88++wxXDA0UIUbAOP23KGZKjI48KnkuhcbiPbPCOBoeBikO
+Lk2VxjqNRilaAEqSZGEAbN261bZt+zW33XY7IAXXm6Ou0YhIMamaaUOl5WRrzg00viuKWWxpQUOH
+NAZFQRpD48Xlkig0MTHBB95zG+VSylz1KCbWyDOh2XyK+56IqjWMKigkUnzWnPPFFFRRLZ29SQRU
+ELOGY4pZ6LKOlM07mZ07d/KOtw1TcB4sGkTDiDQ9K1IkrKeYmQC08d7pZLSiRBpE5s7aS0XAHFEK
+AGY51Wr18g80Zmb33nsvX/z8XdSmj2AWOXhwkrxe46+79jB55Dh/3T2GxUhHextdXW2sXN7PNWtW
+IQKDA71FFBoAjIgQkVg/a5+oHrU5zIznDhxk964xKpXKggAoTlWW8+OfPorlOQ//cjsDy1bS2dFO
+W+diVly1iL6+Pqanpzl5qsL4pPHwN3/G1InDlMsZ7Z1tDA30cfWqIa5dexV9fb2YnT7UTxw4xsHJ
+o4yOjfOP8QOMjx/k4OQx7r777lY0zycXvJ02M4sxMjg4SL1eR0TYsGEDw8PD9PX10d7ejogUN3a1
+GqpKCIE8z5mdnUVVqVarbN++nba2Nvbu3csDDzyAqrJ8+atb+zjn6e/vZ/Xq1axatYq1a9fS29tL
+lmUMDQ1RKpXOm9EXvV6v1+tWr9eZnp5mZmaGWq1GjLHF62aiNZ+bnPfe45xrvTZzxMyYmZk56+LX
+zKjX661DvHOOJElIkoRSqYT3/vLvRlW15eHCa4VxzdvmpjZDfubzuXeb3vuzqCEixBhbo0NTkyS5
+PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==">
+</td>
+<td class="content">IDs &lt; 100 are reserved for internal purposes.</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_file_format">
+File Format
+ <a class="headerlink" href="#_file_format" title="Permalink to this heading"></a>
+</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The file uses a simple colon separated key/value format. Each line has
+the following format:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>OPTION: value</pre>
+</div></div>
+<div class="paragraph">
+<p>Blank lines in the file are ignored, and lines starting with a <span class="monospaced">#</span>
+character are treated as comments and are also ignored.</p></div>
+<div class="paragraph">
+<p>One can use the <span class="monospaced">qm</span> command to generate and modify those files.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_options">
+Options
+ <a class="headerlink" href="#_options" title="Permalink to this heading"></a>
+</h2>
+<div class="sectionbody">
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">acpi</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Enable/disable ACPI.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">affinity</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+List of host cores used to execute guest processes, for example: 0,5,8-11
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">agent</span>: <span class="monospaced">[enabled=]&lt;1|0&gt; [,freeze-fs-on-backup=&lt;1|0&gt;] [,fstrim_cloned_disks=&lt;1|0&gt;] [,type=&lt;virtio|isa&gt;]</span> 
+</dt>
+<dd>
+<p>
+Enable/disable communication with the QEMU Guest Agent and its properties.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">enabled</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Enable/disable communication with a QEMU Guest Agent (QGA) running in the VM.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">freeze-fs-on-backup</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Freeze/thaw guest filesystems on backup for consistency.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">fstrim_cloned_disks</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Run fstrim after moving a disk or migrating the VM.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">type</span>=<span class="monospaced">&lt;isa | virtio&gt;</span> (<em>default =</em> <span class="monospaced">virtio</span>)
+</dt>
+<dd>
+<p>
+Select the agent type
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">amd-sev</span>: <span class="monospaced">[type=]&lt;sev-type&gt; [,allow-smt=&lt;1|0&gt;] [,kernel-hashes=&lt;1|0&gt;] [,no-debug=&lt;1|0&gt;] [,no-key-sharing=&lt;1|0&gt;]</span> 
+</dt>
+<dd>
+<p>
+Secure Encrypted Virtualization (SEV) features by AMD CPUs
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">allow-smt</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Sets policy bit to allow Simultaneous Multi Threading (SMT) (Ignored unless for SEV-SNP)
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">kernel-hashes</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Add kernel hashes to guest firmware for measured linux kernel launch
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">no-debug</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Sets policy bit to disallow debugging of guest
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">no-key-sharing</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Sets policy bit to disallow key sharing with other guests (Ignored for SEV-SNP)
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">type</span>=<span class="monospaced">&lt;sev-type&gt;</span> 
+</dt>
+<dd>
+<p>
+Enable standard SEV with type=<em>std</em> or enable experimental SEV-ES with the <em>es</em> option or enable experimental SEV-SNP with the <em>snp</em> option.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">arch</span>: <span class="monospaced">&lt;aarch64 | x86_64&gt;</span> 
+</dt>
+<dd>
+<p>
+Virtual processor architecture. Defaults to the host.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">args</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Arbitrary arguments passed to kvm, for example:
+</p>
+<div class="paragraph">
+<p>args: -no-reboot -smbios <em>type=0,vendor=FOO</em></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">this option is for experts only.</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">audio0</span>: <span class="monospaced">device=&lt;ich9-intel-hda|intel-hda|AC97&gt; [,driver=&lt;spice|none&gt;]</span> 
+</dt>
+<dd>
+<p>
+Configure a audio device, useful in combination with QXL/Spice.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">device</span>=<span class="monospaced">&lt;AC97 | ich9-intel-hda | intel-hda&gt;</span> 
+</dt>
+<dd>
+<p>
+Configure an audio device.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">driver</span>=<span class="monospaced">&lt;none | spice&gt;</span> (<em>default =</em> <span class="monospaced">spice</span>)
+</dt>
+<dd>
+<p>
+Driver backend for the audio device.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">autostart</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Automatic restart after crash (currently ignored).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">balloon</span>: <span class="monospaced">&lt;integer&gt; (0 - N)</span> 
+</dt>
+<dd>
+<p>
+Amount of target RAM for the VM in MiB. Using zero disables the ballon driver.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bios</span>: <span class="monospaced">&lt;ovmf | seabios&gt;</span> (<em>default =</em> <span class="monospaced">seabios</span>)
+</dt>
+<dd>
+<p>
+Select BIOS implementation.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">boot</span>: <span class="monospaced">[[legacy=]&lt;[acdn]{1,4}&gt;] [,order=&lt;device[;device...]&gt;]</span> 
+</dt>
+<dd>
+<p>
+Specify guest boot order. Use the <em>order=</em> sub-property as usage with no key or <em>legacy=</em> is deprecated.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">legacy</span>=<span class="monospaced">&lt;[acdn]{1,4}&gt;</span> (<em>default =</em> <span class="monospaced">cdn</span>)
+</dt>
+<dd>
+<p>
+Boot on floppy (a), hard disk (c), CD-ROM (d), or network (n). Deprecated, use <em>order=</em> instead.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">order</span>=<span class="monospaced">&lt;device[;device...]&gt;</span> 
+</dt>
+<dd>
+<p>
+The guest will attempt to boot from devices in the order they appear here.
+</p>
+<div class="paragraph">
+<p>Disks, optical drives and passed-through storage USB devices will be directly
+booted from, NICs will load PXE, and PCIe devices will either behave like disks
+(e.g. NVMe) or load an option ROM (e.g. RAID controller, hardware NIC).</p></div>
+<div class="paragraph">
+<p>Note that only devices in this list will be marked as bootable and thus loaded
+by the guest firmware (BIOS/UEFI). If you require multiple disks for booting
+(e.g. software-raid), you need to specify all of them here.</p></div>
+<div class="paragraph">
+<p>Overrides the deprecated <em>legacy=[acdn]*</em> value when given.</p></div>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bootdisk</span>: <span class="monospaced">(ide|sata|scsi|virtio)\d+</span> 
+</dt>
+<dd>
+<p>
+Enable booting from specified disk. Deprecated: Use <em>boot: order=foo;bar</em> instead.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cdrom</span>: <span class="monospaced">&lt;volume&gt;</span> 
+</dt>
+<dd>
+<p>
+This is an alias for option -ide2
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cicustom</span>: <span class="monospaced">[meta=&lt;volume&gt;] [,network=&lt;volume&gt;] [,user=&lt;volume&gt;] [,vendor=&lt;volume&gt;]</span> 
+</dt>
+<dd>
+<p>
+cloud-init: Specify custom files to replace the automatically generated ones at start.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">meta</span>=<span class="monospaced">&lt;volume&gt;</span> 
+</dt>
+<dd>
+<p>
+Specify a custom file containing all meta data passed to the VM via"
+            ." cloud-init. This is provider specific meaning configdrive2 and nocloud differ.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">network</span>=<span class="monospaced">&lt;volume&gt;</span> 
+</dt>
+<dd>
+<p>
+To pass a custom file containing all network data to the VM via cloud-init.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">user</span>=<span class="monospaced">&lt;volume&gt;</span> 
+</dt>
+<dd>
+<p>
+To pass a custom file containing all user data to the VM via cloud-init.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">vendor</span>=<span class="monospaced">&lt;volume&gt;</span> 
+</dt>
+<dd>
+<p>
+To pass a custom file containing all vendor data to the VM via cloud-init.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cipassword</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+cloud-init: Password to assign the user. Using this is generally not recommended. Use ssh keys instead. Also note that older cloud-init versions do not support hashed passwords.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">citype</span>: <span class="monospaced">&lt;configdrive2 | nocloud | opennebula&gt;</span> 
+</dt>
+<dd>
+<p>
+Specifies the cloud-init configuration format. The default depends on the configured operating system type (<span class="monospaced">ostype</span>. We use the <span class="monospaced">nocloud</span> format for Linux, and <span class="monospaced">configdrive2</span> for windows.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ciupgrade</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+cloud-init: do an automatic package upgrade after the first boot.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ciuser</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+cloud-init: User name to change ssh keys and password for instead of the image&#8217;s configured default user.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cores</span>: <span class="monospaced">&lt;integer&gt; (1 - N)</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+The number of cores per socket.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cpu</span>: <span class="monospaced">[[cputype=]&lt;string&gt;] [,flags=&lt;+FLAG[;-FLAG...]&gt;] [,hidden=&lt;1|0&gt;] [,hv-vendor-id=&lt;vendor-id&gt;] [,phys-bits=&lt;8-64|host&gt;] [,reported-model=&lt;enum&gt;]</span> 
+</dt>
+<dd>
+<p>
+Emulated CPU type.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">cputype</span>=<span class="monospaced">&lt;string&gt;</span> (<em>default =</em> <span class="monospaced">kvm64</span>)
+</dt>
+<dd>
+<p>
+Emulated CPU type. Can be default or custom name (custom model names must be prefixed with <em>custom-</em>).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">flags</span>=<span class="monospaced">&lt;+FLAG[;-FLAG...]&gt;</span> 
+</dt>
+<dd>
+<p>
+List of additional CPU flags separated by <em>;</em>. Use <em>+FLAG</em> to enable, <em>-FLAG</em> to disable a flag. Custom CPU models can specify any flag supported by QEMU/KVM, VM-specific flags must be from the following set for security reasons: pcid, spec-ctrl, ibpb, ssbd, virt-ssbd, amd-ssbd, amd-no-ssb, pdpe1gb, md-clear, hv-tlbflush, hv-evmcs, aes
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">hidden</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Do not identify as a KVM virtual machine.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">hv-vendor-id</span>=<span class="monospaced">&lt;vendor-id&gt;</span> 
+</dt>
+<dd>
+<p>
+The Hyper-V vendor ID. Some drivers or programs inside Windows guests need a specific ID.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">phys-bits</span>=<span class="monospaced">&lt;8-64|host&gt;</span> 
+</dt>
+<dd>
+<p>
+The physical memory address bits that are reported to the guest OS. Should be smaller or equal to the host&#8217;s. Set to <em>host</em> to use value from host CPU, but note that doing so will break live migration to CPUs with other values.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">reported-model</span>=<span class="monospaced">&lt;486 | Broadwell | Broadwell-IBRS | Broadwell-noTSX | Broadwell-noTSX-IBRS | Cascadelake-Server | Cascadelake-Server-noTSX | Cascadelake-Server-v2 | Cascadelake-Server-v4 | Cascadelake-Server-v5 | Conroe | Cooperlake | Cooperlake-v2 | EPYC | EPYC-Genoa | EPYC-IBPB | EPYC-Milan | EPYC-Milan-v2 | EPYC-Rome | EPYC-Rome-v2 | EPYC-Rome-v3 | EPYC-Rome-v4 | EPYC-v3 | EPYC-v4 | GraniteRapids | Haswell | Haswell-IBRS | Haswell-noTSX | Haswell-noTSX-IBRS | Icelake-Client | Icelake-Client-noTSX | Icelake-Server | Icelake-Server-noTSX | Icelake-Server-v3 | Icelake-Server-v4 | Icelake-Server-v5 | Icelake-Server-v6 | IvyBridge | IvyBridge-IBRS | KnightsMill | Nehalem | Nehalem-IBRS | Opteron_G1 | Opteron_G2 | Opteron_G3 | Opteron_G4 | Opteron_G5 | Penryn | SandyBridge | SandyBridge-IBRS | SapphireRapids | SapphireRapids-v2 | Skylake-Client | Skylake-Client-IBRS | Skylake-Client-noTSX-IBRS | Skylake-Client-v4 | Skylake-Server | Skylake-Server-IBRS | Skylake-Server-noTSX-IBRS | Skylake-Server-v4 | Skylake-Server-v5 | Westmere | Westmere-IBRS | athlon | core2duo | coreduo | host | kvm32 | kvm64 | max | pentium | pentium2 | pentium3 | phenom | qemu32 | qemu64&gt;</span> (<em>default =</em> <span class="monospaced">kvm64</span>)
+</dt>
+<dd>
+<p>
+CPU model and vendor to report to the guest. Must be a QEMU/KVM supported model. Only valid for custom CPU model definitions, default models will always report themselves to the guest OS.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cpulimit</span>: <span class="monospaced">&lt;number&gt; (0 - 128)</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Limit of CPU usage.
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">If the computer has 2 CPUs, it has total of <em>2</em> CPU time. Value <em>0</em> indicates no CPU limit.</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cpuunits</span>: <span class="monospaced">&lt;integer&gt; (1 - 262144)</span> (<em>default =</em> <span class="monospaced">cgroup v1: 1024, cgroup v2: 100</span>)
+</dt>
+<dd>
+<p>
+CPU weight for a VM. Argument is used in the kernel fair scheduler. The larger the number is, the more CPU time this VM gets. Number is relative to weights of all the other running VMs.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">description</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Description for the VM. Shown in the web-interface VM&#8217;s summary. This is saved as comment inside the configuration file.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">efidisk0</span>: <span class="monospaced">[file=]&lt;volume&gt; [,efitype=&lt;2m|4m&gt;] [,format=&lt;enum&gt;] [,pre-enrolled-keys=&lt;1|0&gt;] [,size=&lt;DiskSize&gt;]</span> 
+</dt>
+<dd>
+<p>
+Configure a disk for storing EFI vars.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">efitype</span>=<span class="monospaced">&lt;2m | 4m&gt;</span> (<em>default =</em> <span class="monospaced">2m</span>)
+</dt>
+<dd>
+<p>
+Size and type of the OVMF EFI vars. <em>4m</em> is newer and recommended, and required for Secure Boot. For backwards compatibility, <em>2m</em> is used if not otherwise specified. Ignored for VMs with arch=aarch64 (ARM).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">file</span>=<span class="monospaced">&lt;volume&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s backing volume.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">format</span>=<span class="monospaced">&lt;cloop | qcow | qcow2 | qed | raw | vmdk&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s backing file&#8217;s data format.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">pre-enrolled-keys</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Use am EFI vars template with distribution-specific and Microsoft Standard keys enrolled, if used with <em>efitype=4m</em>. Note that this will enable Secure Boot by default, though it can still be turned off from within the VM.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">size</span>=<span class="monospaced">&lt;DiskSize&gt;</span> 
+</dt>
+<dd>
+<p>
+Disk size. This is purely informational and has no effect.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">freeze</span>: <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Freeze CPU at startup (use <em>c</em> monitor command to start execution).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">hookscript</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Script that will be executed during various steps in the vms lifetime.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">hostpci[n]</span>: <span class="monospaced">[[host=]&lt;HOSTPCIID[;HOSTPCIID2...]&gt;] [,device-id=&lt;hex id&gt;] [,legacy-igd=&lt;1|0&gt;] [,mapping=&lt;mapping-id&gt;] [,mdev=&lt;string&gt;] [,pcie=&lt;1|0&gt;] [,rombar=&lt;1|0&gt;] [,romfile=&lt;string&gt;] [,sub-device-id=&lt;hex id&gt;] [,sub-vendor-id=&lt;hex id&gt;] [,vendor-id=&lt;hex id&gt;] [,x-vga=&lt;1|0&gt;]</span> 
+</dt>
+<dd>
+<p>
+Map host PCI devices into guest.
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">This option allows direct access to host hardware. So it is no longer
+possible to migrate such machines - use with special care.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Caution" src="data:image/png;base64,
+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">
+</td>
+<td class="content">Experimental! User reported problems with this option.</td>
+</tr></table>
+</div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">device-id</span>=<span class="monospaced">&lt;hex id&gt;</span> 
+</dt>
+<dd>
+<p>
+Override PCI device ID visible to guest
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">host</span>=<span class="monospaced">&lt;HOSTPCIID[;HOSTPCIID2...]&gt;</span> 
+</dt>
+<dd>
+<p>
+Host PCI device pass through. The PCI ID of a host&#8217;s PCI device or a list
+of PCI virtual functions of the host. HOSTPCIID syntax is:
+</p>
+<div class="paragraph">
+<p><em>bus:dev.func</em> (hexadecimal numbers)</p></div>
+<div class="paragraph">
+<p>You can use the <em>lspci</em> command to list existing PCI devices.</p></div>
+<div class="paragraph">
+<p>Either this or the <em>mapping</em> key must be set.</p></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">legacy-igd</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Pass this device in legacy IGD mode, making it the primary and exclusive graphics device in the VM. Requires <em>pc-i440fx</em> machine type and VGA set to <em>none</em>.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mapping</span>=<span class="monospaced">&lt;mapping-id&gt;</span> 
+</dt>
+<dd>
+<p>
+The ID of a cluster wide mapping. Either this or the default-key <em>host</em> must be set.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mdev</span>=<span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+The type of mediated device to use.
+An instance of this type will be created on startup of the VM and
+will be cleaned up when the VM stops.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">pcie</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Choose the PCI-express bus (needs the <em>q35</em> machine model).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">rombar</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Specify whether or not the device&#8217;s ROM will be visible in the guest&#8217;s memory map.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">romfile</span>=<span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Custom pci device rom filename (must be located in /usr/share/kvm/).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">sub-device-id</span>=<span class="monospaced">&lt;hex id&gt;</span> 
+</dt>
+<dd>
+<p>
+Override PCI subsystem device ID visible to guest
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">sub-vendor-id</span>=<span class="monospaced">&lt;hex id&gt;</span> 
+</dt>
+<dd>
+<p>
+Override PCI subsystem vendor ID visible to guest
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">vendor-id</span>=<span class="monospaced">&lt;hex id&gt;</span> 
+</dt>
+<dd>
+<p>
+Override PCI vendor ID visible to guest
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">x-vga</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Enable vfio-vga device support.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">hotplug</span>: <span class="monospaced">&lt;string&gt;</span> (<em>default =</em> <span class="monospaced">network,disk,usb</span>)
+</dt>
+<dd>
+<p>
+Selectively enable hotplug features. This is a comma separated list of hotplug features: <em>network</em>, <em>disk</em>, <em>cpu</em>, <em>memory</em>, <em>usb</em> and <em>cloudinit</em>. Use <em>0</em> to disable hotplug completely. Using <em>1</em> as value is an alias for the default <span class="monospaced">network,disk,usb</span>. USB hotplugging is possible for guests with machine version &gt;= 7.1 and ostype l26 or windows &gt; 7.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">hugepages</span>: <span class="monospaced">&lt;1024 | 2 | any&gt;</span> 
+</dt>
+<dd>
+<p>
+Enable/disable hugepages memory.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ide[n]</span>: <span class="monospaced">[file=]&lt;volume&gt; [,aio=&lt;native|threads|io_uring&gt;] [,backup=&lt;1|0&gt;] [,bps=&lt;bps&gt;] [,bps_max_length=&lt;seconds&gt;] [,bps_rd=&lt;bps&gt;] [,bps_rd_max_length=&lt;seconds&gt;] [,bps_wr=&lt;bps&gt;] [,bps_wr_max_length=&lt;seconds&gt;] [,cache=&lt;enum&gt;] [,cyls=&lt;integer&gt;] [,detect_zeroes=&lt;1|0&gt;] [,discard=&lt;ignore|on&gt;] [,format=&lt;enum&gt;] [,heads=&lt;integer&gt;] [,iops=&lt;iops&gt;] [,iops_max=&lt;iops&gt;] [,iops_max_length=&lt;seconds&gt;] [,iops_rd=&lt;iops&gt;] [,iops_rd_max=&lt;iops&gt;] [,iops_rd_max_length=&lt;seconds&gt;] [,iops_wr=&lt;iops&gt;] [,iops_wr_max=&lt;iops&gt;] [,iops_wr_max_length=&lt;seconds&gt;] [,mbps=&lt;mbps&gt;] [,mbps_max=&lt;mbps&gt;] [,mbps_rd=&lt;mbps&gt;] [,mbps_rd_max=&lt;mbps&gt;] [,mbps_wr=&lt;mbps&gt;] [,mbps_wr_max=&lt;mbps&gt;] [,media=&lt;cdrom|disk&gt;] [,model=&lt;model&gt;] [,replicate=&lt;1|0&gt;] [,rerror=&lt;ignore|report|stop&gt;] [,secs=&lt;integer&gt;] [,serial=&lt;serial&gt;] [,shared=&lt;1|0&gt;] [,size=&lt;DiskSize&gt;] [,snapshot=&lt;1|0&gt;] [,ssd=&lt;1|0&gt;] [,trans=&lt;none|lba|auto&gt;] [,werror=&lt;enum&gt;] [,wwn=&lt;wwn&gt;]</span> 
+</dt>
+<dd>
+<p>
+Use volume as IDE hard disk or CD-ROM (n is 0 to 3).
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">aio</span>=<span class="monospaced">&lt;io_uring | native | threads&gt;</span> 
+</dt>
+<dd>
+<p>
+AIO type to use.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">backup</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Whether the drive should be included when making backups.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps</span>=<span class="monospaced">&lt;bps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum r/w speed in bytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_rd</span>=<span class="monospaced">&lt;bps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum read speed in bytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_rd_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of read I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_wr</span>=<span class="monospaced">&lt;bps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum write speed in bytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_wr_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of write I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cache</span>=<span class="monospaced">&lt;directsync | none | unsafe | writeback | writethrough&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s cache mode
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cyls</span>=<span class="monospaced">&lt;integer&gt;</span> 
+</dt>
+<dd>
+<p>
+Force the drive&#8217;s physical geometry to have a specific cylinder count.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">detect_zeroes</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Controls whether to detect and try to optimize writes of zeroes.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">discard</span>=<span class="monospaced">&lt;ignore | on&gt;</span> 
+</dt>
+<dd>
+<p>
+Controls whether to pass discard/trim requests to the underlying storage.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">file</span>=<span class="monospaced">&lt;volume&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s backing volume.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">format</span>=<span class="monospaced">&lt;cloop | qcow | qcow2 | qed | raw | vmdk&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s backing file&#8217;s data format.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">heads</span>=<span class="monospaced">&lt;integer&gt;</span> 
+</dt>
+<dd>
+<p>
+Force the drive&#8217;s physical geometry to have a specific head count.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum r/w I/O in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_max</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled r/w I/O pool in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum read I/O in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd_max</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled read I/O pool in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of read I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum write I/O in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr_max</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled write I/O pool in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of write I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum r/w speed in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_max</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled r/w pool in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_rd</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum read speed in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_rd_max</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled read pool in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_wr</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum write speed in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_wr_max</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled write pool in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">media</span>=<span class="monospaced">&lt;cdrom | disk&gt;</span> (<em>default =</em> <span class="monospaced">disk</span>)
+</dt>
+<dd>
+<p>
+The drive&#8217;s media type.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">model</span>=<span class="monospaced">&lt;model&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s reported model name, url-encoded, up to 40 bytes long.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">replicate</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Whether the drive should considered for replication jobs.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">rerror</span>=<span class="monospaced">&lt;ignore | report | stop&gt;</span> 
+</dt>
+<dd>
+<p>
+Read error action.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">secs</span>=<span class="monospaced">&lt;integer&gt;</span> 
+</dt>
+<dd>
+<p>
+Force the drive&#8217;s physical geometry to have a specific sector count.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">serial</span>=<span class="monospaced">&lt;serial&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s reported serial number, url-encoded, up to 20 bytes long.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">shared</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Mark this locally-managed volume as available on all nodes.
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content">This option does not share the volume automatically, it assumes it is shared already!</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">size</span>=<span class="monospaced">&lt;DiskSize&gt;</span> 
+</dt>
+<dd>
+<p>
+Disk size. This is purely informational and has no effect.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">snapshot</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Controls qemu&#8217;s snapshot mode feature. If activated, changes made to the disk are temporary and will be discarded when the VM is shutdown.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ssd</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Whether to expose this drive as an SSD, rather than a rotational hard disk.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">trans</span>=<span class="monospaced">&lt;auto | lba | none&gt;</span> 
+</dt>
+<dd>
+<p>
+Force disk geometry bios translation mode.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">werror</span>=<span class="monospaced">&lt;enospc | ignore | report | stop&gt;</span> 
+</dt>
+<dd>
+<p>
+Write error action.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">wwn</span>=<span class="monospaced">&lt;wwn&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s worldwide name, encoded as 16 bytes hex string, prefixed by <em>0x</em>.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ipconfig[n]</span>: <span class="monospaced">[gw=&lt;GatewayIPv4&gt;] [,gw6=&lt;GatewayIPv6&gt;] [,ip=&lt;IPv4Format/CIDR&gt;] [,ip6=&lt;IPv6Format/CIDR&gt;]</span> 
+</dt>
+<dd>
+<p>
+cloud-init: Specify IP addresses and gateways for the corresponding interface.
+</p>
+<div class="paragraph">
+<p>IP addresses use CIDR notation, gateways are optional but need an IP of the same type specified.</p></div>
+<div class="paragraph">
+<p>The special string <em>dhcp</em> can be used for IP addresses to use DHCP, in which case no explicit
+gateway should be provided.
+For IPv6 the special string <em>auto</em> can be used to use stateless autoconfiguration. This requires
+cloud-init 19.4 or newer.</p></div>
+<div class="paragraph">
+<p>If cloud-init is enabled and neither an IPv4 nor an IPv6 address is specified, it defaults to using
+dhcp on IPv4.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">gw</span>=<span class="monospaced">&lt;GatewayIPv4&gt;</span> 
+</dt>
+<dd>
+<p>
+Default gateway for IPv4 traffic.
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAJhUlEQVRoge2ZWWycVxXHf+fce7/v
+m/GaGCde4pI0aQlJC0kRtE1L00JbLIjY4QkeUB9YHhAIJFCExAsKUkE8IAFFPIDUIqhBRSDRBUqC
+CimFFBCBpCWx02IaZ3G2SdyxPZ7vHh6+mcnSZnFjKIge6Wj8zYzvPf9z/me5d8TM+F8WfbkNuFx5
+BcDLLf/fAEZGRmx4eNh6enqsp6fHhoeHbWRk5D9aFeSlVqHNmzfb6H33sHnT7ZQmD5GfOMax6Sm+
+Pl5h1Yc+xpYtW2SBbX1ReUkRGBkZsdH77mHLW95EOv4Ms3ueJh6YYPHUFF9aljJ63z3cf//9/5FI
+vKQIDA8P293L2yhVjjH7t51ocDiviFecF46n7XzBreChhx4qNhH5t0XjJUVgx44ddGUZ9b/vIpQD
+oRQIWSDJAiFL6B9axo4dO4gxAmANWVDLG+Ln82URMRGhVCqRHxonlAPqFXWKC4r6IhI6OMjMzBN4
+/4LlTUQQEZxzZ32QJAlpmrb+p16vU6vVOHXq1AWjN18AnDj0F971vrs4OnmYJVkoDA4FCPUO172I
+Cgnt7SV++4vvsGhRJx3tJbIsRVVpsUnOBBABBVFEClKYwbKr7sTM7EIUnBcA7z21k7t49x1X8JXv
+bOWra7rw5QRtcN8PLCfvvZJvb9vJycpJpg4/hp/N0I4SMQs4Jw0A5zBXHGiCaIZIKABgpGlKjPEF
+0TpT5pUDRXiVt99+Le03r+WzuytM1gO6pB/3+o0cbxvk8yOPMjW6i2iR2lxOjJDHSDMFogmGwzQ7
+rRJAUpAENAGXIZq2AFzQpvkACCEQcahP+cRH3sKHn9zHXU+MM7rtGeD33NDXzaZynZU9gcezpUw9
+X6OzIyOakkfF4QEpPG6nDRNNEA2FSgKimETSNCXPc0II57VpXhEolUqoOrxPSLOMT330Dv5SqfKD
+NR388Y2L+caQsjITNv3pMBs3rOT56ZyZGaM+J0QUxDc0INrWUgggoRGBAOIRAt77hY1AmqaoeJxP
+cN645jVDbNn8Hj73o8fZ/af9mEE9j9y2YRXt5YzZWmRmzjj1/BwhTXAKzitOHEbeWlc0AVwDnCv8
+KoZzjotV33lTSL1HNKAuEtKM1169jM98/E6mTk3x4Nbd7Bk7TEdHRvAeVY+hmDqmZwx1kIkiqrhz
+S2zL+AbNMC6l/80LgHMOEY9oQvBCks5RKpXo7JhFxbhz42pet2aQet1YtLiDJAkIDq8BHwJmwlwO
+UaD0ojsrNKuUReIZyb9gABCHcwWFgg+0lTPyvIRToVzKWLpkMfV6REQplYvmZCj1uuBUSdJwTg8A
+XBdoCZMOsBkQBeGi/J83gBgjmABC8AlJGsjzFLMyaXDM1etEA0VR50iCx6mSZhkiijpPjEpQD+SF
+4WdJrTAewdCFB1CtVlFVVATnhMQnWJqC5aTBk+c5IIgWRoTgSZJAmiZAo1s7hwsppglI+fTiljeY
+nyHkLQotKIAYI4igzpFHISQOiwEnKTEG8hhRVZw6YjRQLfJGHcF7jleqTBw8znXr12MABnv37efY
+iSnesG4tiUsRUQwD7JIAzKsPqCqiRbVwweM04XdPjhJN+dvTBxgbn6G9q59yZx9/3HWEb33vN+zc
+/RzOJ+w/eJLtO8Z5ZNtT7PvHIUQTvvv9X/Lc/mN0d3by3fseRLQwvWh0Fy+h8wbQ2VFG1KM+xfuA
+qufo8So/fejPPD/rqJys8pvf7eLAoeNMHqnw2U9+kH3jVQ5MClMzKUla5obr13HliiEMmDx6gltv
+uY7Vr1nBQF8PJopQ9AFTt/AROFfMjCW9XTy19xB33Hodb924jr1j+/nDk3/nzTdei4jw3nfeyCOP
+bufa1y5jzeoVrcHM8HR3dfHlr/2Q+x94jFtuuh44/9B2PplXDryYLF3STXd3e+t5UXcHY89OsOH6
+NS2Qed7wpM1Rm50G4MGHH2P961Zy3bqreXrPP5mrzwLt5y6/cACq1eoLCKm+TN/SAebmfn8aUG83
+PYs7+cnPH+eqKwd5as8/edc7bi02847pmVkATk1VWbF8AOcca1Yv59DkqcYK0tCL02deACqVCldc
+0YdIwLmEPM9RV6NnUZlPf3wT6oqJcePN6wHhzTeu4/CRCrfctJ4sSxBRli7pYfHEMUSU97/7Th75
+1RP8eec+Yp5zzTVXM9DfDyogBvHS6HTJACYmJnjVoq5GFw0454gCEOnoaMfiNGZFFRFxJGkbywZ6
+i1NWoy9kWYmbb1gHKCHApuGbisVFGyoYUswa5OR5ftF56JIBjI6OMtDfWwAQ35jnc8AVpRXBohVq
+UowECKqK4RBxoE0W6gvGCcEjaOEAwEQWdpgbGxujt7erOLO2mk3R8i0Wz9EiuUGz+qlKEQEUaJbI
+4lTHmTVePKgWzpDGJGpc8CDTlEsuo88++wxXDA0UIUbAOP23KGZKjI48KnkuhcbiPbPCOBoeBikO
+Lk2VxjqNRilaAEqSZGEAbN261bZt+zW33XY7IAXXm6Ou0YhIMamaaUOl5WRrzg00viuKWWxpQUOH
+NAZFQRpD48Xlkig0MTHBB95zG+VSylz1KCbWyDOh2XyK+56IqjWMKigkUnzWnPPFFFRRLZ29SQRU
+ELOGY4pZ6LKOlM07mZ07d/KOtw1TcB4sGkTDiDQ9K1IkrKeYmQC08d7pZLSiRBpE5s7aS0XAHFEK
+AGY51Wr18g80Zmb33nsvX/z8XdSmj2AWOXhwkrxe46+79jB55Dh/3T2GxUhHextdXW2sXN7PNWtW
+IQKDA71FFBoAjIgQkVg/a5+oHrU5zIznDhxk964xKpXKggAoTlWW8+OfPorlOQ//cjsDy1bS2dFO
+W+diVly1iL6+Pqanpzl5qsL4pPHwN3/G1InDlMsZ7Z1tDA30cfWqIa5dexV9fb2YnT7UTxw4xsHJ
+o4yOjfOP8QOMjx/k4OQx7r777lY0zycXvJ02M4sxMjg4SL1eR0TYsGEDw8PD9PX10d7ejogUN3a1
+GqpKCIE8z5mdnUVVqVarbN++nba2Nvbu3csDDzyAqrJ8+atb+zjn6e/vZ/Xq1axatYq1a9fS29tL
+lmUMDQ1RKpXOm9EXvV6v1+tWr9eZnp5mZmaGWq1GjLHF62aiNZ+bnPfe45xrvTZzxMyYmZk56+LX
+zKjX661DvHOOJElIkoRSqYT3/vLvRlW15eHCa4VxzdvmpjZDfubzuXeb3vuzqCEixBhbo0NTkyS5
+PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==">
+</td>
+<td class="content">Requires option(s): <span class="monospaced">ip</span></td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">gw6</span>=<span class="monospaced">&lt;GatewayIPv6&gt;</span> 
+</dt>
+<dd>
+<p>
+Default gateway for IPv6 traffic.
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">Requires option(s): <span class="monospaced">ip6</span></td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ip</span>=<span class="monospaced">&lt;IPv4Format/CIDR&gt;</span> (<em>default =</em> <span class="monospaced">dhcp</span>)
+</dt>
+<dd>
+<p>
+IPv4 address in CIDR format.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ip6</span>=<span class="monospaced">&lt;IPv6Format/CIDR&gt;</span> (<em>default =</em> <span class="monospaced">dhcp</span>)
+</dt>
+<dd>
+<p>
+IPv6 address in CIDR format.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ivshmem</span>: <span class="monospaced">size=&lt;integer&gt; [,name=&lt;string&gt;]</span> 
+</dt>
+<dd>
+<p>
+Inter-VM shared memory. Useful for direct communication between VMs, or to the host.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">name</span>=<span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+The name of the file. Will be prefixed with <em>pve-shm-</em>. Default is the VMID. Will be deleted when the VM is stopped.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">size</span>=<span class="monospaced">&lt;integer&gt; (1 - N)</span> 
+</dt>
+<dd>
+<p>
+The size of the file in MB.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">keephugepages</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Use together with hugepages. If enabled, hugepages will not not be deleted after VM shutdown and can be used for subsequent starts.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">keyboard</span>: <span class="monospaced">&lt;da | de | de-ch | en-gb | en-us | es | fi | fr | fr-be | fr-ca | fr-ch | hu | is | it | ja | lt | mk | nl | no | pl | pt | pt-br | sl | sv | tr&gt;</span> 
+</dt>
+<dd>
+<p>
+Keyboard layout for VNC server. This option is generally not required and is often better handled from within the guest OS.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">kvm</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Enable/disable KVM hardware virtualization.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">localtime</span>: <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Set the real time clock (RTC) to local time. This is enabled by default if the <span class="monospaced">ostype</span> indicates a Microsoft Windows OS.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">lock</span>: <span class="monospaced">&lt;backup | clone | create | migrate | rollback | snapshot | snapshot-delete | suspended | suspending&gt;</span> 
+</dt>
+<dd>
+<p>
+Lock/unlock the VM.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">machine</span>: <span class="monospaced">[[type=]&lt;machine type&gt;] [,enable-s3=&lt;1|0&gt;] [,enable-s4=&lt;1|0&gt;] [,viommu=&lt;intel|virtio&gt;]</span> 
+</dt>
+<dd>
+<p>
+Specify the QEMU machine.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">enable-s3</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Enables S3 power state. Defaults to false beginning with machine types 9.2+pve1, true before.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">enable-s4</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Enables S4 power state. Defaults to false beginning with machine types 9.2+pve1, true before.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">type</span>=<span class="monospaced">&lt;machine type&gt;</span> 
+</dt>
+<dd>
+<p>
+Specifies the QEMU machine type.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">viommu</span>=<span class="monospaced">&lt;intel | virtio&gt;</span> 
+</dt>
+<dd>
+<p>
+Enable and set guest vIOMMU variant (Intel vIOMMU needs q35 to be set as machine type).
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">memory</span>: <span class="monospaced">[current=]&lt;integer&gt;</span> 
+</dt>
+<dd>
+<p>
+Memory properties.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">current</span>=<span class="monospaced">&lt;integer&gt; (16 - N)</span> (<em>default =</em> <span class="monospaced">512</span>)
+</dt>
+<dd>
+<p>
+Current amount of online RAM for the VM in MiB. This is the maximum available memory when you use the balloon device.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">migrate_downtime</span>: <span class="monospaced">&lt;number&gt; (0 - N)</span> (<em>default =</em> <span class="monospaced">0.1</span>)
+</dt>
+<dd>
+<p>
+Set maximum tolerated downtime (in seconds) for migrations. Should the migration not be able to converge in the very end, because too much newly dirtied RAM needs to be transferred, the limit will be increased automatically step-by-step until migration can converge.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">migrate_speed</span>: <span class="monospaced">&lt;integer&gt; (0 - N)</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Set maximum speed (in MB/s) for migrations. Value 0 is no limit.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">name</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Set a name for the VM. Only used on the configuration web interface.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">nameserver</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+cloud-init: Sets DNS server IP address for a container. Create will automatically use the setting from the host if neither searchdomain nor nameserver are set.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">net[n]</span>: <span class="monospaced">[model=]&lt;enum&gt; [,bridge=&lt;bridge&gt;] [,firewall=&lt;1|0&gt;] [,link_down=&lt;1|0&gt;] [,macaddr=&lt;XX:XX:XX:XX:XX:XX&gt;] [,mtu=&lt;integer&gt;] [,queues=&lt;integer&gt;] [,rate=&lt;number&gt;] [,tag=&lt;integer&gt;] [,trunks=&lt;vlanid[;vlanid...]&gt;] [,&lt;model&gt;=&lt;macaddr&gt;]</span> 
+</dt>
+<dd>
+<p>
+Specify network devices.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">bridge</span>=<span class="monospaced">&lt;bridge&gt;</span> 
+</dt>
+<dd>
+<p>
+Bridge to attach the network device to. The Proxmox VE standard bridge
+is called <em>vmbr0</em>.
+</p>
+<div class="paragraph">
+<p>If you do not specify a bridge, we create a kvm user (NATed) network
+device, which provides DHCP and DNS services. The following addresses
+are used:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>10.0.2.2   Gateway
+10.0.2.3   DNS Server
+10.0.2.4   SMB Server</pre>
+</div></div>
+<div class="paragraph">
+<p>The DHCP server assign addresses to the guest starting from 10.0.2.15.</p></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">firewall</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Whether this interface should be protected by the firewall.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">link_down</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Whether this interface should be disconnected (like pulling the plug).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">macaddr</span>=<span class="monospaced">&lt;XX:XX:XX:XX:XX:XX&gt;</span> 
+</dt>
+<dd>
+<p>
+A common MAC address with the I/G (Individual/Group) bit not set.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">model</span>=<span class="monospaced">&lt;e1000 | e1000-82540em | e1000-82544gc | e1000-82545em | e1000e | i82551 | i82557b | i82559er | ne2k_isa | ne2k_pci | pcnet | rtl8139 | virtio | vmxnet3&gt;</span> 
+</dt>
+<dd>
+<p>
+Network Card Model. The <em>virtio</em> model provides the best performance with very low CPU overhead. If your guest does not support this driver, it is usually best to use <em>e1000</em>.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mtu</span>=<span class="monospaced">&lt;integer&gt; (1 - 65520)</span> 
+</dt>
+<dd>
+<p>
+Force MTU, for VirtIO only. Set to <em>1</em> to use the bridge MTU
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">queues</span>=<span class="monospaced">&lt;integer&gt; (0 - 64)</span> 
+</dt>
+<dd>
+<p>
+Number of packet queues to be used on the device.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">rate</span>=<span class="monospaced">&lt;number&gt; (0 - N)</span> 
+</dt>
+<dd>
+<p>
+Rate limit in mbps (megabytes per second) as floating point number.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">tag</span>=<span class="monospaced">&lt;integer&gt; (1 - 4094)</span> 
+</dt>
+<dd>
+<p>
+VLAN tag to apply to packets on this interface.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">trunks</span>=<span class="monospaced">&lt;vlanid[;vlanid...]&gt;</span> 
+</dt>
+<dd>
+<p>
+VLAN trunks to pass through this interface.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">numa</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Enable/disable NUMA.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">numa[n]</span>: <span class="monospaced">cpus=&lt;id[-id];...&gt; [,hostnodes=&lt;id[-id];...&gt;] [,memory=&lt;number&gt;] [,policy=&lt;preferred|bind|interleave&gt;]</span> 
+</dt>
+<dd>
+<p>
+NUMA topology.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">cpus</span>=<span class="monospaced">&lt;id[-id];...&gt;</span> 
+</dt>
+<dd>
+<p>
+CPUs accessing this NUMA node.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">hostnodes</span>=<span class="monospaced">&lt;id[-id];...&gt;</span> 
+</dt>
+<dd>
+<p>
+Host NUMA nodes to use.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">memory</span>=<span class="monospaced">&lt;number&gt;</span> 
+</dt>
+<dd>
+<p>
+Amount of memory this NUMA node provides.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">policy</span>=<span class="monospaced">&lt;bind | interleave | preferred&gt;</span> 
+</dt>
+<dd>
+<p>
+NUMA allocation policy.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">onboot</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Specifies whether a VM will be started during system bootup.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ostype</span>: <span class="monospaced">&lt;l24 | l26 | other | solaris | w2k | w2k3 | w2k8 | win10 | win11 | win7 | win8 | wvista | wxp&gt;</span> 
+</dt>
+<dd>
+<p>
+Specify guest operating system. This is used to enable special
+optimization/features for specific operating systems:
+</p>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+other
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+unspecified OS
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+wxp
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Microsoft Windows XP
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+w2k
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Microsoft Windows 2000
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+w2k3
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Microsoft Windows 2003
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+w2k8
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Microsoft Windows 2008
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+wvista
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Microsoft Windows Vista
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+win7
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Microsoft Windows 7
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+win8
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Microsoft Windows 8/2012/2012r2
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+win10
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Microsoft Windows 10/2016/2019
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+win11
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Microsoft Windows 11/2022/2025
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+l24
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Linux 2.4 Kernel
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+l26
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Linux 2.6 - 6.X Kernel
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+solaris
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Solaris/OpenSolaris/OpenIndiania kernel
+</p>
+</td>
+</tr>
+</table></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">parallel[n]</span>: <span class="monospaced">/dev/parport\d+|/dev/usb/lp\d+</span> 
+</dt>
+<dd>
+<p>
+Map host parallel devices (n is 0 to 2).
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">This option allows direct access to host hardware. So it is no longer possible to migrate such
+machines - use with special care.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Caution" src="data:image/png;base64,
+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">
+</td>
+<td class="content">Experimental! User reported problems with this option.</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">protection</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Sets the protection flag of the VM. This will disable the remove VM and remove disk operations.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">reboot</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Allow reboot. If set to <em>0</em> the VM exit on reboot.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">rng0</span>: <span class="monospaced">[source=]&lt;/dev/urandom|/dev/random|/dev/hwrng&gt; [,max_bytes=&lt;integer&gt;] [,period=&lt;integer&gt;]</span> 
+</dt>
+<dd>
+<p>
+Configure a VirtIO-based Random Number Generator.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">max_bytes</span>=<span class="monospaced">&lt;integer&gt;</span> (<em>default =</em> <span class="monospaced">1024</span>)
+</dt>
+<dd>
+<p>
+Maximum bytes of entropy allowed to get injected into the guest every <em>period</em> milliseconds. Use <span class="monospaced">0</span> to disable limiting (potentially dangerous!).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">period</span>=<span class="monospaced">&lt;integer&gt;</span> (<em>default =</em> <span class="monospaced">1000</span>)
+</dt>
+<dd>
+<p>
+Every <em>period</em> milliseconds the entropy-injection quota is reset, allowing the guest to retrieve another <em>max_bytes</em> of entropy.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">source</span>=<span class="monospaced">&lt;/dev/hwrng | /dev/random | /dev/urandom&gt;</span> 
+</dt>
+<dd>
+<p>
+The file on the host to gather entropy from. Using urandom does <strong>not</strong> decrease security in any meaningful way, as it&#8217;s still seeded from real entropy, and the bytes provided will most likely be mixed with real entropy on the guest as well. <em>/dev/hwrng</em> can be used to pass through a hardware RNG from the host.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">sata[n]</span>: <span class="monospaced">[file=]&lt;volume&gt; [,aio=&lt;native|threads|io_uring&gt;] [,backup=&lt;1|0&gt;] [,bps=&lt;bps&gt;] [,bps_max_length=&lt;seconds&gt;] [,bps_rd=&lt;bps&gt;] [,bps_rd_max_length=&lt;seconds&gt;] [,bps_wr=&lt;bps&gt;] [,bps_wr_max_length=&lt;seconds&gt;] [,cache=&lt;enum&gt;] [,cyls=&lt;integer&gt;] [,detect_zeroes=&lt;1|0&gt;] [,discard=&lt;ignore|on&gt;] [,format=&lt;enum&gt;] [,heads=&lt;integer&gt;] [,iops=&lt;iops&gt;] [,iops_max=&lt;iops&gt;] [,iops_max_length=&lt;seconds&gt;] [,iops_rd=&lt;iops&gt;] [,iops_rd_max=&lt;iops&gt;] [,iops_rd_max_length=&lt;seconds&gt;] [,iops_wr=&lt;iops&gt;] [,iops_wr_max=&lt;iops&gt;] [,iops_wr_max_length=&lt;seconds&gt;] [,mbps=&lt;mbps&gt;] [,mbps_max=&lt;mbps&gt;] [,mbps_rd=&lt;mbps&gt;] [,mbps_rd_max=&lt;mbps&gt;] [,mbps_wr=&lt;mbps&gt;] [,mbps_wr_max=&lt;mbps&gt;] [,media=&lt;cdrom|disk&gt;] [,replicate=&lt;1|0&gt;] [,rerror=&lt;ignore|report|stop&gt;] [,secs=&lt;integer&gt;] [,serial=&lt;serial&gt;] [,shared=&lt;1|0&gt;] [,size=&lt;DiskSize&gt;] [,snapshot=&lt;1|0&gt;] [,ssd=&lt;1|0&gt;] [,trans=&lt;none|lba|auto&gt;] [,werror=&lt;enum&gt;] [,wwn=&lt;wwn&gt;]</span> 
+</dt>
+<dd>
+<p>
+Use volume as SATA hard disk or CD-ROM (n is 0 to 5).
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">aio</span>=<span class="monospaced">&lt;io_uring | native | threads&gt;</span> 
+</dt>
+<dd>
+<p>
+AIO type to use.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">backup</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Whether the drive should be included when making backups.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps</span>=<span class="monospaced">&lt;bps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum r/w speed in bytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_rd</span>=<span class="monospaced">&lt;bps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum read speed in bytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_rd_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of read I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_wr</span>=<span class="monospaced">&lt;bps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum write speed in bytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_wr_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of write I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cache</span>=<span class="monospaced">&lt;directsync | none | unsafe | writeback | writethrough&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s cache mode
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cyls</span>=<span class="monospaced">&lt;integer&gt;</span> 
+</dt>
+<dd>
+<p>
+Force the drive&#8217;s physical geometry to have a specific cylinder count.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">detect_zeroes</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Controls whether to detect and try to optimize writes of zeroes.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">discard</span>=<span class="monospaced">&lt;ignore | on&gt;</span> 
+</dt>
+<dd>
+<p>
+Controls whether to pass discard/trim requests to the underlying storage.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">file</span>=<span class="monospaced">&lt;volume&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s backing volume.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">format</span>=<span class="monospaced">&lt;cloop | qcow | qcow2 | qed | raw | vmdk&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s backing file&#8217;s data format.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">heads</span>=<span class="monospaced">&lt;integer&gt;</span> 
+</dt>
+<dd>
+<p>
+Force the drive&#8217;s physical geometry to have a specific head count.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum r/w I/O in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_max</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled r/w I/O pool in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum read I/O in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd_max</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled read I/O pool in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of read I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum write I/O in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr_max</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled write I/O pool in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of write I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum r/w speed in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_max</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled r/w pool in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_rd</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum read speed in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_rd_max</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled read pool in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_wr</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum write speed in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_wr_max</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled write pool in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">media</span>=<span class="monospaced">&lt;cdrom | disk&gt;</span> (<em>default =</em> <span class="monospaced">disk</span>)
+</dt>
+<dd>
+<p>
+The drive&#8217;s media type.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">replicate</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Whether the drive should considered for replication jobs.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">rerror</span>=<span class="monospaced">&lt;ignore | report | stop&gt;</span> 
+</dt>
+<dd>
+<p>
+Read error action.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">secs</span>=<span class="monospaced">&lt;integer&gt;</span> 
+</dt>
+<dd>
+<p>
+Force the drive&#8217;s physical geometry to have a specific sector count.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">serial</span>=<span class="monospaced">&lt;serial&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s reported serial number, url-encoded, up to 20 bytes long.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">shared</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Mark this locally-managed volume as available on all nodes.
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content">This option does not share the volume automatically, it assumes it is shared already!</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">size</span>=<span class="monospaced">&lt;DiskSize&gt;</span> 
+</dt>
+<dd>
+<p>
+Disk size. This is purely informational and has no effect.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">snapshot</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Controls qemu&#8217;s snapshot mode feature. If activated, changes made to the disk are temporary and will be discarded when the VM is shutdown.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ssd</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Whether to expose this drive as an SSD, rather than a rotational hard disk.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">trans</span>=<span class="monospaced">&lt;auto | lba | none&gt;</span> 
+</dt>
+<dd>
+<p>
+Force disk geometry bios translation mode.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">werror</span>=<span class="monospaced">&lt;enospc | ignore | report | stop&gt;</span> 
+</dt>
+<dd>
+<p>
+Write error action.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">wwn</span>=<span class="monospaced">&lt;wwn&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s worldwide name, encoded as 16 bytes hex string, prefixed by <em>0x</em>.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">scsi[n]</span>: <span class="monospaced">[file=]&lt;volume&gt; [,aio=&lt;native|threads|io_uring&gt;] [,backup=&lt;1|0&gt;] [,bps=&lt;bps&gt;] [,bps_max_length=&lt;seconds&gt;] [,bps_rd=&lt;bps&gt;] [,bps_rd_max_length=&lt;seconds&gt;] [,bps_wr=&lt;bps&gt;] [,bps_wr_max_length=&lt;seconds&gt;] [,cache=&lt;enum&gt;] [,cyls=&lt;integer&gt;] [,detect_zeroes=&lt;1|0&gt;] [,discard=&lt;ignore|on&gt;] [,format=&lt;enum&gt;] [,heads=&lt;integer&gt;] [,iops=&lt;iops&gt;] [,iops_max=&lt;iops&gt;] [,iops_max_length=&lt;seconds&gt;] [,iops_rd=&lt;iops&gt;] [,iops_rd_max=&lt;iops&gt;] [,iops_rd_max_length=&lt;seconds&gt;] [,iops_wr=&lt;iops&gt;] [,iops_wr_max=&lt;iops&gt;] [,iops_wr_max_length=&lt;seconds&gt;] [,iothread=&lt;1|0&gt;] [,mbps=&lt;mbps&gt;] [,mbps_max=&lt;mbps&gt;] [,mbps_rd=&lt;mbps&gt;] [,mbps_rd_max=&lt;mbps&gt;] [,mbps_wr=&lt;mbps&gt;] [,mbps_wr_max=&lt;mbps&gt;] [,media=&lt;cdrom|disk&gt;] [,product=&lt;product&gt;] [,queues=&lt;integer&gt;] [,replicate=&lt;1|0&gt;] [,rerror=&lt;ignore|report|stop&gt;] [,ro=&lt;1|0&gt;] [,scsiblock=&lt;1|0&gt;] [,secs=&lt;integer&gt;] [,serial=&lt;serial&gt;] [,shared=&lt;1|0&gt;] [,size=&lt;DiskSize&gt;] [,snapshot=&lt;1|0&gt;] [,ssd=&lt;1|0&gt;] [,trans=&lt;none|lba|auto&gt;] [,vendor=&lt;vendor&gt;] [,werror=&lt;enum&gt;] [,wwn=&lt;wwn&gt;]</span> 
+</dt>
+<dd>
+<p>
+Use volume as SCSI hard disk or CD-ROM (n is 0 to 30).
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">aio</span>=<span class="monospaced">&lt;io_uring | native | threads&gt;</span> 
+</dt>
+<dd>
+<p>
+AIO type to use.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">backup</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Whether the drive should be included when making backups.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps</span>=<span class="monospaced">&lt;bps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum r/w speed in bytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_rd</span>=<span class="monospaced">&lt;bps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum read speed in bytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_rd_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of read I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_wr</span>=<span class="monospaced">&lt;bps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum write speed in bytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_wr_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of write I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cache</span>=<span class="monospaced">&lt;directsync | none | unsafe | writeback | writethrough&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s cache mode
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cyls</span>=<span class="monospaced">&lt;integer&gt;</span> 
+</dt>
+<dd>
+<p>
+Force the drive&#8217;s physical geometry to have a specific cylinder count.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">detect_zeroes</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Controls whether to detect and try to optimize writes of zeroes.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">discard</span>=<span class="monospaced">&lt;ignore | on&gt;</span> 
+</dt>
+<dd>
+<p>
+Controls whether to pass discard/trim requests to the underlying storage.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">file</span>=<span class="monospaced">&lt;volume&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s backing volume.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">format</span>=<span class="monospaced">&lt;cloop | qcow | qcow2 | qed | raw | vmdk&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s backing file&#8217;s data format.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">heads</span>=<span class="monospaced">&lt;integer&gt;</span> 
+</dt>
+<dd>
+<p>
+Force the drive&#8217;s physical geometry to have a specific head count.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum r/w I/O in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_max</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled r/w I/O pool in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum read I/O in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd_max</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled read I/O pool in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of read I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum write I/O in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr_max</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled write I/O pool in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of write I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iothread</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Whether to use iothreads for this drive
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum r/w speed in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_max</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled r/w pool in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_rd</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum read speed in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_rd_max</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled read pool in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_wr</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum write speed in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_wr_max</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled write pool in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">media</span>=<span class="monospaced">&lt;cdrom | disk&gt;</span> (<em>default =</em> <span class="monospaced">disk</span>)
+</dt>
+<dd>
+<p>
+The drive&#8217;s media type.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">product</span>=<span class="monospaced">&lt;product&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s product name, up to 16 bytes long.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">queues</span>=<span class="monospaced">&lt;integer&gt; (2 - N)</span> 
+</dt>
+<dd>
+<p>
+Number of queues.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">replicate</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Whether the drive should considered for replication jobs.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">rerror</span>=<span class="monospaced">&lt;ignore | report | stop&gt;</span> 
+</dt>
+<dd>
+<p>
+Read error action.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ro</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Whether the drive is read-only.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">scsiblock</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+whether to use scsi-block for full passthrough of host block device
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAMVUlEQVRogdWZeXDVVZbHP7/f27JB
+wtJIiCERRFlbx5FuHRrRBgtBsRIwCCOrFmGmiDBjYVNlQlgiQjU6IjI4xLJxGf5QGp0Cbaftsu3R
+hu6aYXqgLZoWEsjyyDP7S972e7/l3vnj5cW3Ji9M/zOn6lRS997fvd/vueece+59ipSS/89iv5mP
+ZEQQQsS23RQARVEAUFUVRVFQog0ZyogJSClld3c327Ztw7IsLMuKto90KgBsNhtVVVXMnj2bvLw8
+7Ha7HBEJKWXGKoSQXV1dcsuWLfLSpUsyKkKIIdWyrLTqdrvlU089Jc+cOSM9Ho8Mh8NSCCEzxTRi
+8JWVlbKtre0vAt6yLGmapmxtbZXr1q2TZ86ckW1tbSMikTH4GzduyKqqqkHwsSA1TZOhUChOg8Hg
+oBqGIQ3DSAk+VleuXDliEspwviullD09PbzwwgscO3Yszt91XScQCNDZ2YlhGIPfuFwu7Pb48FJV
+lZycnEG/z8/PRwiBqqqDYzweD88//zyrV69m7ty5jBs3DofDMWRgD0lASik9Hg979uzh2LFjcYEa
+CoVob2/n2q9+hbZ585BGSCWltbVMr61NtSYbN25k7dq1zJkzZ1gSaqrGWPD79+9PAh8MBuns7OTi
+e+8R2rwZCYOaqTTt3cuf6+qSwAMcP36co0eP8vXXX9Pd3Y1hGMg0lk65A1HwdXV1vPHGG0mW7+jo
+4A8/+xn2BAAAI0riQOnu3cyork7Zt3btWtavX89dd92VdieSCEgppdvt5sCBAxw5ciSuLxQK0dTU
+RMOHHyJ37hwh1NSiAKU7djDzxRdT9q9YsYJt27YxY8aMlCTiCEgp5eXLl6mvr+fVV1+NmygYDNLW
+1sY3J09ipLEYQDPw2sBfCTwMLARKgKwhiNxWU8OsXbvi2qLYnnzySSorK1PvRGyqvH79uty6dWtS
+Lg8EAvLKlSvyo1275M8hSV8H+eMBvRPkP9Vslp0tV6W3u12+c7hOTgT5NyAXgtwE8gTIUyn0D9XV
+0jAMqet6klZUVMjPP/88KcWqUcs3NjZy+PBhDh06FGeFqNtcOnECY8+euICVwDWgFtj/m1/wD+8f
+5xtg6uy5ZI+5BSkkU6fexgu7tvLWhd/x1tXL5P/905wAggnzSODavn388Sc/SblDL7/8Mq+99hqX
+L1+OC2zb7t27uX79+u7Dhw+ndJvW1lYaP/qI0EDKS1z0XeDjC7/l9llz+d6EWxjv0imdcgeFRcVo
+fR46vm1Cx8ndP5hP3qjR/GDuX/GbC5/iberl1qirxGjv73+PYRjc8tBDcVhGjRpFRUUF27dvp7i4
+mPz8fFwuV2QHVq1aldLyDQ0NXDt5En91NRIQCRqNHld2HsLUCfu6GD9mNIoVQggDy9RQpYLTbkdV
+7Vh6CH9vJ/fcfz/vALsAN2AlzHv1wAEu1tTExUI0Hl555RXq6upobm4mEAhECEyePDkOvK7rtLS0
+cOP0aby1tUnAo2oNkFAUSTjoRfN+ix7wgjRBShACVVFQRGSkHvTypwtnmXHPQhrbb3D0k1McAdpi
+DBLVhp/+lIvV1UlV7oQJE8jNzcXtduPz+ZIPMtM0aWhooPH99+mtrU1ymVRqUxUQFlJYSBFGCivG
+OSyEaSCFAGlhd+Vy7w/n43BmM3POXWx69hl8AyMTDXTl4EEu7t2bCBGAQCCAruupCdjtdrp3705r
++ViN22YhsUwdyzRBCpACyzIRMnpngCxXNjYlMk4L+ggoYXxp5pbAlX37cDgcSQSEEAxmoVgQg/9n
+AP67bVdAUcFmQ3W6IgtIiWUKLCGwLGvQj69e+m+EsBB6iGB/N/3e9oyNlIgRYm5kiR2JH0L6MkFY
+Ei0UQKAycdJUbIodT3Mjpu6n3xfCptoRlomQCqZpRkhLCykMhLBQSV1HJbalKnvSF3MpNO0OSIEw
+DWyuPCaVzCRv7ER8Ph+mtJM35lZsdjvuxktYhobDkYOCgqJEDWLLaAfSVc1p78SJO2AAvUBggLUN
+KIx2Kgqjv3crY2wOiqaqKKoKihKJCctCC/npbW+jq7sbS7UjkGCZCCkQQkdJsV6mRWHGBH4HLHpx
+F3LcGDq6u7nw2S85++V/4gb0kB9hFoAZwuZwgc2BqjpQVRWbzYXd4cDlysHn7WJi0W2EfH24XA6E
+jKySqhTPtDRPIjB4XUtoPw3sKV/O+KJipJT4V63mq3/7Obu21/LN/5xl9l/PIys7G2fOaBS7E5vN
+QrU7UW0KNlUFp5P8MeO5/8HFhPo7CXr7MMIaQW8neSkMlqnEEYj1s8QJbwXaWpopmDgJh93OqHGF
+LFy9jjunTeHNo2uAvUy54/uMuaUYV24BUpVYpoVEwaY4UVUbitNJ9ugxOBw2tEAPfX29QCjuVB9O
+EmNBTdeRGEj3A56OdkwtgDDCCKFjz8ql6N55/G3VcRouX+SXH72Ht6udcCg4cJiJSPIn8oCloIKU
+KAhURUUIiVCjx128pjtrEiVtFkrMNNOBA+s34XG3YIRDSMtAkSbOrDzuvOchHnmiklEFY3n76G7O
+f/nv9Ht7EMJCSjGoljCxjOBAnaSjhYPowevDZrx04FMSGLwnJEzmAOYCn33wAUYoiGXoSMsEoeNw
+ZTO2aDrzFpWxck0VJVOn4fd2E/T7oneNyOFlGkjLwNTD6FoILRQEa/hDcyhJIuB0OlFVNeVE04B3
+XjnC+d9+hRYKYJlhpDBBGDidDiaUfp/xk24nJ3c0eaPzsKsgzEhtZJkGIuzDNDRCAR99fb309XYh
+NAYPsnQ6IgJSSgoKCihavDilJZ4Aajf8HVf/fAnLCCNNAyktECaqIsgbV8So0WMHrn2RGLBMHREO
+YBg6eiiIFgzQ7/US8vmYoEDuENa/u6oqcwJRPysoKOC+N9+kcNGiJGvkAQuADY+twn3tCuFg/4CV
+DbB0VKHhzHbhdGVhs6kgDKTuR9f86KEAWtBHd0c73p52pB5Av5KewJxnnmHeoUOEw+EkjHEEYi8M
+EHlFKyws5IfHjlG4cGHSxJOA1cATPy7nT388j+73YoYDCEuP1DhSRrKOlFhmmLAWQNMCBHw9tHtu
+8K2nBcsI8uGxf8HoiRBINNTtjz7KQ/X1xL6iRDHGvubZAfr7+1Nuz+TJk6G+nv/atInmX/86rq8A
+WAlUrahk/Fio/8XHjM4fi93pHCgRFCzLQtd1tFAQLeCjs9NNb4cHxdL44J8PozfD7XyXRqNy97p1
+PPz220gp0XU9zriKogw+SaqqGtmB48ePU15enkRASklRURH31tcz6cEHk1JrAfAUcEcPLLjvMU69
+/694uzsI+X3093TS5blBl8eNt72VHk8Tfd9eR+vv4MQ/HkZpiJwttgTL3/Hoo2nBNzY2smjRIhYs
+WEBBQQEulyvyLuT3+2VTUxM7d+7k5MmTKXNuS0sL555+mtYvv0zqE0A7kavhqFL4oAlCCWOygGIi
+qTiHyMnuTBgz/bHHKDt9GillnN8D+P1+ysrKWLJkCdOmTWPWrFmUlpZGCAghpN/vp7m5mZqaGl5/
+/XUKCwtJFLfbzX+sX8+Nr75K6rtZiXr49KVLKf/4Y4QQ6LqeBP6RRx6hvLycadOmMXPmTEpKSsjN
+zf3uZS6WRHV1NadOnUpaTEpJa2sr5zZupOkmSaQqk2csWcLyTz4BQNO0uL7GxkbWr1+fErzNZlMG
+w1lVVSUvL4+SkhL27dvH8uXL8Xg8ceABiouLue+ttyieN2+IK2Z6TRx/5+LFacE3NDRQWVmZFjwk
+nAOxJF566SW2bNnChQsXkmKipKSEB959l9vmzcvo1pZOpz/8ME98+mla8Bs2bGDZsmVpwUOa5/VE
+d0oXE319fXxWXs43Z88m9Q0n03/0I1YPJIRE8OfOnWPHjh2UlZUNCT4tgUQSO3fupKqqigceeGCw
+P/a7VM8emUg0VcbK+fPn2bp1KytWrBgW/JAEEknU1NTw7LPPMn/+/GFBZQI8lZw/f57nnnuO5cuX
+M2XKlGHBD0sgkURdXR2PP/44FRUVNwV+qP7Tp09z8ODBjNxmRAQSSRw4cIBly5axdOnSvwh4RVH4
+4osv2L9/P2VlZRlbfkQEEkls376djo4OQqHE83bk4nK5EEKwZs0aSktLRwR+RATgOxItLS1cu3aN
+vr6+wTfK/4tEfzeeMmUKkydPzhg8jJAAREgEg0H6+vrQNC2pFL8ZUVWVrKws8vPzycnJQVXVjH/s
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content">can lead to I/O errors in combination with low memory or high memory fragmentation on host</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">secs</span>=<span class="monospaced">&lt;integer&gt;</span> 
+</dt>
+<dd>
+<p>
+Force the drive&#8217;s physical geometry to have a specific sector count.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">serial</span>=<span class="monospaced">&lt;serial&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s reported serial number, url-encoded, up to 20 bytes long.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">shared</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Mark this locally-managed volume as available on all nodes.
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content">This option does not share the volume automatically, it assumes it is shared already!</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">size</span>=<span class="monospaced">&lt;DiskSize&gt;</span> 
+</dt>
+<dd>
+<p>
+Disk size. This is purely informational and has no effect.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">snapshot</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Controls qemu&#8217;s snapshot mode feature. If activated, changes made to the disk are temporary and will be discarded when the VM is shutdown.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ssd</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Whether to expose this drive as an SSD, rather than a rotational hard disk.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">trans</span>=<span class="monospaced">&lt;auto | lba | none&gt;</span> 
+</dt>
+<dd>
+<p>
+Force disk geometry bios translation mode.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">vendor</span>=<span class="monospaced">&lt;vendor&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s vendor name, up to 8 bytes long.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">werror</span>=<span class="monospaced">&lt;enospc | ignore | report | stop&gt;</span> 
+</dt>
+<dd>
+<p>
+Write error action.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">wwn</span>=<span class="monospaced">&lt;wwn&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s worldwide name, encoded as 16 bytes hex string, prefixed by <em>0x</em>.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">scsihw</span>: <span class="monospaced">&lt;lsi | lsi53c810 | megasas | pvscsi | virtio-scsi-pci | virtio-scsi-single&gt;</span> (<em>default =</em> <span class="monospaced">lsi</span>)
+</dt>
+<dd>
+<p>
+SCSI controller model
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">searchdomain</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+cloud-init: Sets DNS search domains for a container. Create will automatically use the setting from the host if neither searchdomain nor nameserver are set.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">serial[n]</span>: <span class="monospaced">(/dev/.+|socket)</span> 
+</dt>
+<dd>
+<p>
+Create a serial device inside the VM (n is 0 to 3), and pass through a
+host serial device (i.e. /dev/ttyS0), or create a unix socket on the
+host side (use <em>qm terminal</em> to open a terminal connection).
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">If you pass through a host serial device, it is no longer possible to migrate such machines -
+use with special care.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Caution" src="data:image/png;base64,
+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">
+</td>
+<td class="content">Experimental! User reported problems with this option.</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">shares</span>: <span class="monospaced">&lt;integer&gt; (0 - 50000)</span> (<em>default =</em> <span class="monospaced">1000</span>)
+</dt>
+<dd>
+<p>
+Amount of memory shares for auto-ballooning. The larger the number is, the more memory this VM gets. Number is relative to weights of all other running VMs. Using zero disables auto-ballooning. Auto-ballooning is done by pvestatd.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">smbios1</span>: <span class="monospaced">[base64=&lt;1|0&gt;] [,family=&lt;Base64 encoded string&gt;] [,manufacturer=&lt;Base64 encoded string&gt;] [,product=&lt;Base64 encoded string&gt;] [,serial=&lt;Base64 encoded string&gt;] [,sku=&lt;Base64 encoded string&gt;] [,uuid=&lt;UUID&gt;] [,version=&lt;Base64 encoded string&gt;]</span> 
+</dt>
+<dd>
+<p>
+Specify SMBIOS type 1 fields.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">base64</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Flag to indicate that the SMBIOS values are base64 encoded
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">family</span>=<span class="monospaced">&lt;Base64 encoded string&gt;</span> 
+</dt>
+<dd>
+<p>
+Set SMBIOS1 family string.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">manufacturer</span>=<span class="monospaced">&lt;Base64 encoded string&gt;</span> 
+</dt>
+<dd>
+<p>
+Set SMBIOS1 manufacturer.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">product</span>=<span class="monospaced">&lt;Base64 encoded string&gt;</span> 
+</dt>
+<dd>
+<p>
+Set SMBIOS1 product ID.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">serial</span>=<span class="monospaced">&lt;Base64 encoded string&gt;</span> 
+</dt>
+<dd>
+<p>
+Set SMBIOS1 serial number.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">sku</span>=<span class="monospaced">&lt;Base64 encoded string&gt;</span> 
+</dt>
+<dd>
+<p>
+Set SMBIOS1 SKU string.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">uuid</span>=<span class="monospaced">&lt;UUID&gt;</span> 
+</dt>
+<dd>
+<p>
+Set SMBIOS1 UUID.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">version</span>=<span class="monospaced">&lt;Base64 encoded string&gt;</span> 
+</dt>
+<dd>
+<p>
+Set SMBIOS1 version.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">smp</span>: <span class="monospaced">&lt;integer&gt; (1 - N)</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+The number of CPUs. Please use option -sockets instead.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">sockets</span>: <span class="monospaced">&lt;integer&gt; (1 - N)</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+The number of CPU sockets.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">spice_enhancements</span>: <span class="monospaced">[foldersharing=&lt;1|0&gt;] [,videostreaming=&lt;off|all|filter&gt;]</span> 
+</dt>
+<dd>
+<p>
+Configure additional enhancements for SPICE.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">foldersharing</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Enable folder sharing via SPICE. Needs Spice-WebDAV daemon installed in the VM.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">videostreaming</span>=<span class="monospaced">&lt;all | filter | off&gt;</span> (<em>default =</em> <span class="monospaced">off</span>)
+</dt>
+<dd>
+<p>
+Enable video streaming. Uses compression for detected video streams.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">sshkeys</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+cloud-init: Setup public SSH keys (one key per line, OpenSSH format).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">startdate</span>: <span class="monospaced">(now | YYYY-MM-DD | YYYY-MM-DDTHH:MM:SS)</span> (<em>default =</em> <span class="monospaced">now</span>)
+</dt>
+<dd>
+<p>
+Set the initial date of the real time clock. Valid format for date are:'now' or <em>2006-06-17T16:01:21</em> or <em>2006-06-17</em>.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">startup</span>: `[[order=]\d+] [,up=\d+] [,down=\d+] ` 
+</dt>
+<dd>
+<p>
+Startup and shutdown behavior. Order is a non-negative number defining the general startup order. Shutdown in done with reverse ordering. Additionally you can set the <em>up</em> or <em>down</em> delay in seconds, which specifies a delay to wait before the next VM is started or stopped.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">tablet</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Enable/disable the USB tablet device. This device is usually needed to allow absolute mouse positioning with VNC. Else the mouse runs out of sync with normal VNC clients. If you&#8217;re running lots of console-only guests on one host, you may consider disabling this to save some context switches. This is turned off by default if you use spice (<span class="monospaced">qm set &lt;vmid&gt; --vga qxl</span>).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">tags</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Tags of the VM. This is only meta information.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">tdf</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Enable/disable time drift fix.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">template</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Enable/disable Template.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">tpmstate0</span>: <span class="monospaced">[file=]&lt;volume&gt; [,size=&lt;DiskSize&gt;] [,version=&lt;v1.2|v2.0&gt;]</span> 
+</dt>
+<dd>
+<p>
+Configure a Disk for storing TPM state. The format is fixed to <em>raw</em>.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">file</span>=<span class="monospaced">&lt;volume&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s backing volume.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">size</span>=<span class="monospaced">&lt;DiskSize&gt;</span> 
+</dt>
+<dd>
+<p>
+Disk size. This is purely informational and has no effect.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">version</span>=<span class="monospaced">&lt;v1.2 | v2.0&gt;</span> (<em>default =</em> <span class="monospaced">v1.2</span>)
+</dt>
+<dd>
+<p>
+The TPM interface version. v2.0 is newer and should be preferred. Note that this cannot be changed later on.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">unused[n]</span>: <span class="monospaced">[file=]&lt;volume&gt;</span> 
+</dt>
+<dd>
+<p>
+Reference to unused volumes. This is used internally, and should not be modified manually.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">file</span>=<span class="monospaced">&lt;volume&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s backing volume.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">usb[n]</span>: <span class="monospaced">[[host=]&lt;HOSTUSBDEVICE|spice&gt;] [,mapping=&lt;mapping-id&gt;] [,usb3=&lt;1|0&gt;]</span> 
+</dt>
+<dd>
+<p>
+Configure an USB device (n is 0 to 4, for machine version &gt;= 7.1 and ostype l26 or windows &gt; 7, n can be up to 14).
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">host</span>=<span class="monospaced">&lt;HOSTUSBDEVICE|spice&gt;</span> 
+</dt>
+<dd>
+<p>
+The Host USB device or port or the value <em>spice</em>. HOSTUSBDEVICE syntax is:
+</p>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>'bus-port(.port)*' (decimal numbers) or
+'vendor_id:product_id' (hexadecimal numbers) or
+'spice'</pre>
+</div></div>
+<div class="paragraph">
+<p>You can use the <em>lsusb -t</em> command to list existing usb devices.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">This option allows direct access to host hardware. So it is no longer possible to migrate such
+machines - use with special care.</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>The value <em>spice</em> can be used to add a usb redirection devices for spice.</p></div>
+<div class="paragraph">
+<p>Either this or the <em>mapping</em> key must be set.</p></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mapping</span>=<span class="monospaced">&lt;mapping-id&gt;</span> 
+</dt>
+<dd>
+<p>
+The ID of a cluster wide mapping. Either this or the default-key <em>host</em> must be set.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">usb3</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Specifies whether if given host option is a USB3 device or port. For modern guests (machine version &gt;= 7.1 and ostype l26 and windows &gt; 7), this flag is irrelevant (all devices are plugged into a xhci controller).
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">vcpus</span>: <span class="monospaced">&lt;integer&gt; (1 - N)</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Number of hotplugged vcpus.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">vga</span>: <span class="monospaced">[[type=]&lt;enum&gt;] [,clipboard=&lt;vnc&gt;] [,memory=&lt;integer&gt;]</span> 
+</dt>
+<dd>
+<p>
+Configure the VGA Hardware. If you want to use high resolution modes (&gt;= 1280x1024x16) you may need to increase the vga memory option. Since QEMU 2.9 the default VGA display type is <em>std</em> for all OS types besides some Windows versions (XP and older) which use <em>cirrus</em>. The <em>qxl</em> option enables the SPICE display server. For win* OS you can select how many independent displays you want, Linux guests can add displays them self.
+You can also run without any graphic card, using a serial device as terminal.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">clipboard</span>=<span class="monospaced">&lt;vnc&gt;</span> 
+</dt>
+<dd>
+<p>
+Enable a specific clipboard. If not set, depending on the display type the SPICE one will be added. Migration with VNC clipboard is not yet supported!
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">memory</span>=<span class="monospaced">&lt;integer&gt; (4 - 512)</span> 
+</dt>
+<dd>
+<p>
+Sets the VGA memory (in MiB). Has no effect with serial display.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">type</span>=<span class="monospaced">&lt;cirrus | none | qxl | qxl2 | qxl3 | qxl4 | serial0 | serial1 | serial2 | serial3 | std | virtio | virtio-gl | vmware&gt;</span> (<em>default =</em> <span class="monospaced">std</span>)
+</dt>
+<dd>
+<p>
+Select the VGA type. Using type <em>cirrus</em> is not recommended.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">virtio[n]</span>: <span class="monospaced">[file=]&lt;volume&gt; [,aio=&lt;native|threads|io_uring&gt;] [,backup=&lt;1|0&gt;] [,bps=&lt;bps&gt;] [,bps_max_length=&lt;seconds&gt;] [,bps_rd=&lt;bps&gt;] [,bps_rd_max_length=&lt;seconds&gt;] [,bps_wr=&lt;bps&gt;] [,bps_wr_max_length=&lt;seconds&gt;] [,cache=&lt;enum&gt;] [,cyls=&lt;integer&gt;] [,detect_zeroes=&lt;1|0&gt;] [,discard=&lt;ignore|on&gt;] [,format=&lt;enum&gt;] [,heads=&lt;integer&gt;] [,iops=&lt;iops&gt;] [,iops_max=&lt;iops&gt;] [,iops_max_length=&lt;seconds&gt;] [,iops_rd=&lt;iops&gt;] [,iops_rd_max=&lt;iops&gt;] [,iops_rd_max_length=&lt;seconds&gt;] [,iops_wr=&lt;iops&gt;] [,iops_wr_max=&lt;iops&gt;] [,iops_wr_max_length=&lt;seconds&gt;] [,iothread=&lt;1|0&gt;] [,mbps=&lt;mbps&gt;] [,mbps_max=&lt;mbps&gt;] [,mbps_rd=&lt;mbps&gt;] [,mbps_rd_max=&lt;mbps&gt;] [,mbps_wr=&lt;mbps&gt;] [,mbps_wr_max=&lt;mbps&gt;] [,media=&lt;cdrom|disk&gt;] [,replicate=&lt;1|0&gt;] [,rerror=&lt;ignore|report|stop&gt;] [,ro=&lt;1|0&gt;] [,secs=&lt;integer&gt;] [,serial=&lt;serial&gt;] [,shared=&lt;1|0&gt;] [,size=&lt;DiskSize&gt;] [,snapshot=&lt;1|0&gt;] [,trans=&lt;none|lba|auto&gt;] [,werror=&lt;enum&gt;]</span> 
+</dt>
+<dd>
+<p>
+Use volume as VIRTIO hard disk (n is 0 to 15).
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">aio</span>=<span class="monospaced">&lt;io_uring | native | threads&gt;</span> 
+</dt>
+<dd>
+<p>
+AIO type to use.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">backup</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Whether the drive should be included when making backups.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps</span>=<span class="monospaced">&lt;bps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum r/w speed in bytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_rd</span>=<span class="monospaced">&lt;bps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum read speed in bytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_rd_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of read I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_wr</span>=<span class="monospaced">&lt;bps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum write speed in bytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">bps_wr_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of write I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cache</span>=<span class="monospaced">&lt;directsync | none | unsafe | writeback | writethrough&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s cache mode
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cyls</span>=<span class="monospaced">&lt;integer&gt;</span> 
+</dt>
+<dd>
+<p>
+Force the drive&#8217;s physical geometry to have a specific cylinder count.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">detect_zeroes</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Controls whether to detect and try to optimize writes of zeroes.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">discard</span>=<span class="monospaced">&lt;ignore | on&gt;</span> 
+</dt>
+<dd>
+<p>
+Controls whether to pass discard/trim requests to the underlying storage.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">file</span>=<span class="monospaced">&lt;volume&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s backing volume.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">format</span>=<span class="monospaced">&lt;cloop | qcow | qcow2 | qed | raw | vmdk&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s backing file&#8217;s data format.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">heads</span>=<span class="monospaced">&lt;integer&gt;</span> 
+</dt>
+<dd>
+<p>
+Force the drive&#8217;s physical geometry to have a specific head count.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum r/w I/O in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_max</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled r/w I/O pool in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum read I/O in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd_max</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled read I/O pool in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_rd_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of read I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum write I/O in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr_max</span>=<span class="monospaced">&lt;iops&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled write I/O pool in operations per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iops_wr_max_length</span>=<span class="monospaced">&lt;seconds&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum length of write I/O bursts in seconds.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">iothread</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Whether to use iothreads for this drive
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum r/w speed in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_max</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled r/w pool in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_rd</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum read speed in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_rd_max</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled read pool in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_wr</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum write speed in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mbps_wr_max</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Maximum unthrottled write pool in megabytes per second.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">media</span>=<span class="monospaced">&lt;cdrom | disk&gt;</span> (<em>default =</em> <span class="monospaced">disk</span>)
+</dt>
+<dd>
+<p>
+The drive&#8217;s media type.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">replicate</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Whether the drive should considered for replication jobs.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">rerror</span>=<span class="monospaced">&lt;ignore | report | stop&gt;</span> 
+</dt>
+<dd>
+<p>
+Read error action.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ro</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Whether the drive is read-only.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">secs</span>=<span class="monospaced">&lt;integer&gt;</span> 
+</dt>
+<dd>
+<p>
+Force the drive&#8217;s physical geometry to have a specific sector count.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">serial</span>=<span class="monospaced">&lt;serial&gt;</span> 
+</dt>
+<dd>
+<p>
+The drive&#8217;s reported serial number, url-encoded, up to 20 bytes long.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">shared</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Mark this locally-managed volume as available on all nodes.
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAMVUlEQVRogdWZeXDVVZbHP7/f27JB
+wtJIiCERRFlbx5FuHRrRBgtBsRIwCCOrFmGmiDBjYVNlQlgiQjU6IjI4xLJxGf5QGp0Cbaftsu3R
+hu6aYXqgLZoWEsjyyDP7S972e7/l3vnj5cW3Ji9M/zOn6lRS997fvd/vueece+59ipSS/89iv5mP
+ZEQQQsS23RQARVEAUFUVRVFQog0ZyogJSClld3c327Ztw7IsLMuKto90KgBsNhtVVVXMnj2bvLw8
+7Ha7HBEJKWXGKoSQXV1dcsuWLfLSpUsyKkKIIdWyrLTqdrvlU089Jc+cOSM9Ho8Mh8NSCCEzxTRi
+8JWVlbKtre0vAt6yLGmapmxtbZXr1q2TZ86ckW1tbSMikTH4GzduyKqqqkHwsSA1TZOhUChOg8Hg
+oBqGIQ3DSAk+VleuXDliEspwviullD09PbzwwgscO3Yszt91XScQCNDZ2YlhGIPfuFwu7Pb48FJV
+lZycnEG/z8/PRwiBqqqDYzweD88//zyrV69m7ty5jBs3DofDMWRgD0lASik9Hg979uzh2LFjcYEa
+CoVob2/n2q9+hbZ585BGSCWltbVMr61NtSYbN25k7dq1zJkzZ1gSaqrGWPD79+9PAh8MBuns7OTi
+e+8R2rwZCYOaqTTt3cuf6+qSwAMcP36co0eP8vXXX9Pd3Y1hGMg0lk65A1HwdXV1vPHGG0mW7+jo
+4A8/+xn2BAAAI0riQOnu3cyork7Zt3btWtavX89dd92VdieSCEgppdvt5sCBAxw5ciSuLxQK0dTU
+RMOHHyJ37hwh1NSiAKU7djDzxRdT9q9YsYJt27YxY8aMlCTiCEgp5eXLl6mvr+fVV1+NmygYDNLW
+1sY3J09ipLEYQDPw2sBfCTwMLARKgKwhiNxWU8OsXbvi2qLYnnzySSorK1PvRGyqvH79uty6dWtS
+Lg8EAvLKlSvyo1275M8hSV8H+eMBvRPkP9Vslp0tV6W3u12+c7hOTgT5NyAXgtwE8gTIUyn0D9XV
+0jAMqet6klZUVMjPP/88KcWqUcs3NjZy+PBhDh06FGeFqNtcOnECY8+euICVwDWgFtj/m1/wD+8f
+5xtg6uy5ZI+5BSkkU6fexgu7tvLWhd/x1tXL5P/905wAggnzSODavn388Sc/SblDL7/8Mq+99hqX
+L1+OC2zb7t27uX79+u7Dhw+ndJvW1lYaP/qI0EDKS1z0XeDjC7/l9llz+d6EWxjv0imdcgeFRcVo
+fR46vm1Cx8ndP5hP3qjR/GDuX/GbC5/iberl1qirxGjv73+PYRjc8tBDcVhGjRpFRUUF27dvp7i4
+mPz8fFwuV2QHVq1aldLyDQ0NXDt5En91NRIQCRqNHld2HsLUCfu6GD9mNIoVQggDy9RQpYLTbkdV
+7Vh6CH9vJ/fcfz/vALsAN2AlzHv1wAEu1tTExUI0Hl555RXq6upobm4mEAhECEyePDkOvK7rtLS0
+cOP0aby1tUnAo2oNkFAUSTjoRfN+ix7wgjRBShACVVFQRGSkHvTypwtnmXHPQhrbb3D0k1McAdpi
+DBLVhp/+lIvV1UlV7oQJE8jNzcXtduPz+ZIPMtM0aWhooPH99+mtrU1ymVRqUxUQFlJYSBFGCivG
+OSyEaSCFAGlhd+Vy7w/n43BmM3POXWx69hl8AyMTDXTl4EEu7t2bCBGAQCCAruupCdjtdrp3705r
++ViN22YhsUwdyzRBCpACyzIRMnpngCxXNjYlMk4L+ggoYXxp5pbAlX37cDgcSQSEEAxmoVgQg/9n
+AP67bVdAUcFmQ3W6IgtIiWUKLCGwLGvQj69e+m+EsBB6iGB/N/3e9oyNlIgRYm5kiR2JH0L6MkFY
+Ei0UQKAycdJUbIodT3Mjpu6n3xfCptoRlomQCqZpRkhLCykMhLBQSV1HJbalKnvSF3MpNO0OSIEw
+DWyuPCaVzCRv7ER8Ph+mtJM35lZsdjvuxktYhobDkYOCgqJEDWLLaAfSVc1p78SJO2AAvUBggLUN
+KIx2Kgqjv3crY2wOiqaqKKoKihKJCctCC/npbW+jq7sbS7UjkGCZCCkQQkdJsV6mRWHGBH4HLHpx
+F3LcGDq6u7nw2S85++V/4gb0kB9hFoAZwuZwgc2BqjpQVRWbzYXd4cDlysHn7WJi0W2EfH24XA6E
+jKySqhTPtDRPIjB4XUtoPw3sKV/O+KJipJT4V63mq3/7Obu21/LN/5xl9l/PIys7G2fOaBS7E5vN
+QrU7UW0KNlUFp5P8MeO5/8HFhPo7CXr7MMIaQW8neSkMlqnEEYj1s8QJbwXaWpopmDgJh93OqHGF
+LFy9jjunTeHNo2uAvUy54/uMuaUYV24BUpVYpoVEwaY4UVUbitNJ9ugxOBw2tEAPfX29QCjuVB9O
+EmNBTdeRGEj3A56OdkwtgDDCCKFjz8ql6N55/G3VcRouX+SXH72Ht6udcCg4cJiJSPIn8oCloIKU
+KAhURUUIiVCjx128pjtrEiVtFkrMNNOBA+s34XG3YIRDSMtAkSbOrDzuvOchHnmiklEFY3n76G7O
+f/nv9Ht7EMJCSjGoljCxjOBAnaSjhYPowevDZrx04FMSGLwnJEzmAOYCn33wAUYoiGXoSMsEoeNw
+ZTO2aDrzFpWxck0VJVOn4fd2E/T7oneNyOFlGkjLwNTD6FoILRQEa/hDcyhJIuB0OlFVNeVE04B3
+XjnC+d9+hRYKYJlhpDBBGDidDiaUfp/xk24nJ3c0eaPzsKsgzEhtZJkGIuzDNDRCAR99fb309XYh
+NAYPsnQ6IgJSSgoKCihavDilJZ4Aajf8HVf/fAnLCCNNAyktECaqIsgbV8So0WMHrn2RGLBMHREO
+YBg6eiiIFgzQ7/US8vmYoEDuENa/u6oqcwJRPysoKOC+N9+kcNGiJGvkAQuADY+twn3tCuFg/4CV
+DbB0VKHhzHbhdGVhs6kgDKTuR9f86KEAWtBHd0c73p52pB5Av5KewJxnnmHeoUOEw+EkjHEEYi8M
+EHlFKyws5IfHjlG4cGHSxJOA1cATPy7nT388j+73YoYDCEuP1DhSRrKOlFhmmLAWQNMCBHw9tHtu
+8K2nBcsI8uGxf8HoiRBINNTtjz7KQ/X1xL6iRDHGvubZAfr7+1Nuz+TJk6G+nv/atInmX/86rq8A
+WAlUrahk/Fio/8XHjM4fi93pHCgRFCzLQtd1tFAQLeCjs9NNb4cHxdL44J8PozfD7XyXRqNy97p1
+PPz220gp0XU9zriKogw+SaqqGtmB48ePU15enkRASklRURH31tcz6cEHk1JrAfAUcEcPLLjvMU69
+/694uzsI+X3093TS5blBl8eNt72VHk8Tfd9eR+vv4MQ/HkZpiJwttgTL3/Hoo2nBNzY2smjRIhYs
+WEBBQQEulyvyLuT3+2VTUxM7d+7k5MmTKXNuS0sL555+mtYvv0zqE0A7kavhqFL4oAlCCWOygGIi
+qTiHyMnuTBgz/bHHKDt9GillnN8D+P1+ysrKWLJkCdOmTWPWrFmUlpZGCAghpN/vp7m5mZqaGl5/
+/XUKCwtJFLfbzX+sX8+Nr75K6rtZiXr49KVLKf/4Y4QQ6LqeBP6RRx6hvLycadOmMXPmTEpKSsjN
+zf3uZS6WRHV1NadOnUpaTEpJa2sr5zZupOkmSaQqk2csWcLyTz4BQNO0uL7GxkbWr1+fErzNZlMG
+w1lVVSUvL4+SkhL27dvH8uXL8Xg8ceABiouLue+ttyieN2+IK2Z6TRx/5+LFacE3NDRQWVmZFjwk
+nAOxJF566SW2bNnChQsXkmKipKSEB959l9vmzcvo1pZOpz/8ME98+mla8Bs2bGDZsmVpwUOa5/VE
+d0oXE319fXxWXs43Z88m9Q0n03/0I1YPJIRE8OfOnWPHjh2UlZUNCT4tgUQSO3fupKqqigceeGCw
+P/a7VM8emUg0VcbK+fPn2bp1KytWrBgW/JAEEknU1NTw7LPPMn/+/GFBZQI8lZw/f57nnnuO5cuX
+M2XKlGHBD0sgkURdXR2PP/44FRUVNwV+qP7Tp09z8ODBjNxmRAQSSRw4cIBly5axdOnSvwh4RVH4
+4osv2L9/P2VlZRlbfkQEEkls376djo4OQqHE83bk4nK5EEKwZs0aSktLRwR+RATgOxItLS1cu3aN
+vr6+wTfK/4tEfzeeMmUKkydPzhg8jJAAREgEg0H6+vrQNC2pFL8ZUVWVrKws8vPzycnJQVXVjH/s
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content">This option does not share the volume automatically, it assumes it is shared already!</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">size</span>=<span class="monospaced">&lt;DiskSize&gt;</span> 
+</dt>
+<dd>
+<p>
+Disk size. This is purely informational and has no effect.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">snapshot</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Controls qemu&#8217;s snapshot mode feature. If activated, changes made to the disk are temporary and will be discarded when the VM is shutdown.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">trans</span>=<span class="monospaced">&lt;auto | lba | none&gt;</span> 
+</dt>
+<dd>
+<p>
+Force disk geometry bios translation mode.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">werror</span>=<span class="monospaced">&lt;enospc | ignore | report | stop&gt;</span> 
+</dt>
+<dd>
+<p>
+Write error action.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">virtiofs[n]</span>: <span class="monospaced">[dirid=]&lt;mapping-id&gt; [,cache=&lt;enum&gt;] [,direct-io=&lt;1|0&gt;] [,expose-acl=&lt;1|0&gt;] [,expose-xattr=&lt;1|0&gt;]</span> 
+</dt>
+<dd>
+<p>
+Configuration for sharing a directory between host and guest using Virtio-fs.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">cache</span>=<span class="monospaced">&lt;always | auto | metadata | never&gt;</span> (<em>default =</em> <span class="monospaced">auto</span>)
+</dt>
+<dd>
+<p>
+The caching policy the file system should use (auto, always, metadata, never).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">direct-io</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Honor the O_DIRECT flag passed down by guest applications.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">dirid</span>=<span class="monospaced">&lt;mapping-id&gt;</span> 
+</dt>
+<dd>
+<p>
+Mapping identifier of the directory mapping to be shared with the guest. Also used as a mount tag inside the VM.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">expose-acl</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Enable support for POSIX ACLs (enabled ACL implies xattr) for this mount.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">expose-xattr</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Enable support for extended attributes for this mount.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">vmgenid</span>: <span class="monospaced">&lt;UUID&gt;</span> (<em>default =</em> <span class="monospaced">1 (autogenerated)</span>)
+</dt>
+<dd>
+<p>
+The VM generation ID (vmgenid) device exposes a 128-bit integer value identifier to the guest OS. This allows to notify the guest operating system when the virtual machine is executed with a different configuration (e.g. snapshot execution or creation from a template). The guest operating system notices the change, and is then able to react as appropriate by marking its copies of distributed databases as dirty, re-initializing its random number generator, etc.
+Note that auto-creation only works when done through API/CLI create or update methods, but not when manually editing the config file.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">vmstatestorage</span>: <span class="monospaced">&lt;storage ID&gt;</span> 
+</dt>
+<dd>
+<p>
+Default storage for VM state volumes/files.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">watchdog</span>: <span class="monospaced">[[model=]&lt;i6300esb|ib700&gt;] [,action=&lt;enum&gt;]</span> 
+</dt>
+<dd>
+<p>
+Create a virtual hardware watchdog device. Once enabled (by a guest action), the watchdog must be periodically polled by an agent inside the guest or else the watchdog will reset the guest (or execute the respective action specified)
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">action</span>=<span class="monospaced">&lt;debug | none | pause | poweroff | reset | shutdown&gt;</span> 
+</dt>
+<dd>
+<p>
+The action to perform if after activation the guest fails to poll the watchdog in time.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">model</span>=<span class="monospaced">&lt;i6300esb | ib700&gt;</span> (<em>default =</em> <span class="monospaced">i6300esb</span>)
+</dt>
+<dd>
+<p>
+Watchdog type to emulate.
+</p>
+</dd>
+</dl></div>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_copyright_and_disclaimer">
+Copyright and Disclaimer
+ <a class="headerlink" href="#_copyright_and_disclaimer" title="Permalink to this heading"></a>
+</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Copyright &#169; 2007-2022 Proxmox Server Solutions GmbH</p></div>
+<div class="paragraph">
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.</p></div>
+<div class="paragraph">
+<p>This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Affero General Public License for more details.</p></div>
+<div class="paragraph">
+<p>You should have received a copy of the GNU Affero General Public
+License along with this program.  If not, see
+<a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a></p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr></div>
+<div id="footer">
+<div id="footer-text">
+Version 8.4.0<br>
+Last updated
+ Wed Apr  9 08:00:00 CEST 2025
+</div>
+</div>
+</body>
+</html>
