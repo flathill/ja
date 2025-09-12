@@ -1,0 +1,3870 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="AsciiDoc 10.2.1" />
+<title>ha-manager(1)</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
+  padding: 0;
+  margin: 0;
+}
+pre {
+  white-space: pre-wrap;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; vertical-align: text-bottom; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel0, div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overridden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+</style>
+
+
+<style type="text/css">
+:root {
+    /* pre-defined colors */
+    --pdt-grey-950: hsl(0deg, 0%, 95%);
+    --pdt-grey-750: hsl(0deg, 0%, 75%);
+    --pdt-grey-400: hsl(0deg, 0%, 40%);
+    --pdt-grey-250: hsl(0deg, 0%, 25%);
+    --pdt-grey-150: hsl(0deg, 0%, 15%);
+    --pdt-grey-100: hsl(0deg, 0%, 10%);
+    --pdt-primary-850: hsl(205deg, 100%, 85%);
+    --pdt-primary-800: hsl(205deg, 100%, 80%);
+    --pdt-primary-700: hsl(205deg, 100%, 70%);
+    --pdt-primary-250: hsl(205deg, 100%, 25%);
+    --pdt-secondary-850: hsl(250deg, 100%, 85%);
+}
+
+#header > h1 > .image > img {
+    max-width: 100%;
+}
+
+/* Avoid serif font and increase font-size from 16px to 18px. Makes it more similar to PBS docs */
+body, p {
+    font-family: Open Sans, sans-serif;
+    font-size: 18px;
+}
+
+/* adjust admonition block spacing. this allows for a background on
+ * admonition blocks that doesn't make the elements look to tightly
+ * spaced.
+ */
+div.admonitionblock {
+    border-radius: 3px;
+    margin: 1.5em 0;
+    padding: 0.5em 10% 0.5em 0.5em;
+}
+
+div.admonitionblock td.icon {
+    padding-right: 0.5em;
+}
+
+div.admonitionblock td.icon > img {
+    box-sizing: border-box;
+    padding: 0.15em;
+}
+
+th.tableblock, td.tableblock {
+    border-color: #527bbd80;
+}
+
+/* Fine-tune headings a bit */
+h4 {
+  font-size: 1.1em;
+}
+h5 {
+  font-size: 1.05em;
+}
+h6 {
+  font-size: 1.0em;
+}
+
+/* Support for heading anchor links */
+h3 {
+    border-bottom: unset;
+}
+
+h3 > span {
+    display: inline-block;
+    border-bottom: 2px solid silver;
+}
+
+a, a:visited {
+    color: var(--pdt-primary-250);
+}
+
+a.headerlink {
+    color: var(--pdt-grey-750);
+    padding: 0 4px;
+    text-decoration: none;
+    visibility: hidden;
+}
+
+/* add it as an pseudo-element, so that it does not show up in the ToC */
+a.headerlink::after {
+    content: '\00b6';
+    text-decoration: none;
+}
+
+h1:hover > a.headerlink,
+h2:hover > a.headerlink,
+h3:hover > a.headerlink,
+h4:hover > a.headerlink,
+h5:hover > a.headerlink,
+h6:hover > a.headerlink {
+  visibility: visible;
+}
+
+/* Hide the TOC menu toggler by default */
+.menu-toggler, .nav-toggle, .menu-overlay {
+    display: none;
+}
+
+#toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    padding: 0.5em;
+    transition: transform 0.2s ease-in-out;
+    z-index: 1000;
+}
+
+/* Mobile styles */
+@media only screen and (max-width: 1000px) {
+    /* Avoid overly big header author block */
+    #header span {
+        font-size: 1rem;
+        line-height: 1rem;
+    }
+
+    /* Show toggle button on mobile */
+    .nav-toggle {
+        display: inline-block;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 1001;
+        background-color: var(--pdt-grey-100);
+        color: var(--pdt-grey-950);
+        opacity: 0.6;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 2px;
+        transition: left 0.2s ease-in-out;
+        font-size: 0;
+    }
+    .no-toc.nav-toggle {
+        display: none !important;
+    }
+
+    /* Hide sidebar by default on mobile */
+    #toc {
+        transform: translateX(-100%);
+        line-height: 1.5em;
+        overflow-x: auto;
+    }
+    #content, #header {
+        font-size: 1.25em;
+        line-height: 1.5em;
+    }
+
+    /* Adjust body margin for mobile */
+    body {
+        margin: 1em !important;
+        max-width: 100% !important;
+        overflow-wrap: break-word;
+    }
+
+    /* Show sidebar when checkbox is checked */
+    .menu-toggler:checked ~ #header #toc {
+        transform: translateX(0);
+    }
+
+    /* Show overlay when menu is open */
+    .menu-toggler:checked ~ .menu-overlay {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        cursor: pointer;
+        animation: fadeIn 0.2s;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* Change icon when open */
+    .menu-toggler:checked ~ .nav-toggle::after {
+        content: '✕';
+    }
+    .menu-toggler:not(:checked) ~ .nav-toggle::after {
+        content: '☰';
+    }
+
+    .nav-toggle::after {
+        display: block;
+        font-size: 1.5rem;
+    }
+    .menu-toggler:checked ~ .nav-toggle {
+        left: 24rem;
+    }
+
+}
+
+/* barely useable at such small sizes but can only win here */
+@media only screen and (max-width: 27rem) {
+    body {
+        margin: 0.5em !important;
+    }
+    #toc {
+        font-size: 0.8em;
+    }
+    .menu-toggler:checked ~ .nav-toggle {
+        left: 19rem;
+    }
+}
+
+
+/* Dark mode theme */
+@media screen and (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+        --pdt-body-background: var(--pdt-grey-150);
+        --pdt-text: var(--pdt-grey-950);
+        --pdt-headline: var(--pdt-primary-800);
+        --pdt-link: var(--pdt-primary-700);
+        --pdt-highlighted-text: var(--pdt-primary-850);
+        --pdt-background-sidebar: var(--pdt-grey-100);
+        --pdt-background-listings: var(--pdt-grey-100);
+        --pdt-border: var(--pdt-grey-400);
+        --pdt-border-alt: var(--pdt-grey-250);
+        --pdt-table-border: var(--pdt-grey-400);
+        --pdt-background-admonition: var(--pdt-grey-250);
+    }
+
+    body {
+        color: var(--pdt-text);
+        background-color: var(--pdt-body-background);
+    }
+
+    a, a:visited {
+        color: var(--pdt-link);
+    }
+
+    /* style headlines, titles etc. */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    thead,
+    #author,
+    #toctitle,
+    div.title,
+    td.hdlist1,
+    caption.title,
+    p.tableblock.header {
+        color: var(--pdt-headline);
+    }
+
+    h1,
+    h2,
+    h3,
+    #footer {
+        border-color: var(--pdt-border);
+    }
+
+    /* formatted colored text */
+    dt,
+    em,
+    pre,
+    code,
+    strong,
+    .monospaced {
+        color: var(--pdt-highlighted-text);
+    }
+
+    /* style the table of contents sidebar */
+    div #toc {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-sidebar);
+        border-color: var(--pdt-border-alt);
+    }
+
+    div #toc a:link,
+    div #toc a:visited {
+        color: var(--pdt-text);
+    }
+
+    /* reduce the brigthness of images a bit and make it reversable
+     * through hovering over them.
+     */
+    .image > img {
+        filter: brightness(90%);
+    }
+
+    .image > img:hover {
+        filter: none;
+    }
+
+    /* tables */
+    th.tableblock,
+    td.tableblock,
+    table.tableblock {
+        border-color: var(--pdt-table-border);
+    }
+
+    div.quoteblock,
+    div.verseblock {
+        color: var(--pdt-text);
+        border-color: var(--pdt-border);
+    }
+
+    /* listings (e.g. code snippet blocks) */
+    div.listingblock > div.content {
+        background-color: var(--pdt-background-listings);
+        border-color: var(--pdt-border-alt);
+    }
+
+    /* admonition blocks (e.g. notes, warnings etc.) */
+    div.admonitionblock {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-admonition);
+    }
+
+    div.admonitionblock td.content {
+        border-color: var(--pdt-border);
+    }
+
+    /* makes the admonition icons appear a bit more consistent, by
+     * adding a white background the shadows in the icons look
+     * "correct"
+     */
+    div.admonitionblock td.icon > img {
+        background-color: white;
+        border-radius: 100%;
+        filter: brightness(95%);
+    }
+
+    /* invert the logo */
+    #header > h1 > .image > img {
+        filter: invert(100%) hue-rotate(180deg) brightness(90%);
+    }
+
+    /* fixes the black text on unorderd lists */
+    ul > li > * {
+        color: var(--pdt-text);
+    }
+
+    .nav-toggle {
+        background-color: var(--pdt-grey-250);
+        color: var(--pdt-grey-950);
+    }
+}
+</style>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install();
+/*]]>*/
+</script>
+<script type="text/javascript">
+var asciiDocTocOrig = asciidoc.toc;
+asciidoc.toc = function(toclevel) {
+    asciiDocTocOrig.call(asciidoc, toclevel);
+    document.querySelectorAll('#toc a').forEach(link => {
+        link.addEventListener('click', () => {
+            document.getElementById('menu-toggler').checked = false;
+        });
+    });
+    document.querySelector('.nav-toggle')?.classList.remove("no-toc");;
+}
+</script>
+</head>
+<body class="article" style="max-width:55em">
+<input id="menu-toggler" type="checkbox" class="menu-toggler" />
+<label for="menu-toggler" class="no-toc nav-toggle">☰</label>
+<div id="header">
+<h1>ha-manager(1)</h1>
+<span id="author">Proxmox Server Solutions GmbH</span><br />
+<span id="email" class="monospaced"><a href="mailto:support@proxmox.com">&lt;support@proxmox.com&gt;</a></span><br />
+<span id="revnumber">バージョン9.0.8</span>
+<span id="revdate">最終更新 Tue Aug 5 16:04:45 CEST 2025</span>
+</div>
+<label for="menu-toggler" class="menu-overlay"></label>
+<div id="content">
+<div class="sect1">
+<h2 id="chapter_ha_manager">
+名前<a class="headerlink" href="#chapter_ha_manager" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ha-manager - Proxmox VE HAマネージャ</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_synopsis">
+SYNOPSIS<a class="headerlink" href="#_synopsis" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>ha-manager</strong> <span class="monospaced">&lt;COMMAND&gt; [ARGS] [OPTIONS] (コマンド)</span></p></div>
+<div class="paragraph">
+<p><strong>ha-manager add</strong> <span class="monospaced">&lt;sid&gt;</span> <span class="monospaced">[OPTIONS]</span><strong>新しい</strong>HA<strong>リソースを作成します。</strong></p></div>
+<div class="paragraph">
+<p>新しいHAリソースを作成します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;sid&gt;:</span> <span class="monospaced">&lt;type&gt;:&lt;name&gt;を</span>指定します<span class="monospaced">。</span></dt>
+<dd>
+<p>
+HAリソースID。これは、リソースの種類と、コロンで区切られたリソース固有の名前で構成されます（例：vm:100 / ct:100）。仮想マシンとコンテナの場合、VMまたはCT IDをショートカットとして使用できます（例：100）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--コメント</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+説明</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">-フェイルバック</span> <span class="monospaced">&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+現在のノードよりも優先度の高いノードがオンラインになった場合に、そのノードのノードアフィニティルールに従って、HAリソースを最も優先度の高いノードに自動的に移行します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--グループ</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+HAグループの識別子。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--max_relocate</span> <span class="monospaced">&lt;integer&gt; (0 - N)</span><em>(default =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+サービスの起動に失敗した場合のサービス再配置の最大試行回数。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--max_restart</span> <span class="monospaced">&lt;integer&gt; (0 - N)</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+サービスの起動に失敗した後、そのノード上でサービスを再起動する最大試行回数。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--state</span> <span class="monospaced">&lt;disabled | enabled | ignored | started | stopped&gt;</span><em>(default =</em> <span class="monospaced">started</span>)</dt>
+<dd>
+<p>
+要求リソースの状態。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--type</span> <span class="monospaced">&lt;ct | vm&gt;</span></dt>
+<dd>
+<p>
+リソースの種類。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>ha-manager config</strong> <span class="monospaced">[OPTIONS]</span><strong>新しい</strong>HA<strong>リソースを作成</strong>します<strong>。</strong></p></div>
+<div class="paragraph">
+<p>HAリソースをリストします。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--タイプ</span> <span class="monospaced">&lt;ct | vm&gt;</span></dt>
+<dd>
+<p>
+特定のタイプのリソースのリストのみ</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>ha-manager crm-command migrate</strong> <span class="monospaced">&lt;sid&gt; &lt;node</span></p></div>
+<div class="paragraph">
+<p>別のノードへのリソースの移行（オンライン）を要求します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;sid&gt;:</span> <span class="monospaced">&lt;タイプ&gt;:&lt;名前</span></dt>
+<dd>
+<p>
+HAリソースID。これは、リソースタイプに続いて、コロンで区切られたリソース固有の名前で構成されます（例：vm:100 / ct:100）。仮想マシンとコンテナの場合は、VMまたはCT IDをショートカットとして使用できます（例：100）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">&lt;node&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+ターゲットノード。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>ha-manager crm-command node-maintenance disable</strong> <span class="monospaced">&lt;node&gt;</span><strong>ノードメインテナンスを無効にします</strong>。</p></div>
+<div class="paragraph">
+<p>ノード保守要求状態を変更します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;node&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+クラスタノード名。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>ha-manager crm-command node-maintenance enable</strong> <span class="monospaced">&lt;node&gt;</span><strong>ノード保守</strong>要求状態を変更します<strong>。</strong></p></div>
+<div class="paragraph">
+<p>ノード保守要求状態を変更します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;node&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+クラスタノード名。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>ha-manager crm-command relocate</strong> <span class="monospaced">&lt;sid&gt; &lt;node</span></p></div>
+<div class="paragraph">
+<p>別のノードへのリソース再配置を要求します。これは古いノード上のサービスを停止し、ターゲット・ノード上でサービスを再起動します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;sid&gt;:</span> <span class="monospaced">&lt;タイプ&gt;:&lt;名前</span></dt>
+<dd>
+<p>
+HAリソースID。リソースの種類に続いて、リソース固有の名前をコロンで区切って指定します（例：vm:100 / ct:100）。仮想マシンとコンテナの場合は、VMまたはCT IDをショートカットとして使用できます（例：100）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">&lt;ノード&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+ターゲットノード。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>ha-manager crm-command stop</strong> <span class="monospaced">&lt;sid&gt; &lt;timeout</span></p></div>
+<div class="paragraph">
+<p>サービスの停止を要求します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;sid&gt;:</span> <span class="monospaced">&lt;タイプ&gt;:&lt;名前</span></dt>
+<dd>
+<p>
+HAリソースID。リソースの種類に続いて、リソース固有の名前をコロンで区切って指定します（例：vm:100 / ct:100）。仮想マシンとコンテナの場合は、VMまたはCT IDをショートカットとして使用できます（例：100）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">&lt;timeout&gt;:</span> <span class="monospaced">&lt;整数&gt; (0 - N</span>)</dt>
+<dd>
+<p>
+タイムアウト（秒）。0に設定すると、ハード停止が実行されます。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>ha-manager groupadd</strong> <span class="monospaced">&lt;group&gt; --nodes &lt;string&gt;</span> <span class="monospaced">[OPTIONS]</span><strong>新しい</strong>HA<strong>グループを作成します。</strong></p></div>
+<div class="paragraph">
+<p>新しいHAグループを作成します。(HAルールを優先して非推奨)</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;group&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+HAグループの識別子。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--コメント</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+説明</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--nodes</span> <span class="monospaced">&lt;node&gt;[:&lt;pri&gt;]{,&lt;node&gt;[:&lt;pri&gt;]}*</span><span class="monospaced">--nofailback</span>&lt;booo</dt>
+<dd>
+<p>
+クラスタノード名のリスト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--nofailback</span> <span class="monospaced">&lt;boolean&gt;</span><em>(default =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+CRMは最も優先度の高いノードでサービスを実行しようとします。より高い優先度を持つノードがオンラインになると、CRMはそのノードにサービスを移行します。nofailback を有効にすると、この動作を防ぐことができます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--restricted</span> <span class="monospaced">&lt;boolean&gt;</span><em>(default =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+制限付きグループにバインドされたリソースは、そのグループによって定義されたノードでのみ実行できます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--type</span> <span class="monospaced">&lt;グループ</span></dt>
+<dd>
+<p>
+グループタイプ。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>ha-manager groupconfig</strong></p></div>
+<div class="paragraph">
+<p>HAグループを取得します。(HAルールを優先するため廃止予定)</p></div>
+<div class="paragraph">
+<p><strong>ha-manager groupremove</strong> <span class="monospaced">&lt;グループ</span></p></div>
+<div class="paragraph">
+<p>HAグループ設定を削除します。(HAルールを優先するため、非推奨)</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;group&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+HAグループ識別子。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>ha-manager groupset</strong> <span class="monospaced">&lt;group&gt;</span> <span class="monospaced">[OPTIONS] (オプション)</span></p></div>
+<div class="paragraph">
+<p>haグループ構成を更新します。(HAルールに優先して非推奨)</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;group&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+HAグループの識別子。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--コメント</span> <span class="monospaced">&lt;string</span></dt>
+<dd>
+<p>
+説明</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--削除</span> <span class="monospaced">&lt;string</span></dt>
+<dd>
+<p>
+削除したい設定のリスト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">-ダイジェスト</span> <span class="monospaced">&lt;string</span></dt>
+<dd>
+<p>
+Prevent changes if current configuration file has a different digest.これは同時変更を防止するために使用できます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--nodes</span> <span class="monospaced">&lt;node&gt;[:&lt;pri&gt;]{,&lt;node&gt;[:&lt;pri&gt;]}*</span><span class="monospaced">--nofailback</span>&lt;boolean&gt; (ブール値)</dt>
+<dd>
+<p>
+オプションの優先度を持つクラスタ・ノード名のリスト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--nofailback</span> <span class="monospaced">&lt;boolean&gt;</span><em>(default =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+CRMは最も優先度の高いノードでサービスを実行しようとします。より高い優先度を持つノードがオンラインになると、CRMはそのノードにサービスを移行します。nofailback を有効にすると、この動作を防止できます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--restricted</span> <span class="monospaced">&lt;boolean&gt;</span><em>(default =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+制限付きグループにバインドされたリソースは、そのグループによって定義されたノードでのみ実行できます。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>ha-manager help</strong> <span class="monospaced">[OPTIONS]</span>指定されたコマンドに関する<strong>ヘルプを取得します</strong>。</p></div>
+<div class="paragraph">
+<p>指定されたコマンドに関するヘルプを取得します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--extra-args</span> <span class="monospaced">&lt;array&gt;</span></dt>
+<dd>
+<p>
+特定のコマンドのヘルプを表示します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--verbose</span> <span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+詳細出力形式。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>ha-manager migrate</strong></p></div>
+<div class="paragraph">
+<p><em>ha-manager crm-command migrate</em> のエイリアスです。</p></div>
+<div class="paragraph">
+<p><strong>ha-manager relocate</strong></p></div>
+<div class="paragraph">
+<p><em>ha-manager crm-command relocateの</em>エイリアスです。</p></div>
+<div class="paragraph">
+<p><strong>ha-manager remove</strong> <span class="monospaced">&lt;sid</span></p></div>
+<div class="paragraph">
+<p>リソース構成を削除します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;sid&gt;:</span> <span class="monospaced">&lt;タイプ&gt;:&lt;名前</span></dt>
+<dd>
+<p>
+HA リソース ID。リソースの種類に続いて、リソース固有の名前をコロンで区切って指定します（例：vm:100 / ct:100）。仮想マシンとコンテナの場合は、VMまたはCT IDをショートカットとして使用できます（例：100）。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>ha-manager rules add</strong> <span class="monospaced">&lt;type&gt; &lt;rule&gt; --resources &lt;string&gt;</span> <span class="monospaced">[OPTIONS]</span>HA<strong>ルールを作成します。</strong></p></div>
+<div class="paragraph">
+<p>HAルールを作成します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;type&gt;:</span> <span class="monospaced">&lt;ノードアフィニティ | リソースアフィニティ</span></dt>
+<dd>
+<p>
+HAルールタイプ。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">&lt;rule&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+HAルール識別子</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--コメント</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+HAルールの説明。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--disable</span> <span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+HAルールが無効かどうか。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--resources</span> <span class="monospaced">&lt;type&gt;:&lt;name&gt;{,&lt;type&gt;:&lt;name&gt;}*。</span></dt>
+<dd>
+<p>
+HAリソースIDのリスト。これは、リソースタイプのリストと、コロンで区切られたリソース固有の名前（例：vm:100,ct:101）で構成されます。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><span class="monospaced">条件付きオプション：</span></p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">[type=ノード・アフィニティ］</span></dt>
+<dd>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--nodes</span> <span class="monospaced">&lt;node&gt;[:&lt;pri&gt;]{,&lt;node&gt;[:&lt;pri&gt;]}*</span><span class="monospaced">--rict</span>&lt;boolean</dt>
+<dd>
+<p>
+オプションの優先度を持つクラスタ・ノード名のリスト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--strict</span> <span class="monospaced">&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+ノードアフィニティルールが厳格か非厳格かを記述します。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">[type=リソースアフィニティ]</span>.</dt>
+<dd>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--アフィニティ</span> <span class="monospaced">&lt;負｜正</span></dt>
+<dd>
+<p>
+HAリソースを同じノードに保持する<em>（正</em>）か、別々のノードに保持する<em>（負</em>）かを記述します。</p>
+</dd>
+</dl></div>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>ha-manager rules config</strong> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span>HA<strong>ルールを取得</strong>します。</p></div>
+<div class="paragraph">
+<p>HAルールを取得します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--リソース</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+指定したリソースに影響するルールにリストを限定します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--type</span> <span class="monospaced">&lt;ノードアフィニティ｜リソースアフィニティ&gt;</span><span class="monospaced">--resource</span>&lt;string</dt>
+<dd>
+<p>
+返されるリストを指定されたルールタイプに限定します。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>ha-manager rules list</strong> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span>HA<strong>ルールを取得</strong>します<strong>。</strong></p></div>
+<div class="paragraph">
+<p>HAルールを取得します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--リソース</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+返されるリストを、指定したリソースに影響するルールに限定します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--type</span> <span class="monospaced">&lt;ノードアフィニティ｜リソースアフィニティ&gt;</span><span class="monospaced">--resource</span>&lt;string</dt>
+<dd>
+<p>
+返されるリストを指定されたルールタイプに限定します。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>ha-manager rules remove</strong> <span class="monospaced">&lt;ルール&gt; [</span>OPIONS] HA<strong>ルールを削除します。</strong></p></div>
+<div class="paragraph">
+<p>HAルールを削除します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;rule&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+HA ルールの識別子。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>ha-manager rules set</strong> <span class="monospaced">&lt;type&gt; &lt;rule&gt;</span> <span class="monospaced">[OPTIONS]</span>HA<strong>ルールを更新します。</strong></p></div>
+<div class="paragraph">
+<p>HAルールを更新します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;type&gt;:</span> <span class="monospaced">&lt;ノードアフィニティ | リソースアフィニティ</span></dt>
+<dd>
+<p>
+HAルールタイプ。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">&lt;rule&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+HAルール識別子。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--コメント</span> <span class="monospaced">&lt;string</span></dt>
+<dd>
+<p>
+HAルールの説明。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--delete</span> <span class="monospaced">&lt;string&gt;</span></dt>
+<dd>
+<p>
+削除する設定のリスト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">-ダイジェスト</span> <span class="monospaced">&lt;string</span></dt>
+<dd>
+<p>
+現在の設定ファイルのダイジェストが異なる場合、変更を防止します。これは、同時変更を防止するために使用できます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--disable</span> <span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+HAルールが無効かどうか。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--resources</span> <span class="monospaced">&lt;type&gt;:&lt;name&gt;{,&lt;type&gt;:&lt;name&gt;}*を指定します。</span></dt>
+<dd>
+<p>
+HAリソースIDのリスト。これは、リソースタイプのリストと、コロンで区切られたリソース固有の名前から構成されます（例：vm:100,ct:101）。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><span class="monospaced">条件付きオプション：</span></p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">[type=ノード・アフィニティ］</span></dt>
+<dd>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--nodes</span> <span class="monospaced">&lt;node&gt;[:&lt;pri&gt;]{,&lt;node&gt;[:&lt;pri&gt;]}*</span><span class="monospaced">--rict</span>&lt;論理値</dt>
+<dd>
+<p>
+クラスタノード名のリスト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--strict</span> <span class="monospaced">&lt;論理値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+ノードアフィニティルールが厳格か非厳格かを記述します。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">[type=リソースアフィニティ］</span></dt>
+<dd>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--アフィニティ</span> <span class="monospaced">&lt;負｜正</span></dt>
+<dd>
+<p>
+HAリソースを同じノードに保持する<em>（正</em>）か、別々のノードに保持する<em>（負</em>）かを記述します。</p>
+</dd>
+</dl></div>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>ha-manager set</strong> <span class="monospaced">&lt;sid&gt;</span> <span class="monospaced">[OPTIONS]</span>リソース<strong>設定を更新します。</strong></p></div>
+<div class="paragraph">
+<p>リソース構成を更新します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;sid&gt;:</span> <span class="monospaced">&lt;type&gt;:&lt;name&gt;を</span>指定<span class="monospaced">します。</span></dt>
+<dd>
+<p>
+HAリソースID。これは、リソースの種類と、コロンで区切られたリソース固有の名前で構成されます（例：vm:100 / ct:100）。仮想マシンとコンテナの場合、VMまたはCT IDをショートカットとして使用できます（例：100）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--コメント</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+説明</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--削除</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+削除する設定のリスト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">-ダイジェスト</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+現在の設定ファイルのダイジェストが異なる場合、変更を防止します。これは、同時変更を防止するために使用できます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">-フェイルバック</span> <span class="monospaced">&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+HAリソースの自動移行 現在のノードよりも優先度の高いノードがオンラインになった場合に、そのノードのノ ードアフィニティルールに従って、最も優先度の高いノードにHAリソースを自動 的に移行します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--グループ</span> <span class="monospaced">&lt;string</span></dt>
+<dd>
+<p>
+HAグループの識別子。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--max_relocate</span> <span class="monospaced">&lt;integer&gt; (0 - N)</span><em>(default =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+サービスの起動に失敗した場合の、サービス再配置の最大試行回数。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--max_restart</span> <span class="monospaced">&lt;integer&gt; (0 - N)</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+サービスの起動に失敗した後、そのノード上でサービスを再起動する最大試行回数。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--state</span> <span class="monospaced">&lt;無効 | 有効 | 無視 | 開始 | 停止&gt;</span><em>(default =</em> <span class="monospaced">開始</span>)</dt>
+<dd>
+<p>
+要求リソース状態。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>ha-manager status</strong> <span class="monospaced">[OPTIONS]</span><strong>HAマネージャの状態を</strong>表示します<strong>。</strong></p></div>
+<div class="paragraph">
+<p>HAマネージャの状態を表示します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--verbose</span> <span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+詳細出力。完全なCRMおよびLRMステータス（JSON）を含みます。</p>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description">
+説明<a class="headerlink" href="#_description" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>私たちの現代社会は、ネットワークを介してコンピュータから提供される情報に大きく依存しています。モバイル・デバイスは、人々がいつでもどこからでもネットワークにアクセスできるため、その依存度を増幅しています。このようなサービスを提供する場合、ほとんどの時間利用可能であることが非常に重要です。</p></div>
+<div class="paragraph">
+<p>可用性を数学的に定義すると、(A)、ある間隔の間にサービスが使用できる合計時間と、(B)、間隔の長さの比率となります。これは通常、ある年の稼働時間のパーセンテージで表されます。</p></div>
+<div style="overflow-x:auto">
+<table class="tableblock frame-all grid-all" style="
+width:60%;
+">
+<caption class="title">表 1.可用性 - 年間ダウンタイム</caption>
+<col style="width:50%;" />
+<col style="width:50%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">可用性 </th>
+<th class="tableblock halign-left valign-top">年間ダウンタイム</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">99</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.65日</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">99.9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8.76時間</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">99.99</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">52.56分</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">99.999</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5.26分</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">99.9999</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">31.5秒</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">99.99999</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.15秒</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="paragraph">
+<p>可用性を高める方法はいくつかあります。最もエレガントな解決策は、ソフトウェアを書き換えて、複数のホストで同時に実行できるようにすることです。ソフトウェア自体がエラーを検出し、フェイルオーバーを行う方法を持つ必要があります。読み取り専用のウェブページを提供するだけなら、これは比較的簡単です。しかし、これは一般的に複雑で、ソフトウェアを自分で修正することができないため、不可能な場合もあります。以下の解決策は、ソフトウェアを修正することなく動作します：</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+信頼性の高い「サーバー」コンポーネントの使用</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">同じ機能を持つコンピュータのコンポーネントは、コンポーネントの品質によって信頼性の数値が異なります。ほとんどのベンダーは、より信頼性の高いコンポーネントを「サーバー」コンポーネントとして販売しています。</td>
+</tr></table>
+</div>
+</li>
+<li>
+<p>
+単一障害点の排除（冗長コンポーネント）</p>
+<div class="ulist"><ul>
+<li>
+<p>
+無停電電源装置（UPS）の使用</p>
+</li>
+<li>
+<p>
+サーバーに冗長電源を使用</p>
+</li>
+<li>
+<p>
+ECC-RAMを使用</p>
+</li>
+<li>
+<p>
+ネットワーク・ハードウェアの冗長化</p>
+</li>
+<li>
+<p>
+ローカル・ストレージにRAIDを使用</p>
+</li>
+<li>
+<p>
+VMデータ用に分散冗長ストレージを使用</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+ダウンタイムの削減</p>
+<div class="ulist"><ul>
+<li>
+<p>
+管理者への迅速なアクセス(24時間365日)</p>
+</li>
+<li>
+<p>
+スペアパーツの利用可能性（Proxmox VEクラスタの他のノード）</p>
+</li>
+<li>
+<p>
+自動エラー検出（<span class="monospaced">ha-managerが</span>提供）</p>
+</li>
+<li>
+<p>
+自動フェイルオーバー（<span class="monospaced">ha-managerが</span>提供）</p>
+</li>
+</ul></div>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>Proxmox VEのような仮想化環境は、"ハードウェア "への依存を取り除くので、高可用性を達成するのがはるかに簡単になります。また、冗長ストレージやネットワークデバイスのセットアップと使用もサポートしているため、1つのホストに障害が発生した場合は、クラスタ内の別のホストでこれらのサービスを開始するだけです。</p></div>
+<div class="paragraph">
+<p>さらに良いことに、Proxmox VEは<span class="monospaced">ha-managerと</span>呼ばれるソフトウェアスタックを提供しています。自動的にエラーを検出し、自動フェイルオーバーを行うことができます。</p></div>
+<div class="paragraph">
+<p>Proxmox VEの<span class="monospaced">ha-managerは</span>「自動化された」管理者のように動作します。まず、管理すべきリソース（VM、コンテナなど）を設定します。次に、<span class="monospaced">ha-</span> <span class="monospaced">managerは</span>正しい機能を監視し、エラーが発生した場合に別のノードへのサービスフェイルオーバーを処理します。</p></div>
+<div class="paragraph">
+<p>しかし、高可用性には代償が伴います。高品質のコンポーネントは高価であり、冗長化することでコストは少なくとも2倍になります。スペアパーツを追加すれば、コストはさらに増加します。そのため、利点を慎重に計算し、追加コストと比較する必要があります。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Tip" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">可用性を99%から99.9%に高めることは比較的簡単です。しかし、可用性を99.9999%から99.99999%に高めることは非常に難しく、コストがかかります。<span class="monospaced">ha-managerの</span>典型的なエラー検出とフェイルオーバーの時間は約2分なので、99.999%以上の可用性を得ることはできません。</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_requirements">
+必要条件<a class="headerlink" href="#_requirements" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>HAを始める前に、以下の要件を満たす必要があります：</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+少なくとも3つのクラスタノード（信頼できるクォーラムを取得するため）</p>
+</li>
+<li>
+<p>
+VMとコンテナ用の共有ストレージ</p>
+</li>
+<li>
+<p>
+ハードウェアの冗長化（あらゆる場所）</p>
+</li>
+<li>
+<p>
+信頼性の高い「サーバー」コンポーネントの使用</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>オプションで、ハードウェアウォッチドッグが使用できます - 使用できない場合は、Linuxカーネルソフトウェアウォッチドッグ<span class="monospaced">（softdog</span>）にフォールバックします。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ha_manager_resources">
+リソース<a class="headerlink" href="#ha_manager_resources" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="monospaced">ha-managerが</span>扱う主要な管理単位をリソースと呼びます。リソース(「サービス」とも呼ばれます)はサービスID(SID)によって一意に識別されます。SIDはリソースのタイプとタイプ固有のIDで構成され、例えば<span class="monospaced">vm:100の</span>ようになります。例えば、<span class="monospaced">vm</span>:100のようなIDを持つ<span class="monospaced">vm</span>（仮想マシン）タイプのリソースです。</p></div>
+<div class="paragraph">
+<p>今のところ、仮想マシンとコンテナという2つの重要なリソースタイプがあります。ここでの基本的な考え方の1つは、関連するソフトウェアをこのようなVMやコンテナにバンドルすることができるということで、<span class="monospaced">rgmanagerの</span>ように他のサービスから1つの大きなサービスを構成する必要はありません。一般的に、HAが管理するリソースは他のリソースに依存すべきではありません。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_management_tasks">
+管理タスク<a class="headerlink" href="#_management_tasks" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>このセクションでは、一般的な管理タスクの概要を簡単に説明します。最初のステップは、リソースのHAを有効にすることです。これはリソースをHAリソース設定に追加することで行います。これはGUIを使用して行うこともできますし、コマンドラインツールなどを使用することもできます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager add vm:100</pre>
+</div></div>
+<div class="paragraph">
+<p>HAスタックはリソースを起動し、実行し続けようとします。要求された」リソースの状態を設定できることに注意してください。例えば、HAスタックにリソースを停止させたい場合、次のようにします：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager set vm:100 --state stopped</pre>
+</div></div>
+<div class="paragraph">
+<p>を停止し、後で再スタートさせたい場合などです：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager set vm:100 --state started</pre>
+</div></div>
+<div class="paragraph">
+<p>通常のVMおよびコンテナ管理コマンドを使用することもできます。これらのコマンドは自動的にHAスタックに転送されるので、要求された状態をstartedに設定するだけです。</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># qm start 100</pre>
+</div></div>
+<div class="paragraph">
+<p>は単に要求された状態を<span class="monospaced">startedに</span>設定します。<span class="monospaced">qm stopも</span>同様で、要求された状態を<span class="monospaced">stoppedに</span>設定します。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">HAスタックは完全に非同期で動作し、他のクラスタメンバーと通信する必要があります。そのため、このようなアクションの結果が表示されるまで数秒かかります。</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>現在の HA リソース設定を表示するには、次のコマンドを使用します：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager config vm:100 state stopped</pre>
+</div></div>
+<div class="paragraph">
+<p>で、実際のHAマネージャとリソースの状態を表示できます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager status quorum OK master node1 (active, Wed Nov 23 11:07:23 2016) lrm elsa (active, Wed Nov 23 11:07:19 2016) service vm:100 (node1, started)</pre>
+</div></div>
+<div class="paragraph">
+<p>他のノードへのリソース移行を開始することもできます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager マイグレーション vm:100 node2</pre>
+</div></div>
+<div class="paragraph">
+<p>これはオンラインマイグレーションを使用し、VMを実行し続けようとします。オンラインマイグレーションでは、使用済みのメモリをすべてネットワーク経由で転送する必要があるため、VMを停止してから新しいノードで再起動した方が速い場合があります。これは<span class="monospaced">relocate</span>コマンドで実行できます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager relocate vm:100 node2</pre>
+</div></div>
+<div class="paragraph">
+<p>最後に、以下のコマンドを使用してHAコンフィギュレーションからリソースを削除できます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager remove vm:100</pre>
+</div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">これはリソースを開始したり停止したりするものではありません。</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>しかし、HA 関連のタスクはすべて GUI で実行できるため、コマンドラインを使用す る必要はありません。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_it_works">
+仕組み<a class="headerlink" href="#_how_it_works" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>このセクションでは、Proxmox VE HAマネージャの内部について詳しく説明します。関係するすべてのデーモンとその連携方法について説明します。HAを提供するために、各ノードで2つのデーモンが実行されます：</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">pve-ha-lrm</span></dt>
+<dd>
+<p>
+ローカルリソースマネージャ(LRM)は、ローカルノード上で動作するサービスを制御します。現在のマネージャステータスファイルからサービスの要求状態を読み取り、それぞれのコマンドを実行します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">pve-ha-crm</span></dt>
+<dd>
+<p>
+クラスタ全体の決定を行うクラスタリソースマネージャ（CRM）。LRMにコマンドを送信し、その結果を処理し、何か障害が発生した場合はリソースを他のノードに移動します。CRMはノードのフェンシングも行います。</p>
+</dd>
+</dl></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">
+<div class="title">LRMとCRMのロック</div>ロックは分散設定ファイルシステム（pmxcfs）によって提供され、各LRMが一度だけアクティブになって動作することを保証するために使用されます。LRMはロックを保持しているときだけアクションを実行するので、そのロックを取得できれば、故障したノードをフェンスされたものとしてマークすることができます。これにより、障害が発生したHAサービスを、未知の障害ノードからの干渉を受けずに安全に復旧させることができます。 これはすべて、現在マネージャのマスターロックを保持しているCRMによって監視されます。</td>
+</tr></table>
+</div>
+<div class="sect2">
+<h3 id="ha_manager_service_states">
+<span>サービス状態</span> <a class="headerlink" href="#ha_manager_service_states" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>CRM はサービス状態の列挙を使用して現在のサービス状態を記録します。この状態はGUIに表示され、<span class="monospaced">ha-manager</span>コマンドラインツールを使用して照会できます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager status quorum OK master elsa (active, Mon Nov 21 07:23:29 2016) lrm elsa (active, Mon Nov 21 07:23:22 2016) service ct:100 (elsa, stopped) service ct:102 (elsa, started) service vm:501 (elsa, started)</pre>
+</div></div>
+<div class="paragraph">
+<p>以下に可能な状態のリストを示します：</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+停止</dt>
+<dd>
+<p>
+サービスが停止（LRMで確認）。停止したサービスがまだ実行されていることを LRM が検出すると、再度停止します。</p>
+</dd>
+<dt class="hdlist1">
+リクエスト停止</dt>
+<dd>
+<p>
+サービスを停止する必要があります。CRM は LRM からの確認を待ちます。</p>
+</dd>
+<dt class="hdlist1">
+停止中</dt>
+<dd>
+<p>
+停止要求待ち。しかし、CRM は今のところ要求を受け取っていません。</p>
+</dd>
+<dt class="hdlist1">
+開始</dt>
+<dd>
+<p>
+サービスがアクティブで、LRM はまだ実行されていない場合、早急に開始する必要があります。 サービスが失敗し、実行されていないことが検出された場合、LRM はサービスを再起動します（<a href="ha-manager.1.html#ha_manager_start_failure_policy">開始失敗ポリシーを</a>参照）。</p>
+</dd>
+<dt class="hdlist1">
+開始</dt>
+<dd>
+<p>
+開始要求が保留中です。しかし、CRM は LRM からサービスが実行されていることを確認していません。</p>
+</dd>
+<dt class="hdlist1">
+フェンス</dt>
+<dd>
+<p>
+サービスノードがクォーレートクラスタパーティション内にないため、ノードのフェンシングを待ちます（<a href="ha-manager.1.html#ha_manager_fencing">フェンシングを</a>参照）。 ノードのフェンシングが成功すると、サービスはリカバリ状態になります。</p>
+</dd>
+<dt class="hdlist1">
+回復</dt>
+<dd>
+<p>
+サービスの回復を待ちます。HAマネージャはサービスが実行できる新しいノードを探そうとします。新しい利用可能なノードが見つかり次第、サービスはそこに移動され、最初は停止状態になります。実行するように設定されている場合は、新しいノードが実行します。</p>
+</dd>
+<dt class="hdlist1">
+フリーズ</dt>
+<dd>
+<p>
+サービスの状態には触れないでください。ノードを再起動するときや、LRMデーモンを再起動するときに、この状態を使用します（<a href="ha-manager.1.html#ha_manager_package_updates">パッケージの更新を</a>参照）。</p>
+</dd>
+<dt class="hdlist1">
+無視</dt>
+<dd>
+<p>
+一時的にサービスを完全に管理したい場合に便利です。</p>
+</dd>
+<dt class="hdlist1">
+マイグレーション</dt>
+<dd>
+<p>
+サービスを他のノードに（ライブで）移行します。</p>
+</dd>
+<dt class="hdlist1">
+エラー</dt>
+<dd>
+<p>
+LRMエラーが原因でサービスが無効になっています。手動操作が必要（<a href="ha-manager.1.html#ha_manager_error_recovery">エラー回復を</a>参照）。</p>
+</dd>
+<dt class="hdlist1">
+キュー</dt>
+<dd>
+<p>
+サービスが新しく追加され、CRMがそのサービスを見たことがない場合。</p>
+</dd>
+<dt class="hdlist1">
+無効</dt>
+<dd>
+<p>
+サービスが停止され、<span class="monospaced">無効と</span>マークされています。</p>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="ha_manager_lrm">
+<span>ローカルリソースマネージャ</span> <a class="headerlink" href="#ha_manager_lrm" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>ローカルリソースマネージャ<span class="monospaced">(pve-ha-lrm</span>)は起動時にデーモンとして起動され、HAクラスタがクォーレートされ、クラスタ全体のロックが機能するまで待機します。</p></div>
+<div class="paragraph">
+<p>LRMは以下の3つの状態になります：</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+エージェントロック待ち</dt>
+<dd>
+<p>
+LRM は排他ロックを待ちます。これは、サービスが設定されていない場合のアイドル状態としても使用されます。</p>
+</dd>
+<dt class="hdlist1">
+アクティブ</dt>
+<dd>
+<p>
+LRM は排他ロックを保持し、サービスが設定されています。</p>
+</dd>
+<dt class="hdlist1">
+エージェントロック紛失</dt>
+<dd>
+<p>
+LRMがロックを失いました。これは障害が発生し、クォーラムが失われたことを意味します。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p>LRM がアクティブな状態になった後、<span class="monospaced">/etc/pve/ha/manager_status</span>にあるマネージャ ステータス ファイルを読み込んで、所有するサービスに対して実行するコマンドを決定します。 各コマンドに対してワーカーが開始され、これらのワーカーは並行して実行され、デフォルトでは最大 4 つに制限されています。終了するとワーカープロセスは収集され、その結果は CRM のために保存されます。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAJhUlEQVRoge2ZWWycVxXHf+fce7/v
+m/GaGCde4pI0aQlJC0kRtE1L00JbLIjY4QkeUB9YHhAIJFCExAsKUkE8IAFFPIDUIqhBRSDRBUqC
+CimFFBCBpCWx02IaZ3G2SdyxPZ7vHh6+mcnSZnFjKIge6Wj8zYzvPf9z/me5d8TM+F8WfbkNuFx5
+BcDLLf/fAEZGRmx4eNh6enqsp6fHhoeHbWRk5D9aFeSlVqHNmzfb6H33sHnT7ZQmD5GfOMax6Sm+
+Pl5h1Yc+xpYtW2SBbX1ReUkRGBkZsdH77mHLW95EOv4Ms3ueJh6YYPHUFF9aljJ63z3cf//9/5FI
+vKQIDA8P293L2yhVjjH7t51ocDiviFecF46n7XzBreChhx4qNhH5t0XjJUVgx44ddGUZ9b/vIpQD
+oRQIWSDJAiFL6B9axo4dO4gxAmANWVDLG+Ln82URMRGhVCqRHxonlAPqFXWKC4r6IhI6OMjMzBN4
+/4LlTUQQEZxzZ32QJAlpmrb+p16vU6vVOHXq1AWjN18AnDj0F971vrs4OnmYJVkoDA4FCPUO172I
+Cgnt7SV++4vvsGhRJx3tJbIsRVVpsUnOBBABBVFEClKYwbKr7sTM7EIUnBcA7z21k7t49x1X8JXv
+bOWra7rw5QRtcN8PLCfvvZJvb9vJycpJpg4/hp/N0I4SMQs4Jw0A5zBXHGiCaIZIKABgpGlKjPEF
+0TpT5pUDRXiVt99+Le03r+WzuytM1gO6pB/3+o0cbxvk8yOPMjW6i2iR2lxOjJDHSDMFogmGwzQ7
+rRJAUpAENAGXIZq2AFzQpvkACCEQcahP+cRH3sKHn9zHXU+MM7rtGeD33NDXzaZynZU9gcezpUw9
+X6OzIyOakkfF4QEpPG6nDRNNEA2FSgKimETSNCXPc0II57VpXhEolUqoOrxPSLOMT330Dv5SqfKD
+NR388Y2L+caQsjITNv3pMBs3rOT56ZyZGaM+J0QUxDc0INrWUgggoRGBAOIRAt77hY1AmqaoeJxP
+cN645jVDbNn8Hj73o8fZ/af9mEE9j9y2YRXt5YzZWmRmzjj1/BwhTXAKzitOHEbeWlc0AVwDnCv8
+KoZzjotV33lTSL1HNKAuEtKM1169jM98/E6mTk3x4Nbd7Bk7TEdHRvAeVY+hmDqmZwx1kIkiqrhz
+S2zL+AbNMC6l/80LgHMOEY9oQvBCks5RKpXo7JhFxbhz42pet2aQet1YtLiDJAkIDq8BHwJmwlwO
+UaD0ojsrNKuUReIZyb9gABCHcwWFgg+0lTPyvIRToVzKWLpkMfV6REQplYvmZCj1uuBUSdJwTg8A
+XBdoCZMOsBkQBeGi/J83gBgjmABC8AlJGsjzFLMyaXDM1etEA0VR50iCx6mSZhkiijpPjEpQD+SF
+4WdJrTAewdCFB1CtVlFVVATnhMQnWJqC5aTBk+c5IIgWRoTgSZJAmiZAo1s7hwsppglI+fTiljeY
+nyHkLQotKIAYI4igzpFHISQOiwEnKTEG8hhRVZw6YjRQLfJGHcF7jleqTBw8znXr12MABnv37efY
+iSnesG4tiUsRUQwD7JIAzKsPqCqiRbVwweM04XdPjhJN+dvTBxgbn6G9q59yZx9/3HWEb33vN+zc
+/RzOJ+w/eJLtO8Z5ZNtT7PvHIUQTvvv9X/Lc/mN0d3by3fseRLQwvWh0Fy+h8wbQ2VFG1KM+xfuA
+qufo8So/fejPPD/rqJys8pvf7eLAoeNMHqnw2U9+kH3jVQ5MClMzKUla5obr13HliiEMmDx6gltv
+uY7Vr1nBQF8PJopQ9AFTt/AROFfMjCW9XTy19xB33Hodb924jr1j+/nDk3/nzTdei4jw3nfeyCOP
+bufa1y5jzeoVrcHM8HR3dfHlr/2Q+x94jFtuuh44/9B2PplXDryYLF3STXd3e+t5UXcHY89OsOH6
+NS2Qed7wpM1Rm50G4MGHH2P961Zy3bqreXrPP5mrzwLt5y6/cACq1eoLCKm+TN/SAebmfn8aUG83
+PYs7+cnPH+eqKwd5as8/edc7bi02847pmVkATk1VWbF8AOcca1Yv59DkqcYK0tCL02deACqVCldc
+0YdIwLmEPM9RV6NnUZlPf3wT6oqJcePN6wHhzTeu4/CRCrfctJ4sSxBRli7pYfHEMUSU97/7Th75
+1RP8eec+Yp5zzTVXM9DfDyogBvHS6HTJACYmJnjVoq5GFw0454gCEOnoaMfiNGZFFRFxJGkbywZ6
+i1NWoy9kWYmbb1gHKCHApuGbisVFGyoYUswa5OR5ftF56JIBjI6OMtDfWwAQ35jnc8AVpRXBohVq
+UowECKqK4RBxoE0W6gvGCcEjaOEAwEQWdpgbGxujt7erOLO2mk3R8i0Wz9EiuUGz+qlKEQEUaJbI
+4lTHmTVePKgWzpDGJGpc8CDTlEsuo88++wxXDA0UIUbAOP23KGZKjI48KnkuhcbiPbPCOBoeBikO
+Lk2VxjqNRilaAEqSZGEAbN261bZt+zW33XY7IAXXm6Ou0YhIMamaaUOl5WRrzg00viuKWWxpQUOH
+NAZFQRpD48Xlkig0MTHBB95zG+VSylz1KCbWyDOh2XyK+56IqjWMKigkUnzWnPPFFFRRLZ29SQRU
+ELOGY4pZ6LKOlM07mZ07d/KOtw1TcB4sGkTDiDQ9K1IkrKeYmQC08d7pZLSiRBpE5s7aS0XAHFEK
+AGY51Wr18g80Zmb33nsvX/z8XdSmj2AWOXhwkrxe46+79jB55Dh/3T2GxUhHextdXW2sXN7PNWtW
+IQKDA71FFBoAjIgQkVg/a5+oHrU5zIznDhxk964xKpXKggAoTlWW8+OfPorlOQ//cjsDy1bS2dFO
+W+diVly1iL6+Pqanpzl5qsL4pPHwN3/G1InDlMsZ7Z1tDA30cfWqIa5dexV9fb2YnT7UTxw4xsHJ
+o4yOjfOP8QOMjx/k4OQx7r777lY0zycXvJ02M4sxMjg4SL1eR0TYsGEDw8PD9PX10d7ejogUN3a1
+GqpKCIE8z5mdnUVVqVarbN++nba2Nvbu3csDDzyAqrJ8+atb+zjn6e/vZ/Xq1axatYq1a9fS29tL
+lmUMDQ1RKpXOm9EXvV6v1+tWr9eZnp5mZmaGWq1GjLHF62aiNZ+bnPfe45xrvTZzxMyYmZk56+LX
+zKjX661DvHOOJElIkoRSqYT3/vLvRlW15eHCa4VxzdvmpjZDfubzuXeb3vuzqCEixBhbo0NTkyS5
+PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">
+<div class="title">最大同時ワーカー数調整のヒント</div>デフォルト値の最大同時ワーカー数4は、特定の設定に適さない場合があります。例えば、4つのライブマイグレーションが同時に発生する可能性があり、低速なネットワークや大きな（メモリの）サービスでネットワークが混雑する可能性があります。また、最悪の場合、<span class="monospaced">max_workerの</span>値を下げてでも、輻輳が最小になるようにしてください。逆に、特にパワフルでハイエンドなセットアップを使用している場合は、max_workerの値を大きくすることもできます。</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>CRM が要求する各コマンドは UID で一意に識別できます。ワーカーが終了すると、その結果は処理され、LRM ステータスファイル<span class="monospaced">/etc/pve/nodes/&lt;nodename&gt;/lrm_status</span> に書き込まれます。そこで CRM はそれを収集し、コマンド出力に応じたステートマシンを動作させることができます。</p></div>
+<div class="paragraph">
+<p>通常、CRM と LRM 間の各サービスのアクションは常に同期されます。 これは、CRM が UID で一意にマークされた状態を要求し、LRM がこのアクションを<strong>1 回</strong>実行し、同じ UID で識別可能な結果を書き戻すことを意味します。これは、LRMが古いコマンドを実行しないようにするために必要です。 この動作の唯一の例外は、<span class="monospaced">停止</span>コマンドと<span class="monospaced">エラー</span>コマンドです。この2つは生成される結果に依存せず、停止状態の場合は常に実行され、エラー状態の場合は1回実行されます。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">
+<div class="title">ログを読む</div>HA Stackはすべての動作をログに記録します。これはクラスタ内で何が、そしてなぜ何かが起こるのかを理解するのに役立ちます。ここでは、LRMとCRMの両方のデーモンが何をしたかを見ることが重要です。サービスが存在するノード上では<span class="monospaced">journalctl -u pve-ha-lrm を</span>、現在のマスタであるノード上では pve-ha-crm に対して同じコマンドを使用できます。</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ha_manager_crm">
+<span>クラスタリソースマネージャ</span> <a class="headerlink" href="#ha_manager_crm" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>クラスタリソースマネージャ<span class="monospaced">(pve-ha-crm</span>)は各ノード上で起動し、マネージャロックを待ちます。マネージャーロックの取得に成功したノードはCRMマスターに昇格します。</p></div>
+<div class="paragraph">
+<p>CRMマスターは3つの状態になります：</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+エージェントロック待ち</dt>
+<dd>
+<p>
+CRM は排他ロックを待ちます。これは、サービスが構成されていない場合のアイドル状態としても使用されます。</p>
+</dd>
+<dt class="hdlist1">
+アクティブ</dt>
+<dd>
+<p>
+CRM が排他ロックを保持し、サービスが構成されています。</p>
+</dd>
+<dt class="hdlist1">
+失われたエージェントロック</dt>
+<dd>
+<p>
+これは、障害が発生してクォーラムが失われたことを意味します。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p>主なタスクは、高可用性に設定されているサービスを管理し、常に要求された状態を強制しようとすることです。たとえば、要求された状態が<em>started</em>のサービスは、まだ実行されていなければ開始されます。このように、CRMはLRMが実行する必要のあるアクションを指示します。</p></div>
+<div class="paragraph">
+<p>あるノードがクラスタクォーラムから離脱すると、そのノードの状態は不明（unknown）に変更されます。 現在のCRMが故障したノードのロックを確保できれば、サービスは<em>盗まれて</em>別のノードで再起動されます。</p></div>
+<div class="paragraph">
+<p>クラスタ・メンバがクラスタ・クォーラムから外れたと判断すると、LRMは新しいクォーラムが形成されるのを待ちます。クラスタ・クォーラムが形成されるまで、ノードはウォッチドッグをリセットできません。ノード上にアクティブなサービスがある場合、またはLRMまたはCRMプロセスがスケジュールされていない場合、または強制終了された場合、ウォッチドッグがタイムアウトした後に再起動がトリガされます（これは60秒後に発生します）。</p></div>
+<div class="paragraph">
+<p>ノードにアクティブな CRM があっても LRM がアイドル状態の場合は、クォーラムが失われてもセルフ・フェンスのリセットはトリガされないことに注意してください。この理由は、CRM がアクセスするすべての状態ファイルと構成は<a href="pmxcfs.8.html#chapter_pmxcfs">クラスタ構成ファイルシステムによって</a>バックアップされており、クォーラムが失われると読み込み専用になるためです。つまり、CRM はプロセスが長時間スケジューリングされないように自身を保護するだけでよく、その場合、別の CRM が状況を知らずに引き継ぎ、HA 状態の破損を引き起こす可能性があります。 オープン・ウォッチドッグは、このようなことが起こらないようにします。</p></div>
+<div class="paragraph">
+<p>サービスが 15 分以上設定されない場合、CRM は自動的にアイドル状態に戻り、ウォッチドッグは完全に閉じられます。</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ha_simulator">
+HA シミュレータ<a class="headerlink" href="#_ha_simulator" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<a class="image" href="images/screenshot/gui-ha-manager-status.png">
+<img src="images/screenshot/gui-ha-manager-status.png" alt="screenshot/gui-ha-manager-status.png" width=250 style="padding: 0 0 0 10px;float:right;" /></a>
+<p>HAシミュレータを使用すると、Proxmox VE HAソリューションのすべての機能をテストし、学習することができます。</p></div>
+<div class="paragraph">
+<p>デフォルトでは、シミュレータは6つのVMを持つ実際の3ノードクラスタの動作を監視し、テストすることができます。また、VMやコンテナの追加や削除も可能です。</p></div>
+<div class="paragraph">
+<p>実際のクラスタをセットアップしたり設定したりする必要はありません。</p></div>
+<div class="paragraph">
+<p>aptでインストール</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>apt install pve-ha-simulator</pre>
+</div></div>
+<div class="paragraph">
+<p>他のProxmox VEパッケージがないDebianベースのシステムにもインストールできます。  その場合、パッケージをダウンロードし、実行したいシステムにコピーしてインストールする必要があります。  ローカルファイルシステムから apt を使ってパッケージをインストールすると、必要な依存関係も解決されます。</p></div>
+<div class="paragraph">
+<p>リモートマシンでシミュレータを起動するには、現在のシステムへの X11 リダイレクトが必要です。</p></div>
+<div class="paragraph">
+<p>Linuxマシンであれば、X11リダイレクトを使うことができます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>ssh root@&lt;IPofPVE&gt; -Y</pre>
+</div></div>
+<div class="paragraph">
+<p>Windows では<a href="https://mobaxterm.mobatek.net/">mobaxterm</a> で動作します。</p></div>
+<div class="paragraph">
+<p>シミュレータがインストールされた既存の Proxmox VE に接続するか、ローカルの Debian ベースのシステムに手動でインストールしたら、以下のようにして試すことができます。</p></div>
+<div class="paragraph">
+<p>まず、シミュレータが現在の状態を保存し、デフォルトの設定を書き込む作業ディレクトリを作成する必要があります：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>mkdir working</pre>
+</div></div>
+<div class="paragraph">
+<p>作成したディレクトリを<em>pve-ha-simulator</em> にパラメータとして渡すだけです：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>pve-ha-simulator working/</pre>
+</div></div>
+<div class="paragraph">
+<p>その後、シミュレートしたHAサービスを起動、停止、移行したり、ノード障害時に何が起こるかをチェックしたりすることができます。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration">
+構成<a class="headerlink" href="#_configuration" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>HAスタックはProxmox VE APIにうまく統合されています。例えば、<span class="monospaced">ha-manager</span>コマンドラインインタフェースやProxmox VEウェブインタフェースでHAを設定できます。自動化ツールはAPIを直接使用できます。</p></div>
+<div class="paragraph">
+<p>すべての HA 設定ファイルは<span class="monospaced">/etc/pve/ha/</span> 内にあるので、クラスタノードに自動的に配布され、すべてのノードが同じ HA 設定を共有します。</p></div>
+<div class="sect2">
+<h3 id="ha_manager_resource_config">
+<span>リソース</span> <a class="headerlink" href="#ha_manager_resource_config" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<a class="image" href="images/screenshot/gui-ha-manager-status.png">
+<img src="images/screenshot/gui-ha-manager-status.png" alt="screenshot/gui-ha-manager-status.png" width=250 style="padding: 0 0 0 10px;float:right;" /></a>
+<p>リソース設定ファイル<span class="monospaced">/etc/pve/ha/resources.cfg</span>は<span class="monospaced">ha-manager</span> が管理するリソースのリストを保存します。そのリスト内のリソース設定は以下のようになります：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>&lt;type&gt;: &lt;name&gt; &lt;property&gt; &lt;value&gt; ...</pre>
+</div></div>
+<div class="paragraph">
+<p>リソースの種類から始まり、コロンで区切られたリソース固有の名前が続きます。これはすべての<span class="monospaced">ha-manager</span>コマンドでリソースを一意に識別するために使用されます(例:<span class="monospaced">vm:100</span>または<span class="monospaced">ct:101</span>)。次の行は追加のプロパティです：</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">コメント</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+説明</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">failback</span>:<span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+現在のノードよりも優先度の高いノードがオンラインになった場合、そのノードのノードアフィニティルールに従って、最も優先度の高いノードにHAリソースを自動的に移行します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">group</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+HAグループの識別子。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">max_relocate</span>:<span class="monospaced">&lt;integer&gt; (0 - N)</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+サービスの起動に失敗した場合のサービス再配置の最大試行回数。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">max_restart</span>:<span class="monospaced">&lt;integer&gt; (0 - N)</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+サービスの起動に失敗した後、そのノード上でサービスを再起動する最大試行回数。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">state</span>:<span class="monospaced">&lt;無効 | 有効 | 無視 | 開始 | 停止&gt;</span><em>(デフォルト =</em> <span class="monospaced">開始</span>)</dt>
+<dd>
+<p>
+要求リソース状態。CRMはこの状態を読み取り、それに従って動作します。<span class="monospaced">enabledは</span>単に<span class="monospaced">startedの</span>エイリアスであることに注意してください。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">開始</span></dt>
+<dd>
+<div class="paragraph">
+<p>CRM がリソースの起動を試みます．起動に成功すると，サービス状態は<span class="monospaced">startedに</span>設定されます．ノードに障害が発生した場合，または起動に失敗した場合，リソースの復旧を試みます．  すべて失敗した場合、サービス状態は<span class="monospaced">エラーに</span>設定されます。</p></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">停止</span></dt>
+<dd>
+<div class="paragraph">
+<p>CRMはリソースを<span class="monospaced">停止</span>状態に維持しようとしますが、ノード障害時にはリソースの再配置を試みます。</p></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">無効</span></dt>
+<dd>
+<div class="paragraph">
+<p>CRMはリソースを<span class="monospaced">停止</span>状態にしようとしますが、ノード障害時にリソースの再配置は試みません。この状態の主な目的はエラーリカバリーで、リソースを<span class="monospaced">エラー</span>状態から移動させる唯一の方法だからです。</p></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">無視</span></dt>
+<dd>
+<div class="paragraph">
+<p>リソースはマネージャステータスから削除されるため、CRMとLRMはリソースに触れなくなります。このリソースに影響するすべての{pve}APIコールは実行されます。このリソースに影響を与えるAPIコールは、HAスタックを直接バイパスして実行されます。ソースがこの状態にある間、CRMコマンドは破棄されます。リソースはノード障害時に再配置されません。</p></div>
+</dd>
+</dl></div>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p>以下は、1つのVMと1つのコンテナを使った実際の例です。ご覧のように、これらのファイルの構文は実にシンプルなので、お気に入りのエディタを使ってこれらのファイルを読んだり編集したりすることも可能です：</p></div>
+<div class="listingblock">
+<div class="title">設定例<span class="monospaced">(/etc/pve/ha/resources.cfg</span>)</div>
+<div class="content monospaced">
+<pre>vm: 501 state started max_relocate 2 ct: 102 # 注意: 全てデフォルト設定を使用</pre>
+</div></div>
+<div class="paragraph">
+<a class="image" href="images/screenshot/gui-ha-manager-add-resource.png">
+<img src="images/screenshot/gui-ha-manager-add-resource.png" alt="screenshot/gui-ha-manager-add-resource.png" width=250 style="padding: 0 0 0 10px;float:right;" /></a>
+<p>上記の設定は<span class="monospaced">ha-manager</span>コマンドラインツールを使って生成されました：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager add vm:501 --state started --max_relocate 2 # ha-manager add ct:102</pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="ha_manager_groups">
+<span>グループ</span> <a class="headerlink" href="#ha_manager_groups" title="Permalink to this heading"></a></h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">HA Groupsは廃止され、Proxmox VE 9.0からHA Node Affinityルールに移行されました。</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<a class="image" href="images/screenshot/gui-ha-manager-groups-view.png">
+<img src="images/screenshot/gui-ha-manager-groups-view.png" alt="screenshot/gui-ha-manager-groups-view.png" width=250 style="padding: 0 0 0 10px;float:right;" /></a>
+<p>HA グループ設定ファイル<span class="monospaced">/etc/pve/ha/groups.cfg</span>はクラスタ ノードのグループを定義するために使用されます。リソースはそのグループのメンバー上でのみ実行されるように制限することができます。グループ構成は以下のようになります：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>group: &lt;group&gt; nodes &lt;node_list&gt; &lt;property&gt; &lt;value&gt; ...</pre>
+</div></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">コメント</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+説明</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ノード</span>:<span class="monospaced">&lt;node&gt;[:&lt;pri&gt;]{,&lt;node&gt;[:&lt;pri&gt;]}* .</span></dt>
+<dd>
+<p>
+クラスタノードメンバーのリストで、各ノードに優先順位を与えることができます。グループにバインドされたリソースは、最も高い優先度を持つ利用可能なノード上で実行されます。最も優先度の高いクラスのノードが多い場合、サービスはそれらのノードに分散されます。優先順位は相対的な意味しか持ちません。数字が大きいほど優先度が高くなります。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">nofailback</span>:<span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+CRMは最も優先度の高いノードでサービスを実行しようとします。より高い優先度を持つノードがオンラインになると、CRM はそのノードにサービスを移行します。nofailback を有効にすると、この動作が防止されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">restricted</span>:<span class="monospaced">&lt;ブール値&gt;</span><em>(default =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+制限付きグループにバインドされたリソースは、そのグループによって定義されたノードでのみ実行できます。グループノードのメンバがオンラインでない場合、リソースは停止状態になります。非制限グループのリソースは、グループ・メンバがすべてオフラインの場合、どのクラスタ・ノードでも実行できますが、グループ・メンバがオンラインになるとすぐにマイグレーション・バックします。メンバが1人だけの無制限グループを使用して、<em>優先ノードの</em>動作を実装できます。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<a class="image" href="images/screenshot/gui-ha-manager-add-group.png">
+<img src="images/screenshot/gui-ha-manager-add-group.png" alt="screenshot/gui-ha-manager-add-group.png" width=250 style="padding: 0 0 0 10px;float:right;" /></a>
+<p>リソースが特定のノードで実行されることが一般的な要件です。通常、リソースは他のノードでも実行できるので、単一のメンバーで制限のないグループを定義できます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager groupadd prefer_node1 --nodes node1</pre>
+</div></div>
+<div class="paragraph">
+<p>大規模なクラスタでは、より詳細なフェイルオーバー動作を定義することが理にかなっています。例えば、可能であれば<span class="monospaced">node</span>1で一連のサービスを実行したいとします。<span class="monospaced">node1が</span>利用できない場合は、<span class="monospaced">node</span>2と<span class="monospaced">node</span>3で均等にサービスを実行します。これらのノードにも障害が発生した場合は、<span class="monospaced">node4で</span>サービスを実行する必要があります。これを実現するには、ノードリストを次のように設定します：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager groupadd mygroup1 -nodes "node1:2,node2:1,node3:1,node4"</pre>
+</div></div>
+<div class="paragraph">
+<p>もう1つのユースケースは、リソースが特定のノード（例えば<span class="monospaced">node</span>1と<span class="monospaced">node2</span>）でしか利用できない他のリソースを使用する場合です。HAマネージャが他のノードを使用しないようにする必要があるため、当該ノードを含む制限付きグループを作成する必要があります：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager groupadd mygroup2 -nodes "node1,node2" -制限付き</pre>
+</div></div>
+<div class="paragraph">
+<p>上記のコマンドにより、以下のグループ設定ファイルが作成されました：</p></div>
+<div class="listingblock">
+<div class="title">設定例<span class="monospaced">(/etc/pve/ha/groups.cfg</span>)</div>
+<div class="content monospaced">
+<pre>group: prefer_node1 nodes node1 group: mygroup1 nodes node2:1,node4,node1:2,node3:1 group: mygroup2 nodes node2,node1 restricted 1</pre>
+</div></div>
+<div class="paragraph">
+<p><span class="monospaced">nofailback</span>オプションは、管理作業中に不要なリソースの移動を回避するのに便利です。例えば、あるサービスをグループ内で最高の優先度を持たないノードに移行する必要がある場合、<span class="monospaced">nofailback</span>オプションを設定することで、このサービスを即座に戻さないようにHAマネージャに指示する必要があります。</p></div>
+<div class="paragraph">
+<p>もう1つのシナリオは、サービスがフェンスされ、別のノードにリカバリされた場合です。管理者はフェンスで保護されたノードを修復し、再びオンラインにして障害の原因を調査し、再び安定して動作するかどうかを確認しようとします。<span class="monospaced">nofailback</span>フラグを設定することで、復旧したサービスがそのままフェンスで保護されたノードに戻ることを防ぎます。</p></div>
+</div>
+<div class="sect2">
+<h3 id="ha_manager_rules">
+<span>ルール</span> <a class="headerlink" href="#ha_manager_rules" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>HA ルールは、HA が管理するリソースに特定の制約を設定するために使用され、HA ルール設定ファイル<span class="monospaced">/etc/pve/ha/rules.cfg</span> で定義されます。</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>&lt;type&gt;: &lt;rule&gt; resources &lt;resources_list&gt; &lt;property&gt; &lt;value&gt; ...</pre>
+</div></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">コメント</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+HAルールの説明。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">disable</span>:<span class="monospaced">&lt;論理値</span></dt>
+<dd>
+<p>
+HAルールが無効かどうか。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">resources</span>:<span class="monospaced">&lt;タイプ&gt;:&lt;名前&gt;{,&lt;タイプ&gt;:&lt;名前&gt;}*。</span></dt>
+<dd>
+<p>
+HAリソースIDのリスト。これは、リソースタイプのリストと、コロンで区切られたリソース固有の名前（例：vm:100,ct:101）で構成されます。</p>
+</dd>
+</dl></div>
+<div style="overflow-x:auto">
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<caption class="title">表2.利用可能なHAルールタイプ</caption>
+<col style="width:25%;" />
+<col style="width:75%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">HAルールタイプ        </th>
+<th class="tableblock halign-left valign-top">説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="monospaced">ノードアフィニティ</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1つまたは複数のHAリソースから1つまたは複数のノードへのアフィニティを配置します。</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="monospaced">リソースアフィニティ</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2つ以上のHAリソース間にアフィニティを設定します。<span class="monospaced">正の</span>アフィニティはHAリソースを別々のノードに置くことを指定し、<span class="monospaced">別の</span>アフィニティはHAリソースを同じノードに置くことを指定します。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="ha_manager_node_affinity_rules">ノード親和性ルール<a class="headerlink" href="#ha_manager_node_affinity_rules" title="Permalink to this heading"></a></h4>
+<div class="paragraph">
+<p>デフォルトでは、HAリソースはどのクラスタノードでも実行できますが、よくある要件として、HAリソースは特定のノードで実行する必要があります。これは、HAリソース<span class="monospaced">vm:100が</span>ノード<span class="monospaced">node1を</span>優先するように、HAノードアフィニティルールを定義することで実装できます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager rules add node-affinity ha-rule-vm100 --resources vm:100 --nodes node1</pre>
+</div></div>
+<div class="paragraph">
+<p>デフォルトでは、ノードアフィニティルールは厳密ではありません。 つまり、指定されたノードに利用可能なものがない場合、HAリソースを他のノードに移動することもできます。 一方、HAリソースを指定されたノードに制限する必要がある場合は、ノードアフィニティルールを厳密なものに設定する必要があります。</p></div>
+<div class="paragraph">
+<p>前述の例では、ノードアフィニティルールを変更して、リソース<span class="monospaced">vm:100を</span> <span class="monospaced">node1のみに</span>制限することができます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager rules set node-affinity ha-rule-vm100 --strict 1</pre>
+</div></div>
+<div class="paragraph">
+<p>大規模なクラスタや特定のユースケースの場合は、より詳細なフェイルオーバー動作を定義することが理にかなっています。たとえば、リソース<span class="monospaced">vm:200と</span> <span class="monospaced">ct:300は</span> <span class="monospaced">node</span>1で実行する必要があります。<span class="monospaced">node1が</span>使用不能になった場合、リソースを<span class="monospaced">node</span>2と<span class="monospaced">node</span>3に分散させます。<span class="monospaced">node</span>2と<span class="monospaced">node3も</span>利用できない場合は、<span class="monospaced">node4で</span>リソースを実行します。</p></div>
+<div class="paragraph">
+<p>この動作をノード・アフィニティ・ルールで実装するには、ノードに優先順位を付けてペアにします。2つ以上のノードが同じ優先度を持つ場合、リソースはそれらのノードで実行できます。上記の例では、<span class="monospaced">node1が</span>最も高い優先度、<span class="monospaced">node</span>2と<span class="monospaced">node3が</span>同じ優先度、最後に<span class="monospaced">node4が</span>最も低い優先度となります：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager rules add node-affinity priority-cascade \ --resources vm:200,ct:300 --nodes "node1:2,node2:1,node3:1,node4"</pre>
+</div></div>
+<div class="paragraph">
+<p>上記のコマンドにより、ルール設定ファイルに以下のルールが作成されます：</p></div>
+<div class="listingblock">
+<div class="title">ノードアフィニティルールの設定例<span class="monospaced">(/etc/pve/ha/rules.cfg</span>)</div>
+<div class="content monospaced">
+<pre>ノードアフィニティ: ha-rule-vm100 リソース vm:100 ノード node1 strict 1 ノードアフィニティ: priority-cascade リソース vm:200,ct:300 ノード node1:2,node2:1,node3:1,node4</pre>
+</div></div>
+<div class="sect4">
+<h5 id="_node_affinity_rule_properties">ノードアフィニティルールプロパティ<a class="headerlink" href="#_node_affinity_rule_properties" title="Permalink to this heading"></a></h5>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">ノード</span>:<span class="monospaced">&lt;node&gt;[:&lt;pri&gt;]{,&lt;node&gt;[:&lt;pri&gt;]}* *.</span></dt>
+<dd>
+<p>
+クラスタノードメンバのリストで、各ノードに優先度を与えることができます。グループにバインドされたリソースは、最も高い優先度を持つ利用可能なノード上で実行されます。最も優先度の高いクラスのノードが多い場合、サービスはそれらのノードに分散されます。優先順位は相対的な意味しか持ちません。数字が大きいほど優先度が高くなります。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">resources</span>:<span class="monospaced">&lt;タイプ&gt;:&lt;名前&gt;{,&lt;タイプ&gt;:&lt;名前&gt;}*。</span></dt>
+<dd>
+<p>
+HAリソースIDのリスト。リソースの種類と、コロンで区切られたリソース固有の名前（例：vm:100,ct:101）で構成されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">strict</span>:<span class="monospaced">&lt;論理値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+ノードアフィニティルールが厳密か非厳密かを記述します。</p>
+<div class="paragraph">
+<p>非厳密なノード・アフィニティ・ルールは、リソースが定義されたノード上にあることを優先します。 定義されたノードが利用できない場合、リソースは他のノードで実行できます。</p></div>
+<div class="paragraph">
+<p>厳密なノードアフィニティルールは、リソースを定義されたノードに制限します。定義されたノードが1つも利用できない場合、リソースは停止されます。</p></div>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="ha_manager_resource_affinity_rules">リソース親和性ルール<a class="headerlink" href="#ha_manager_resource_affinity_rules" title="Permalink to this heading"></a></h4>
+<div class="paragraph">
+<p>もう 1 つの一般的な要件は、2 つ以上の HA リソースを同じノードで実行するか、別々のノードに分散して実行す ることです。これらは一般に「親和性/反親和性制約」とも呼ばれます。</p></div>
+<div class="paragraph">
+<p>例えば、HAリソースの<span class="monospaced">vm:100と</span> <span class="monospaced">vm:200の</span>間で、Webサーバーとデータベースサーバーのような通信トラフィックが多く発生するとします。これらのHAリソースが別々のノードにある場合、レイテンシが高くなり、不必要なネットワーク負荷がかかる可能性があります。アフィニティ<span class="monospaced">正を</span>持つリソースアフィニティルールは、HAリソースを同じノードに置くという制約を実装しています：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager rules add resource-affinity keep-together \ --affinity positive --resources vm:100,vm:200</pre>
+</div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">共通のHAリソースを持つ2つ以上の正のリソース親和性ルールがある場合、これらは1つの正のリソース親和性ルールとして扱われます。例えば、HAリソース<span class="monospaced">vm:100と</span> <span class="monospaced">vm:101</span>、およびHAリソース<span class="monospaced">vm:101と</span> <span class="monospaced">vm:102が</span>それぞれ1つの正リソースアフィニティルールに含まれる場合、<span class="monospaced">vm:100</span>、<span class="monospaced">vm:101</span>、および<span class="monospaced">vm:102が</span>1つの正リソースアフィニティルールに含まれるのと同じことになります。</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">正リソースアフィニティルールのHAリソースが現在異なるノードで動作している場合、CRSはHAリソースのほとんどをすでに動作しているノードに移動します。HAリソース数が同数の場合、アルファベット順で最初に名前が表示されるノードが選択されます。</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>しかし、HAリソースの<span class="monospaced">vm:200と</span> <span class="monospaced">ct:300で</span>、計算量の多い分散プログラム、例えばシャード化されたデータベースインスタンスが動作しているとします。このような場合、同じノード上でこれらのプログラムを実行すると、ノードのハードウェアリソースが圧迫され、HAリソースの動作が遅くなる可能性があります。アフィニティ<span class="monospaced">負を</span>持つリソースアフィニティルールは、HAリソースを別々のノードに分散させる制約を実装します：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager rules add resource-affinity keep-separate  \ --affinity negative --resources vm:200,ct:300</pre>
+</div></div>
+<div class="paragraph">
+<p>ノードアフィニティルール以外のリソースアフィニティルールは、デフォルトで厳格に設定されています。つまり、リソースアフィニティルールによって設定された制約をHAリソースが満たせない場合、HA ManagerはそのHAリソースをフェイルオーバー時の復旧状態やエラー状態にします。</p></div>
+<div class="paragraph">
+<p>以上のコマンドにより、ルール設定ファイルに以下のルールが作成されました：</p></div>
+<div class="listingblock">
+<div class="title">リソースアフィニティルールの構成例<span class="monospaced">(/etc/pve/ha/rules.cfg</span>)</div>
+<div class="content monospaced">
+<pre>resource-affinity: keep-together リソース vm:100,vm:200 アフィニティ正 resource-affinity: keep-separate リソース vm:200,ct:300 アフィニティ負</pre>
+</div></div>
+<div class="sect4">
+<h5 id="_interactions_between_positive_and_negative_resource_affinity_rules">リソース親和性ルールの構成例 (/etc/pve/ha/rules.cfg) 正と負のリソース親和性ルール間の相互作用<a class="headerlink" href="#_interactions_between_positive_and_negative_resource_affinity_rules" title="Permalink to this heading"></a></h5>
+<div class="paragraph">
+<p>正のリソースアフィニティルールの中に、負のリソースアフィニティルールの一部でもあるHAリソースが存在する場合、正のリソースアフィニティルールの他のHAリソースは、これらの負のリソースアフィニティルールのHAリソースとも負のアフィニティになります。</p></div>
+<div class="paragraph">
+<p>例えば、HA資源<span class="monospaced">vm:100</span>、<span class="monospaced">vm:101</span>、<span class="monospaced">vm:102が</span>正の資源親和性ルールの中にあり、<span class="monospaced">vm:100が</span>HA資源<span class="monospaced">ct:200と</span>負の資源親和性ルールの中にある場合、<span class="monospaced">vm:101と</span> <span class="monospaced">vm:102は</span>それぞれ<span class="monospaced">ct:200とも</span>負の資源親和性を持ちます。</p></div>
+<div class="paragraph">
+<p>正負両方のリソースアフィニティルールに2つ以上のHAリソースが含まれている場合、競合が発生するため、これらのリソースは無効になります。これらのケースの詳細については、以下の<a href="ha-manager.1.html#ha_manager_rule_conflicts">ルールの競合とエラーの</a>セクションを参照してください。</p></div>
+</div>
+<div class="sect4">
+<h5 id="_interactions_between_node_and_positive_resource_affinity_rules">ノードと正のリソース親和性ルール間の相互作用<a class="headerlink" href="#_interactions_between_node_and_positive_resource_affinity_rules" title="Permalink to this heading"></a></h5>
+<div class="paragraph">
+<p>ノードアフィニティルールの中に、正のリソースアフィニティルールの一部でもあるHAリソースがある場合、正のリソースアフィニティルールに含まれる他のHAリソースもすべてノードアフィニティルールを継承します。</p></div>
+<div class="paragraph">
+<p>例えば、HAリソース<span class="monospaced">vm:100</span>、<span class="monospaced">vm:101</span>、<span class="monospaced">vm:102が</span>正のリソースアフィニティルール内にあり、<span class="monospaced">vm:102が</span>ノードアフィニティルール内にある場合、<span class="monospaced">vm</span> <span class="monospaced">:</span> <span class="monospaced">100と</span> <span class="monospaced">vm:101は</span> <span class="monospaced">ノード</span> <span class="monospaced">3</span>上にのみ存在するように制限されます。</p></div>
+<div class="paragraph">
+<p>正のリソースアフィニティルールと異なるノードアフィニティルールに2つ以上のHAリソースが存在する場合、これらのルールはエラーとなり、現在サポートされていないため無効になることに注意してください。このような場合の詳細については、以下の<a href="ha-manager.1.html#ha_manager_rule_conflicts">ルールの競合とエラーの</a>セクションを参照してください。</p></div>
+</div>
+<div class="sect4">
+<h5 id="_resource_affinity_rule_properties">リソース親和性ルールのプロパティ<a class="headerlink" href="#_resource_affinity_rule_properties" title="Permalink to this heading"></a></h5>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">アフィニティ</span>:<span class="monospaced">&lt;負｜正</span></dt>
+<dd>
+<p>
+HAリソースを同じノードに保持する<em>（正</em>）か、別々のノードに保持する<em>（負</em>）かを記述します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">resources</span>:<span class="monospaced">&lt;タイプ&gt;:&lt;名前&gt;{,&lt;タイプ&gt;:&lt;名前&gt;}*。</span></dt>
+<dd>
+<p>
+HAリソースIDのリスト。これは、リソースタイプのリストと、コロンで区切られたリソース固有の名前から構成されます（例：vm:100,ct:101）。</p>
+</dd>
+</dl></div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ha_manager_rule_conflicts">
+<span>ルールの競合とエラー</span> <a class="headerlink" href="#ha_manager_rule_conflicts" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>HA ルールは、HA リソースに対してかなり複雑な制約を課すことができます。新しいHAルールや修正されたHAルールがHAスタックのCRSスケジューラに不確実性をもたらさないようにするために、HAルールは適用される前に実現可能性がテストされます。これらのテストに不合格となったルールについては、コンフリクトやエラーが解決されるまで、これらのルールは無効化されます。</p></div>
+<div class="paragraph">
+<p>現在、HAルールは以下の実現可能性テストに対してチェックされます：</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+1つのHAリソースは、1つのHAノードアフィニティルールにのみ含めることができます。</p>
+</li>
+<li>
+<p>
+HAリソースアフィニティルールには、少なくとも2つのHAリソースが必要です。</p>
+</li>
+<li>
+<p>
+負のHAリソースアフィニティルールでは、クラスタ内のノード数よりも多くのHAリソースを指定することはできません。さもなければ、HAリソースを分離するのに十分なノード数がありません。</p>
+</li>
+<li>
+<p>
+正のHAリソースアフィニティルールは、負のHAリソースアフィニティルールと同じ2つ以上のHAリソースを指定することはできません。つまり、2つ以上のHAリソースを同時に分離することはできません。</p>
+</li>
+<li>
+<p>
+HA資源は、HAノードアフィニティルールとHA資源アフィニティルールの両方を同時に指定することはできません。</p>
+</li>
+<li>
+<p>
+正のHA資源対応ルールのHA資源は、最大でも1つのHAノード対応ルールにのみ属することができます。</p>
+</li>
+<li>
+<p>
+負のHA資源割り当てルールのHA資源は，そのノード割り当てルールによって，HA資源よりも少ないノードに制限することはできません．さもなければ、HAリソースを分離するのに十分なノード数がありません。</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ha_manager_fencing">
+フェンシング<a class="headerlink" href="#ha_manager_fencing" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ノードの障害が発生した場合、フェンシングにより、エラーが発生したノードのオフラインが保証されます。こ れは、 リ ソ ース が別の ノ ー ド で復旧 し た と き に二度実行 さ れない よ う にす る ために必要です。これがなければ、別のノードでリソースをリカバリできないため、これは本当に重要なタスクです。</p></div>
+<div class="paragraph">
+<p>もしノードがフェンスされなければ、そのノードは未知の状態になり、共有リソースにまだアクセスできるかもしれません。これは本当に危険です！ストレージ以外のすべてのネットワークが壊れたとします。パブリック・ネットワークからはアクセスできませんが、VMはまだ稼働しており、共有ストレージに書き込んでいます。</p></div>
+<div class="paragraph">
+<p>このVMを別のノードで起動すると、両方のノードから書き込みが行われるため、危険な競合状態が発生します。このような状態になると、VMのデータがすべて破壊され、VM全体が使用不能になる可能性があります。また、ストレージが複数マウントを防止している場合、リカバリに失敗する可能性もあります。</p></div>
+<div class="sect2">
+<h3 id="_how_proxmox_ve_fences">
+<span>Proxmox VE フェンスの仕組み</span> <a class="headerlink" href="#_how_proxmox_ve_fences" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>例えば、ノードからの電力を遮断したり、通信を完全に無効にしたりするフェンスデバイスなどです。これらのデバイスは非常に高価であることが多く、故障するとサービスを回復できないため、システムにさらに重要なコンポーネントを追加することになります。</p></div>
+<div class="paragraph">
+<p>そこで私たちは、外部ハードウェアを追加する必要のない、よりシンプルなフェンシング方法を統合したいと考えました。これにはウォッチドッグ・タイマーを使用します。</p></div>
+<div class="ulist"><div class="title">可能なフェンシング方法</div><ul>
+<li>
+<p>
+外部電源スイッチ</p>
+</li>
+<li>
+<p>
+スイッチ上のネットワークトラフィックを完全に無効にすることでノードを分離</p>
+</li>
+<li>
+<p>
+ウォッチドッグタイマによるセルフフェンシング</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>ウォッチドッグ・タイマーは、マイクロコントローラーが登場した当初から、重要で信頼性の高いシステムで広く使用されてきました。ウォッチドッグ・タイマーは多くの場合、シンプルで独立した集積回路であり、コンピュータの誤動作を検出して回復するために使用されます。</p></div>
+<div class="paragraph">
+<p>通常動作中、<span class="monospaced">ha-manager は</span>定期的にウォッチドッグ・タイマーをリセットし、タイマーの時間切れを防ぎます。ハードウェア障害またはプログラムエラーにより、コンピュータがウォッチドッグのリセットに失敗すると、タイマーが経過し、サーバー全体のリセット（再起動）がトリガーされます。</p></div>
+<div class="paragraph">
+<p>最近のサーバー・マザーボードには、このようなハードウェア・ウォッチドッグが搭載されていることがよくありますが、これらを設定する必要があります。ウォッチドッグが利用できない、または設定されていない場合、Linuxカーネルの<em>ソフトドッグに</em>フォールバックします。それでも信頼性はありますが、サーバーのハードウェアから独立していないため、ハードウェア・ウォッチドッグよりも信頼性が低くなります。</p></div>
+</div>
+<div class="sect2">
+<h3 id="_configure_hardware_watchdog">
+<span>ハードウェア・ウォッチドッグの設定</span> <a class="headerlink" href="#_configure_hardware_watchdog" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>デフォルトでは、全てのハードウェア・ウォッチドッグ・モジュールはセキュリティ上の理由からブロックされています。正しく初期化されなければ、装填された銃のようなものです。ハードウェアウォッチドッグを有効にするには、<em>/etc/default/pve-ha-manager</em> などでロードするモジュールを指定する必要があります：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ウォッチドッグモジュールの選択（デフォルトはsoftdog） WATCHDOG_MODULE=iTCO_wdt</pre>
+</div></div>
+<div class="paragraph">
+<p>この設定は<em>watchdog-mux</em>サービスによって読み取られ、起動時に指定されたモジュールがロードされます。</p></div>
+</div>
+<div class="sect2">
+<h3 id="_recover_fenced_services">
+<span>フェンスされたサービスのリカバリ</span> <a class="headerlink" href="#_recover_fenced_services" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>ノードに障害が発生し、そのフェンシングが成功すると、CRM は障害が発生したノードからオンライン のノードにサービスを移動しようとします。</p></div>
+<div class="paragraph">
+<p>復旧ノードの選択は、現在アクティブなノードのリスト、使用するスケジューラによるそれぞれの負荷、およびサービスがアフィニティ・ルールに属している場合はその影響を受けます。</p></div>
+<div class="paragraph">
+<p>最初に、CRM はサービスが利用可能なノードのセットを構築します。サービスがノード・アフィニティ・ルールの一部である場合、セットはノード・アフィニティ・ルールの中で最も優先順位の高いノードに縮小されます。サービスがリソース・アフィニティ・ルールの一部である場合、セットはさらに縮小され、他のサービスと同じノードにサービスを維持するか、他のサービスと異なるノードにサービスを維持するかの制約を満たします。最後に、CRMは使用するスケジューラに従って最も負荷の低いノードを選択し、ノードが過負荷になる可能性を最小にします。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Caution" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAKdUlEQVRoge1Ze1AV1x3+zt279wEi
+DWCYGzRVktqa1MEmmtbWR22ncXxUrTDWV/5IqG2wUAUfmUwSkk6V+EAJCEQC6figwZBqZtRxqukf
+tebRZBpFG1S0hiRErwiaKK977+6eX//YPXt37+UiIJlMZnpmdnb33PP4vt97z2VEhG9yc3zdAO60
+/Z/A192+8QScX8Wifr+fWltbzffU1FT4fD72Vew15ASampqovr4eBw8eNPvGjRuHzMxMmj9//tCT
+IKIhu958801yuVwEoNdr48aNNJT7EdHQEdi/fz/JshwTvLiKioqGlMSQLFJfX0+MMRvQsWNSqXLz
+H2jez78fRWLTpk1DRuKOF6irqyOn02kDOP8XGdTz+VFSP91Hatu79NRvZ0SR2LJly5CQuKPJtbW1
+JEmSDdivHp1AwctHSblYSsqFElLOF5PavIvWZU+LIrF169Y7JjHoibt3744CnzXrIQpeOUbKhVJS
+mkpIPV9MyrnNpJwtIuVSNa15/MdRJLZt23ZHJBjRwIu5N954gxYvXgzOudm3aO5E1L5SBNZ1Hoxr
+INLAyH6HJxVP/WkXtu9+37ZeSUkJVq9ePagQO+BMXFNTEwV+ybxHsPeVIjg6zwOkgSWNhuOuUUBC
+KhxJY0AggDSgpwWbn1mO1csftq1ZUFCA0tLSQZXFA0pkVVVVlJOTA6vWsmY9hF07N0AS4OU48LgR
+WLO+FPFxboxMS8G5hlPYmPMI4jwM1P0Jtj67DJyrKHvtNADdjPPz8+FwOCgvL29gmuivrVVUVESF
+yqxZD1PoyjFSL+7QHbapmJTml+n9EzVRtl676ZekNKwl5VQ+KSfzKHR2E+UutodYxhiVl5cPyCf6
+ZUJlZWWUm5trk/wTi6bgtVdf1M2Gq2DEwUgDNBWhUDBqjfSRwwGoIOEP3c3Y/uxirFw0zibMvLw8
+VFZW9tucbkugoqKCVq1aZQO/YslUVJU+D9bVBIDroLgK4hygEDweybYGY8AD6d8yftfASL+j+2O8
+9NwiPJk51kYiNzcXO3fu7BeJPgkUFxdTbm6ure/JZdNRub0QrOMcGFcBrgLgAHEAGqD2ID7OZZsz
+Ji0RcR6HAV4DkaqPJxXouoSywkz8buF9NhIrV65EVVXVbUnEJHDixAlat26drS9n+U+xo/hZMMNh
+yZA+uAbAIKOGMCJlmG3eA/clAYaJEamGBlRdC6QBXZewo3AhVswfbSORk5ODDz/8sE8SvRLw+/1U
+XV0dBb5MgOe6LUNIEqpOwgCUlOCESw4HuAfG3KX7B2kAGaTJ0Jro77yI8ucX4DfzRtlIHD58GH6/
+PyaJXgk0NjZi79695vuUiffrkr91Vt8cHAwc4FZJGiZEKqDcwsi0ZHP+d749POy8MS7iGtBxARWF
+8/CDsQnm3BdeeAHWj6N+EYhspSVbgI5zYYkZGmAwzIEbwA0tUM9NfO+7aeb89HuGRQBWLcSNZxj3
+zvOYMzk5NpjBEHi99mXD5lXdjqGDJh42h7CEOXhnK3448X5z/shUb1jSpIEM8yFuzOUcjAsNcnR0
+KXdG4MEHH8TEiRPN9z0H3sfRE41m+GNcs9i0LjkGTTcrUoGem5g7/V5z/ohElw4O+jxGYQ3qJqmB
+jN/+cbINtcfCJvPYY4+hr3qtVwI+n49lZmaa71fbbuH3hX/FycbPQKSCoIIMQEQcehjVo5Gw8/F3
+3cSvH03H2HuHY1icQzcvYWKGIMiITMwQwjtnruPpqk9w/ZZq7p2RkYEJEyaAYrCIWY36/X7KyMhA
+W1ub2XfP3Qmo3ZKFaQ+P0gmYIdSoOkU4lWSwxGRAdqHL/xm86k27w0blAw3/PncD6yo/xrsfdZj7
+paSkoLGxESNGjAgDZsxWK8X0AZ/Px44fP460tLAzXrnWgUX5r+PYuxf1mG/Gf80sofWy2YuWbg/+
+uONtPLHhPRw+0WIHL8hbwG95rcUGPiEhAYcOHUJSUhI456YZRWqiz+8BIqLm5mZMmjQJN27cMPsT
+E9zYtWE25k4bYzh3mABIBRwOHPgPx+LH/6yDiXPi6pHZcEpk+I5qmtGpCzdQecCPPUevmevLsowj
+R45gypQpcDgc5mVowKaJmBoQTEePHo2GhgaMGxcuum52BLHsqUOoP3oWgLB9Sz7QgpgxJoThw/SS
+IutnaXBKZEpcgD998Uvs+3ubDbzT6URNTQ0mTZoEVVWhaRo459A0TeCy4etVA+JH8RvnHK2trZgz
+Zw5Onz5tjnPJDrxSOAPLZt1nSVIqwDmIVJw6dx1nLt3A3J/cjZThkhE29cvf3o2KA59ja91lcz3G
+GDZv3oylS5fC7XbD6XTC6XRCkiRIktS7Jm5HQLDXNA3Xr19HVlYWPvjgA4vEGLav+RHmTxsJX4rb
+8AsO4kbOIG6GzTD4HvzlmB/PVH9q2zc/Px/Z2dnwer1wu92QZRkulwuSJEGWZZMEY8wkEGVCVvCC
+AOcciqIgPj4e+/btw9SpU83xqkpYteU9HHm7Bf62rnC2RjikisTFSMPV9m4ceucannvVDn7p0qVY
+uHAhgsEggsEgQqFQlAlZnVm0PjOxIKFpGogIqqrC5XKhuroa06dPt4wDcl78F+qPNeNKe6cRoTjs
+ZYOKK+3dON7wBQrKm2H5pMbMmTOxZMkSBAIB9PT0oKenB4FAAIqiQFEUU4hRRyq3I2AlIZ4553A6
+nSgvL8fs2bNtY9eVNaDub58YmhDZWpe+v70bJ5tu4clt/4WihqU4efJkrFixAkRkAg4Gg1AUBaqq
+muDF/pGtX7WQNXeIZ0mSUFRUhAULFtjGPl3ZiJdev4QrbZ16zUQqrrZ342JLN5ZvaEJ3ICz68ePH
+IycnB5qmmZIW4EOhUJTZWEKo+Rx1KsEYY9Zk4XA4IEmSKXnOuRkVJElCYWEhvF4v6urqzDVK9n2M
+zu4Qnl5+L9q/7MHltgBWbr9kA5+eno7c3FzIsoyI5GrTeCzgosU8VmGMmSGLiEwSsixH2WNBQQEA
+2EhUH/wc7330BaaOH479/2zHtS/CFabP58OaNWvg9Xp1EE4nZFmGLMtwu93wer1wuVy2ECpJko2I
+iTNWJrZGI+HEwi6FisUVCAQQCASwZ88eVFZW9lk9JicnY/369fD5fPB4PCbo+Ph4k4TH44HL5YLX
+64XX6zXH9EKE9aUBRkTEGLNJP1Kd4nI4HMjOzkZ8fDyKi4ttJ3eiJSYmYu3atRg1apQJzuv1wuPx
+wOPxwOFwmEBFHnA6nXC5XGYSiywlbns2SnoDANN0hMNZnS0UCpkaOnPmDN566y20tLSY2ktLS8OM
+GTOQkpICt9uNuLg4M2EJ8CJZSZJkZmFBwkrAWpH2+3BXEBEkRIhTVdVMOCL5qKqKy5cvQ1EUaJoG
+VVWRnKx/Jlpt3eVy2QCKu9C68AFr9o0spwd0Oh1ZYggCIlNaiQktiXdhZgKQABcp3ci7LMtM7B0J
+fsAErJoAYItG1mdr+hfvVlACtHDIXkploYXbHvQOikDEe6/ZmjFmAhf9ZvJxOk2Qol88W4kYz32S
+GNQfHLG+TyMTkAVEr88xQfVnkBg7GAKixSIykDYQsL21/wFkW/B5QqT9lwAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">ノードの障害が発生すると、CRMは残りのノードにサービスを分配します。これにより、これらのノードのサービス数が増加し、特に小規模なクラスタでは高負荷になる可能性があります。このような最悪のケースに対応できるようにクラスタを設計してください。</td>
+</tr></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ha_manager_start_failure_policy">
+障害ポリシーの開始<a class="headerlink" href="#ha_manager_start_failure_policy" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>開始失敗ポリシーは、ノード上でサービスの開始が1回以上失敗した場合に有効になります。このポリシーを使用して、同じノードで再起動をトリガーする頻度や、サービスを別のノードで開始できるように再配置する頻度を設定できます。 このポリシーの目的は、特定のノードで共有リソースが一時的に使用できなくなるのを回避することです。例えば、共有ストレージがネットワークの問題などで利用可能なノードで利用できなくなったが、他のノードではまだ利用可能である場合、リロケート・ポリシーによってサービスを開始することができます。</p></div>
+<div class="paragraph">
+<p>各リソースに固有の設定を行うことができる2つのサービス開始回復ポリシー設定があります。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+最大再起動</dt>
+<dd>
+<p>
+実際のノードで障害が発生したサービスの再起動を試行する最大回数。  デフォルトは1です。</p>
+</dd>
+<dt class="hdlist1">
+max_relocate</dt>
+<dd>
+<p>
+実際のノードでmax_restart値を超えた場合にのみ発生します。デフォルトは1です。</p>
+</dd>
+</dl></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">再配置カウントの状態は、サービスが少なくとも1回起動に成功した場合にのみ0にリセットされます。つまり、エラーが修正されずにサービスが再起動されると、再起動ポリシーだけが繰り返されます。</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ha_manager_error_recovery">
+エラーリカバリー<a class="headerlink" href="#ha_manager_error_recovery" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>すべての試行の後、サービスの状態を回復できなかった場合、エラー状態になります。この状態では、サービスはもうHAスタックに接続されません。唯一の方法は、サービスを無効にすることです：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># ha-manager set vm:100 --state disabled</pre>
+</div></div>
+<div class="paragraph">
+<p>これはWebインターフェイスでも可能です。</p></div>
+<div class="paragraph">
+<p>エラー状態から回復するには、次のようにしてください：</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+リソースを安全で一貫性のある状態に戻します(例: サービスを停止できなかった場合、プロセスを終了します)。</p>
+</li>
+<li>
+<p>
+リソースを無効にしてエラーフラグを削除します。</p>
+</li>
+<li>
+<p>
+失敗の原因となったエラーを修正します。</p>
+</li>
+<li>
+<p>
+すべてのエラーを修正した<strong>後</strong>、サービスの再開を要求することができます。</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ha_manager_package_updates">
+パッケージの更新<a class="headerlink" href="#ha_manager_package_updates" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ha-managerをアップデートする際は、様々な理由から一度に行わず、1ノードずつ行う必要があります。第一に、私たちはソフトウェアを徹底的にテストしていますが、特定のセットアップに影響するバグを完全に排除することはできません。 ノードを1つずつ更新し、更新終了後に各ノードの機能をチェックすることは、最終的な問題から回復するのに役立ちますが、一度に更新するとクラスタが壊れる可能性があり、一般的に良い習慣ではありません。</p></div>
+<div class="paragraph">
+<p>また、Proxmox VE HAスタックは、クラスタとローカルリソースマネージャの間でアクションを実行するためにリクエストアクノリッジプロトコルを使用します。再起動のために、LRMはCRMにすべてのサービスをフリーズする要求を行います。これにより、LRMが再起動する短時間の間、クラスタがこれらのサービスに触れることを防ぎます。 その後、LRMは再起動中にウォッチドッグを安全に閉じることができます。 このような再起動は通常パッケージの更新中に発生し、すでに述べたように、LRMからの要求を確認するためにアクティブなマスターCRMが必要です。そうでない場合、更新処理に時間がかかり過ぎ、最悪の場合、ウォッチドッグがリセッ トされる可能性があります。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ha_manager_node_maintenance">
+ノードのメンテナンス<a class="headerlink" href="#ha_manager_node_maintenance" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ハードウェアの交換や新しいカーネルイメージのインストールなど、ノードのメンテナンスが必要になることがあります。これはHAスタックの使用中にも当てはまります。</p></div>
+<div class="paragraph">
+<p>HAスタックは主に2種類のメンテナンスをサポートします：</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+一般的なシャットダウンやリブートについては、<a href="ha-manager.1.html#ha_manager_shutdown_policy">シャットダウンポリシーを</a>参照してください。</p>
+</li>
+<li>
+<p>
+シャットダウンやリブートを必要としないメンテナンス、あるいは1回のリブートだけで自動的にオフにされるべきでないメンテナンスについては、手動メンテナンスモードを有効にすることができます。</p>
+</li>
+</ul></div>
+<div class="sect2">
+<h3 id="_maintenance_mode">
+<span>メンテナンスモード</span> <a class="headerlink" href="#_maintenance_mode" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>手動メンテナンスモードを使用して、ノードをHA動作不可としてマークし、HAが管理するすべてのサービスを他のノードに移行するように促すことができます。</p></div>
+<div class="paragraph">
+<p>移行先のノードは、現在利用可能な他のノードから選択され、HAルールの設定と設定されているクラスタリソーススケジューラ(CRS)モードによって決定されます。 各移行の間、元のノードはHAマネージャの状態に記録されるため、メンテナンスモードが無効になってノードがオンラインに戻ると、サービスは再び自動的に移行されます。</p></div>
+<div class="paragraph">
+<p>現在、ha-manager CLIツールを使用してメンテナンスモードを有効または無効にすることができます。</p></div>
+<div class="listingblock">
+<div class="title">ノードのメンテナンスモードの有効化</div>
+<div class="content monospaced">
+<pre># ha-manager crm-command node-maintenance enable NODENAME</pre>
+</div></div>
+<div class="paragraph">
+<p>これはCRMコマンドをキューに入れ、マネージャがこのコマンドを処理すると、マネージャステータスにメンテナンスモードの要求が記録されます。これにより、メンテナンスモードにしたいノードだけでなく、どのノードでもコマンドを送信できるようになります。</p></div>
+<div class="paragraph">
+<p>各ノードのLRMがコマンドを受信すると、LRM自身は使用不可のマークを付けますが、移行コマンドはすべて処理されます。つまり、LRM のセルフフェンシング・ウォッチドッグは、すべてのアクティブなサービスが移動し、すべての実行中のワーカーが終了するまでアクティブなままです。</p></div>
+<div class="paragraph">
+<p>LRMのステータスは、すべてのサービスが移動されたときだけでなく、LRMが要求された状態をピックアップしたときにも<span class="monospaced">メンテナンス</span>モードを表示することに注意してください。 今のところ、ノードにアクティブなHAサービスが残っていないか確認するか、次のようなログ行に注意してください:<span class="monospaced">pve-ha-lrm[PID]: watchdog closed (disabled)</span>ノードがいつメンテナンスモードへの移行を終了したかを知ることができます。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">手動メンテナンスモードはノードのリブート時に自動的には削除されませんが、<span class="monospaced">ha-manager</span>CLIを使用して手動で非アクティブにするか、manager-statusを手動でクリアした場合にのみ削除されます。</td>
+</tr></table>
+</div>
+<div class="listingblock">
+<div class="title">ノードのメンテナンスモードの無効化</div>
+<div class="content monospaced">
+<pre># ha-manager crm-command node-maintenance disable NODENAME</pre>
+</div></div>
+<div class="paragraph">
+<p>上記の<span class="monospaced">ha-manager</span>CLIコマンドを使用すると、CRMコマンドがキューに入れられ、それが処理されると、それぞれのLRMノードが再び使用可能になります。</p></div>
+<div class="paragraph">
+<p>メンテナンスモードを無効にすると、メンテナンスモードが有効化されたときにノード上にあったサービスはすべて元に戻ります。</p></div>
+</div>
+<div class="sect2">
+<h3 id="ha_manager_shutdown_policy">
+<span>シャットダウンポリシー</span> <a class="headerlink" href="#ha_manager_shutdown_policy" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>以下に、ノードのシャットダウンに関するさまざまなHAポリシーの説明を示します。現在のところ、後方互換性のために<em>「条件付き</em>」がデフォルトになっています。 ユーザによっては、<em>Migrateの</em>方がより期待通りの動作をすると感じるかもしれません。</p></div>
+<div class="paragraph">
+<p>シャットダウンポリシーは、ウェブUI<span class="monospaced">（Datacenter</span>→<span class="monospaced">Options</span>→<span class="monospaced">HA Settings</span>）で設定するか、<span class="monospaced">datacenter.cfgで</span>直接設定することができます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>ha: shutdown_policy=&lt;value&gt; です。</pre>
+</div></div>
+<div class="sect3">
+<h4 id="_migrate">Migrate<a class="headerlink" href="#_migrate" title="Permalink to this heading"></a></h4>
+<div class="paragraph">
+<p>ローカルリソースマネージャ(LRM)がシャットダウン要求を受け取り、このポリシーが有効になると、現在のHAマネージャが利用できないようにマークします。 これにより、現在このノードに配置されているすべてのHAサービスがマイグレーションされます。 LRMは、実行中のサービスがすべて移動されるまで、シャットダウン処理を遅らせようとします。しかし、これは実行中のサービスが別のノードに移行<strong>できる</strong>ことを想定しています。言い換えると、ハードウェア・パススルーを使用するなどして、サービスがローカルにバインドされていない必要があります。例えば、厳密なノードアフィニティルールは、選択されたノードセット以外ではサービスを実行できないことをHA Managerに伝えます。これらのノードがすべて利用できない場合、手動で介入するまでシャットダウンは停止します。シャットダウンされたノードが再びオンラインに戻ると、その間にまだ手動で移行されていなかった場合、以前に置き換えられたサービスは元に戻ります。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">ウォッチドッグはシャットダウン時の移行プロセス中もアクティブです。 ノードがクォーラムを失った場合、フェンスされ、サービスが回復します。</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>現在メンテナンス中のノードで（以前に停止した）サービスを開始する場合、サービスを移動して別の利用可能なノードで開始できるように、ノードをフェンスで囲む必要があります。</p></div>
+</div>
+<div class="sect3">
+<h4 id="_failover">フェイルオーバー<a class="headerlink" href="#_failover" title="Permalink to this heading"></a></h4>
+<div class="paragraph">
+<p>このモードでは、現在のノードがすぐにオンラインにならない場合、すべてのサービスが確実に停止され、回復されます。このモードは、クラスタ規模でメンテナンスを行う場合に便利です。一度に多くのノードがパワーオフされると、VMのライブマイグレーションが不可能になる可能性がありますが、それでもHAサービスを確実にリカバリして、できるだけ早く再スタートさせたい場合です。</p></div>
+</div>
+<div class="sect3">
+<h4 id="_freeze">フリーズ<a class="headerlink" href="#_freeze" title="Permalink to this heading"></a></h4>
+<div class="paragraph">
+<p>このモードでは、すべてのサービスが停止してフリーズし、現在のノードが再びオンラインになるまで復旧しないようにします。</p></div>
+</div>
+<div class="sect3">
+<h4 id="_conditional">条件付き<a class="headerlink" href="#_conditional" title="Permalink to this heading"></a></h4>
+<div class="paragraph">
+<p><em>条件付き</em>シャットダウンポリシーは、シャットダウンまたはリブートが要求されたかどうかを自動的に検出し、それに応じて動作を変更します。</p></div>
+<div class="paragraph">
+<div class="title">シャットダウン</div><p>シャットダウン<em>（電源オフ</em>）は通常、ノードがしばらくの間停止することが計画されている場合に実行されます。この場合、LRMはすべての管理サービスを停止します。つまり、他のノードがこれらのサービスを引き継ぐことになります。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">最近のハードウェアは大量のメモリ（RAM）を搭載しています。そのため、すべてのリソースを停止してから再起動し、すべてのRAMのオンラインマイグレーションを回避します。オンラインマイグレーションを使用する場合は、ノードをシャットダウンする前に手動でマイグレーションを起動する必要があります。</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<div class="title">リブート</div><p>ノードの再起動は<em>reboot</em>コマンドで行います。これは通常、新しいカーネルをインストールした後に実行されます。これは「シャットダウン」とは異なり、ノードがすぐに再起 動することに注意してください。</p></div>
+<div class="paragraph">
+<p>LRM は CRM に再起動を指示し、CRM がすべてのリソースを<span class="monospaced">フリーズ</span>状態にするまで待ちます （<a href="ha-manager.1.html#ha_manager_package_updates">パッケージ・アップデートの</a>場合と同じメカニズムです）。これにより、これらのリソースが他のノードに移動するのを防ぎます。代わりに、CRM は同じノード上で再起動後にリソースを開始します。</p></div>
+</div>
+<div class="sect3">
+<h4 id="_manual_resource_movement">手動リソース移動<a class="headerlink" href="#_manual_resource_movement" title="Permalink to this heading"></a></h4>
+<div class="paragraph">
+<p>最後に、ノードをシャットダウンまたは再起動する前に、リソースを手動で他のノードに移動することもできます。利点は、完全な制御が可能で、オンラインマイグレーションを使用するかどうかを決定できることです。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content"><span class="monospaced">pve-ha-crm</span>、<span class="monospaced">pve-ha-lrm</span>、<span class="monospaced">watchdog-muxなどの</span>サービスは<em>停止</em>しないでください。これらのサービスはウォッチドッグを管理および使用するため、ノードの即時リブートまたはリセットにつながる可能性があります。</td>
+</tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ha_manager_crs">
+クラスタリソースのスケジューリング<a class="headerlink" href="#ha_manager_crs" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>クラスタリソーススケジューラ（CRS）モードは、シャットダウンポリシーによってトリガされる移行と同様に、サービスの復旧のためにHAがノードを選択する方法を制御します。デフォルトのモードは<span class="monospaced">basic</span>ですが、Web UI<span class="monospaced">(Datacenter</span>→<span class="monospaced">Options</span>)、または<span class="monospaced">datacenter.cfgで</span>直接変更できます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>crs: ha=static</pre>
+</div></div>
+<div class="paragraph">
+<a class="image" href="images/screenshot/gui-datacenter-options-crs.png">
+<img src="images/screenshot/gui-datacenter-options-crs.png" alt="screenshot/gui-datacenter-options-crs.png" width=250 style="padding: 0 0 0 10px;float:right;" /></a>
+<p>変更は、次のマネージャ ラウンド（数秒後）から有効になります。</p></div>
+<div class="paragraph">
+<p>回復または移行が必要な各サービスに対して、スケジューラは、HA ルールがある場合は、そのルールに従って、サービスが利用可能なノードの中から最適なノードを繰り返し選択します。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">将来的には、（静的および動的な）ロードバランシングモードを追加する予定です。</td>
+</tr></table>
+</div>
+<div class="sect2">
+<h3 id="_basic_scheduler">
+<span>基本スケジューラ</span> <a class="headerlink" href="#_basic_scheduler" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>各ノード上のアクティブなHAサービスの数が、復旧ノードの選択に使用されます。 現在、HA管理されていないサービスはカウントされません。</p></div>
+</div>
+<div class="sect2">
+<h3 id="_static_load_scheduler">
+<span>静的負荷スケジューラ</span> <a class="headerlink" href="#_static_load_scheduler" title="Permalink to this heading"></a></h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Important" src="data:image/png;base64,
+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
+EQn3XQAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">静的モードはまだ技術プレビューです。</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>各ノード上のHAサービスからの静的な使用情報が、復旧ノードの選択に使用されます。HA管理されていないサービスの利用は現在考慮されていません。</p></div>
+<div class="paragraph">
+<p>この選択のために、各ノードは、関連するゲスト構成からのCPUおよびメモリ使用量を使用して、そのノード上でサービスがすでに実行されているかのように順番に検討されます。そして、そのような代替案ごとに、すべてのノードのCPUとメモリの使用量が考慮されます。CPU とメモリの両方について、ノードの中で最も高い使用率（理想的にはどのノードもオーバーコミットされるべきではないため、より重み付けされます）と、すべてのノードの平均使用率（よりコミット率の高いノードがすでにある場合に区別できるようにするため）が考慮されます。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Important" src="data:image/png;base64,
+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
+EQn3XQAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">サービスが多ければ多いほど可能な組み合わせが増えるため、数千のHAマネージドサービスがある場合は、現在のところ使用することは推奨されません。</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_crs_scheduling_points">
+<span>CRS スケジューリングポイント</span> <a class="headerlink" href="#_crs_scheduling_points" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>CRSアルゴリズムはすべてのラウンドですべてのサービスに適用されるわけではありません。そのため、Proxmox VE HAマネージャはサービスを現在のノードに維持することを推奨しています。</p></div>
+<div class="paragraph">
+<p>CRSは現在、以下のスケジューリングポイントで使用されています：</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+サービス回復（常にアクティブ）。アクティブなHAサービスを持つノードに障害が発生した場合、そのノードのすべてのサービスを他のノードにリカバリする必要があります。CRSアルゴリズムは、残りのノードでバランスよく復旧させるために使用されます。</p>
+</li>
+<li>
+<p>
+HAグループの設定変更（常にアクティブ）。あるノードがグループから削除されたり、そのノードの優先度が下がったりすると、HAスタックはCRSアルゴリズムを使って、適応された優先度制約にマッチする、そのグループ内のHAサービスの新しいターゲットノードを見つけます。</p>
+</li>
+<li>
+<p>
+HAルール設定の変更（常にアクティブ）規則がHAリソースに異なる制約を与える場合、HAスタックはCRSアルゴリズムを使用して、新しい規則のタイプに応じて、これらの規則の影響を受けるHAリソースのための新しいターゲットノードを見つけます：</p>
+<div class="ulist"><ul>
+<li>
+<p>
+ノードアフィニティルール：ノードアフィニティルールが作成された場合、または既存のノードアフィニティルールにHAリソース/ノードが追加された場合、HAスタックはCRSアルゴリズムを使用して、これらのHAリソースがノードと優先度の制約に従って割り当てられるようにします。</p>
+</li>
+<li>
+<p>
+正のリソースアフィニティルール正のリソース親和性ルールが作成された場合、または既存の正のリソース親和性ルールにHAリソースが追加された場合、HAスタックはCRSアルゴリズムを使用して、これらのHAリソースが共通のノードに移動されるようにします。</p>
+</li>
+<li>
+<p>
+負のリソースアフィニティルール負のリソースアフィニティルールが作成された場合、または既存の負のリソースアフィニティルールにHAリソースが追加された場合、HAスタックはCRSアルゴリズムを使用して、これらのHAリソースが別々のノードに移動されるようにします。</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+HAサービス停止→移行開始（オプトイン）。停止しているサービスを開始するように要求することは、CRSアルゴリズムに従って最適なノードをチェックする良い機会です。これは、データセンター設定で<strong><span class="monospaced">ha-rebalance-on-start</span></strong>CRS オプションを設定することで有効にできます。このオプションはWeb UIの<span class="monospaced">Datacenter</span>→<span class="monospaced">Options</span>→<span class="monospaced">Cluster Resource Schedulingでも</span>変更できます。</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_copyright_and_disclaimer">
+著作権および免責事項<a class="headerlink" href="#_copyright_and_disclaimer" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>著作権 © 2007-2022 Proxmox Server Solutions GmbH</p></div>
+<div class="paragraph">
+<p>このプログラムはフリーソフトウェアです。Free Software Foundationによって発行されたGNU Affero General Public Licenseのバージョン3、またはそれ以降のバージョンのいずれかに従って、再配布および/または改変することができます。</p></div>
+<div class="paragraph">
+<p>このプログラムは有用であることを期待して配布されていますが、商品性や特定目的への適合性についての暗黙の保証もなく、いかなる保証もありません。詳細はGNU Affero General Public Licenseをご覧ください。</p></div>
+<div class="paragraph">
+<p>あなたはこのプログラムとともにGNU Affero General Public Licenseのコピーを受け取っているはずです。  そうでない場合は、<a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>をご覧ください。</p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+バージョン 9.0.8<br>
+最終更新 Tue Aug 5 16:04:45 CEST 2025</div>
+</div>
+</body>
+</html>
+
+<!-- ***** END FILE ***** -->
+

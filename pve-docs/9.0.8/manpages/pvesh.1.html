@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="AsciiDoc 10.2.1">
+<title>pvesh(1)</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
+  padding: 0;
+  margin: 0;
+}
+pre {
+  white-space: pre-wrap;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; vertical-align: text-bottom; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel0, div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overridden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+</style>
+
+
+<style type="text/css">
+:root {
+    /* pre-defined colors */
+    --pdt-grey-950: hsl(0deg, 0%, 95%);
+    --pdt-grey-750: hsl(0deg, 0%, 75%);
+    --pdt-grey-400: hsl(0deg, 0%, 40%);
+    --pdt-grey-250: hsl(0deg, 0%, 25%);
+    --pdt-grey-150: hsl(0deg, 0%, 15%);
+    --pdt-grey-100: hsl(0deg, 0%, 10%);
+    --pdt-primary-850: hsl(205deg, 100%, 85%);
+    --pdt-primary-800: hsl(205deg, 100%, 80%);
+    --pdt-primary-700: hsl(205deg, 100%, 70%);
+    --pdt-primary-250: hsl(205deg, 100%, 25%);
+    --pdt-secondary-850: hsl(250deg, 100%, 85%);
+}
+
+#header > h1 > .image > img {
+    max-width: 100%;
+}
+
+/* Avoid serif font and increase font-size from 16px to 18px. Makes it more similar to PBS docs */
+body, p {
+    font-family: Open Sans, sans-serif;
+    font-size: 18px;
+}
+
+/* adjust admonition block spacing. this allows for a background on
+ * admonition blocks that doesn't make the elements look to tightly
+ * spaced.
+ */
+div.admonitionblock {
+    border-radius: 3px;
+    margin: 1.5em 0;
+    padding: 0.5em 10% 0.5em 0.5em;
+}
+
+div.admonitionblock td.icon {
+    padding-right: 0.5em;
+}
+
+div.admonitionblock td.icon > img {
+    box-sizing: border-box;
+    padding: 0.15em;
+}
+
+th.tableblock, td.tableblock {
+    border-color: #527bbd80;
+}
+
+/* Fine-tune headings a bit */
+h4 {
+  font-size: 1.1em;
+}
+h5 {
+  font-size: 1.05em;
+}
+h6 {
+  font-size: 1.0em;
+}
+
+/* Support for heading anchor links */
+h3 {
+    border-bottom: unset;
+}
+
+h3 > span {
+    display: inline-block;
+    border-bottom: 2px solid silver;
+}
+
+a, a:visited {
+    color: var(--pdt-primary-250);
+}
+
+a.headerlink {
+    color: var(--pdt-grey-750);
+    padding: 0 4px;
+    text-decoration: none;
+    visibility: hidden;
+}
+
+/* add it as an pseudo-element, so that it does not show up in the ToC */
+a.headerlink::after {
+    content: '\00b6';
+    text-decoration: none;
+}
+
+h1:hover > a.headerlink,
+h2:hover > a.headerlink,
+h3:hover > a.headerlink,
+h4:hover > a.headerlink,
+h5:hover > a.headerlink,
+h6:hover > a.headerlink {
+  visibility: visible;
+}
+
+/* Hide the TOC menu toggler by default */
+.menu-toggler, .nav-toggle, .menu-overlay {
+    display: none;
+}
+
+#toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    padding: 0.5em;
+    transition: transform 0.2s ease-in-out;
+    z-index: 1000;
+}
+
+/* Mobile styles */
+@media only screen and (max-width: 1000px) {
+    /* Avoid overly big header author block */
+    #header span {
+        font-size: 1rem;
+        line-height: 1rem;
+    }
+
+    /* Show toggle button on mobile */
+    .nav-toggle {
+        display: inline-block;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 1001;
+        background-color: var(--pdt-grey-100);
+        color: var(--pdt-grey-950);
+        opacity: 0.6;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 2px;
+        transition: left 0.2s ease-in-out;
+        font-size: 0;
+    }
+    .no-toc.nav-toggle {
+        display: none !important;
+    }
+
+    /* Hide sidebar by default on mobile */
+    #toc {
+        transform: translateX(-100%);
+        line-height: 1.5em;
+        overflow-x: auto;
+    }
+    #content, #header {
+        font-size: 1.25em;
+        line-height: 1.5em;
+    }
+
+    /* Adjust body margin for mobile */
+    body {
+        margin: 1em !important;
+        max-width: 100% !important;
+        overflow-wrap: break-word;
+    }
+
+    /* Show sidebar when checkbox is checked */
+    .menu-toggler:checked ~ #header #toc {
+        transform: translateX(0);
+    }
+
+    /* Show overlay when menu is open */
+    .menu-toggler:checked ~ .menu-overlay {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        cursor: pointer;
+        animation: fadeIn 0.2s;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* Change icon when open */
+    .menu-toggler:checked ~ .nav-toggle::after {
+        content: '✕';
+    }
+    .menu-toggler:not(:checked) ~ .nav-toggle::after {
+        content: '☰';
+    }
+
+    .nav-toggle::after {
+        display: block;
+        font-size: 1.5rem;
+    }
+    .menu-toggler:checked ~ .nav-toggle {
+        left: 24rem;
+    }
+
+}
+
+/* barely useable at such small sizes but can only win here */
+@media only screen and (max-width: 27rem) {
+    body {
+        margin: 0.5em !important;
+    }
+    #toc {
+        font-size: 0.8em;
+    }
+    .menu-toggler:checked ~ .nav-toggle {
+        left: 19rem;
+    }
+}
+
+
+/* Dark mode theme */
+@media screen and (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+        --pdt-body-background: var(--pdt-grey-150);
+        --pdt-text: var(--pdt-grey-950);
+        --pdt-headline: var(--pdt-primary-800);
+        --pdt-link: var(--pdt-primary-700);
+        --pdt-highlighted-text: var(--pdt-primary-850);
+        --pdt-background-sidebar: var(--pdt-grey-100);
+        --pdt-background-listings: var(--pdt-grey-100);
+        --pdt-border: var(--pdt-grey-400);
+        --pdt-border-alt: var(--pdt-grey-250);
+        --pdt-table-border: var(--pdt-grey-400);
+        --pdt-background-admonition: var(--pdt-grey-250);
+    }
+
+    body {
+        color: var(--pdt-text);
+        background-color: var(--pdt-body-background);
+    }
+
+    a, a:visited {
+        color: var(--pdt-link);
+    }
+
+    /* style headlines, titles etc. */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    thead,
+    #author,
+    #toctitle,
+    div.title,
+    td.hdlist1,
+    caption.title,
+    p.tableblock.header {
+        color: var(--pdt-headline);
+    }
+
+    h1,
+    h2,
+    h3,
+    #footer {
+        border-color: var(--pdt-border);
+    }
+
+    /* formatted colored text */
+    dt,
+    em,
+    pre,
+    code,
+    strong,
+    .monospaced {
+        color: var(--pdt-highlighted-text);
+    }
+
+    /* style the table of contents sidebar */
+    div #toc {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-sidebar);
+        border-color: var(--pdt-border-alt);
+    }
+
+    div #toc a:link,
+    div #toc a:visited {
+        color: var(--pdt-text);
+    }
+
+    /* reduce the brigthness of images a bit and make it reversable
+     * through hovering over them.
+     */
+    .image > img {
+        filter: brightness(90%);
+    }
+
+    .image > img:hover {
+        filter: none;
+    }
+
+    /* tables */
+    th.tableblock,
+    td.tableblock,
+    table.tableblock {
+        border-color: var(--pdt-table-border);
+    }
+
+    div.quoteblock,
+    div.verseblock {
+        color: var(--pdt-text);
+        border-color: var(--pdt-border);
+    }
+
+    /* listings (e.g. code snippet blocks) */
+    div.listingblock > div.content {
+        background-color: var(--pdt-background-listings);
+        border-color: var(--pdt-border-alt);
+    }
+
+    /* admonition blocks (e.g. notes, warnings etc.) */
+    div.admonitionblock {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-admonition);
+    }
+
+    div.admonitionblock td.content {
+        border-color: var(--pdt-border);
+    }
+
+    /* makes the admonition icons appear a bit more consistent, by
+     * adding a white background the shadows in the icons look
+     * "correct"
+     */
+    div.admonitionblock td.icon > img {
+        background-color: white;
+        border-radius: 100%;
+        filter: brightness(95%);
+    }
+
+    /* invert the logo */
+    #header > h1 > .image > img {
+        filter: invert(100%) hue-rotate(180deg) brightness(90%);
+    }
+
+    /* fixes the black text on unorderd lists */
+    ul > li > * {
+        color: var(--pdt-text);
+    }
+
+    .nav-toggle {
+        background-color: var(--pdt-grey-250);
+        color: var(--pdt-grey-950);
+    }
+}
+</style>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install();
+/*]]>*/
+</script>
+<script type="text/javascript">
+var asciiDocTocOrig = asciidoc.toc;
+asciidoc.toc = function(toclevel) {
+    asciiDocTocOrig.call(asciidoc, toclevel);
+    document.querySelectorAll('#toc a').forEach(link => {
+        link.addEventListener('click', () => {
+            document.getElementById('menu-toggler').checked = false;
+        });
+    });
+    document.querySelector('.nav-toggle')?.classList.remove("no-toc");;
+}
+</script>
+</head>
+<body class="article" style="max-width:55em">
+<input id="menu-toggler" type="checkbox" class="menu-toggler">
+<label for="menu-toggler" class="no-toc nav-toggle">☰</label>
+<div id="header">
+<h1>pvesh(1)</h1>
+<span id="author">Proxmox Server Solutions GmbH</span><br>
+<span id="email" class="monospaced">&lt;<a href="mailto:support@proxmox.com">support@proxmox.com</a>&gt;</span><br>
+<span id="revnumber">version 9.0.8,</span>
+<span id="revdate">Tue Aug  5 16:04:45 CEST 2025</span>
+</div>
+<label for="menu-toggler" class="menu-overlay"></label>
+<div id="content">
+<div class="sect1">
+<h2 id="_name">
+NAME
+ <a class="headerlink" href="#_name" title="Permalink to this heading"></a>
+</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>pvesh - Shell interface for the Proxmox VE API</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_synopsis">
+SYNOPSIS
+ <a class="headerlink" href="#_synopsis" title="Permalink to this heading"></a>
+</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>pvesh</strong> <span class="monospaced">&lt;COMMAND&gt; [ARGS] [OPTIONS]</span></p></div>
+<div class="paragraph">
+<p><strong>pvesh create</strong> <span class="monospaced">&lt;api_path&gt;</span> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Call API POST on &lt;api_path&gt;.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;api_path&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+API path.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--noproxy</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Disable automatic proxying.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesh delete</strong> <span class="monospaced">&lt;api_path&gt;</span> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Call API DELETE on &lt;api_path&gt;.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;api_path&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+API path.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--noproxy</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Disable automatic proxying.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesh get</strong> <span class="monospaced">&lt;api_path&gt;</span> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Call API GET on &lt;api_path&gt;.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;api_path&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+API path.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--noproxy</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Disable automatic proxying.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesh help</strong> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Get help about specified command.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--extra-args</span> <span class="monospaced">&lt;array&gt;</span> 
+</dt>
+<dd>
+<p>
+Shows help for a specific command
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--verbose</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Verbose output format.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesh ls</strong> <span class="monospaced">&lt;api_path&gt;</span> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>List child objects on &lt;api_path&gt;.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;api_path&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+API path.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--noproxy</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Disable automatic proxying.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesh set</strong> <span class="monospaced">&lt;api_path&gt;</span> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Call API PUT on &lt;api_path&gt;.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;api_path&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+API path.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--noproxy</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Disable automatic proxying.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesh usage</strong> <span class="monospaced">&lt;api_path&gt;</span> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>print API usage information for &lt;api_path&gt;.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;api_path&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+API path.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--command</span> <span class="monospaced">&lt;create | delete | get | set&gt;</span> 
+</dt>
+<dd>
+<p>
+API command.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--returns</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Including schema for returned data.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--verbose</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Verbose output format.
+</p>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description">
+DESCRIPTION
+ <a class="headerlink" href="#_description" title="Permalink to this heading"></a>
+</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Proxmox VE management tool (<span class="monospaced">pvesh</span>) allows to directly invoke API
+function, without using the REST/HTTPS server.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">Only <em>root</em> is allowed to do that.</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_format_options">
+FORMAT_OPTIONS
+ <a class="headerlink" href="#_format_options" title="Permalink to this heading"></a>
+</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is possible to specify the output format using the
+<span class="monospaced">--output-format</span> parameter. The default format <em>text</em> uses ASCII-art
+to draw nice borders around tables. It additionally transforms some
+values into human-readable text, for example:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Unix epoch is displayed as ISO 8601 date string.
+</p>
+</li>
+<li>
+<p>
+Durations are displayed as week/day/hour/minute/second count, i.e <span class="monospaced">1d 5h</span>.
+</p>
+</li>
+<li>
+<p>
+Byte sizes value include units (<span class="monospaced">B</span>, <span class="monospaced">KiB</span>, <span class="monospaced">MiB</span>, <span class="monospaced">GiB</span>, <span class="monospaced">TiB</span>, <span class="monospaced">PiB</span>).
+</p>
+</li>
+<li>
+<p>
+Fractions are display as percentage, i.e. 1.0 is displayed as 100%.
+</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>You can also completely suppress output using option <span class="monospaced">--quiet</span>.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--human-readable</span> <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Call output rendering functions to produce human readable text.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--noborder</span> <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Do not draw borders (for <em>text</em> format).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--noheader</span> <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Do not show column headers (for <em>text</em> format).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--output-format</span> <span class="monospaced">&lt;json | json-pretty | text | yaml&gt;</span> (<em>default =</em> <span class="monospaced">text</span>)
+</dt>
+<dd>
+<p>
+Output format.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--quiet</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Suppress printing results.
+</p>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_examples">
+EXAMPLES
+ <a class="headerlink" href="#_examples" title="Permalink to this heading"></a>
+</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Get the list of nodes in my cluster</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># pvesh get /nodes</pre>
+</div></div>
+<div class="paragraph">
+<p>Get a list of available options for the datacenter</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># pvesh usage cluster/options -v</pre>
+</div></div>
+<div class="paragraph">
+<p>Set the HTMl5 NoVNC console as the default console for the datacenter</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># pvesh set cluster/options -console html5</pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_copyright_and_disclaimer">
+Copyright and Disclaimer
+ <a class="headerlink" href="#_copyright_and_disclaimer" title="Permalink to this heading"></a>
+</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Copyright &#169; 2007-2022 Proxmox Server Solutions GmbH</p></div>
+<div class="paragraph">
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.</p></div>
+<div class="paragraph">
+<p>This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Affero General Public License for more details.</p></div>
+<div class="paragraph">
+<p>You should have received a copy of the GNU Affero General Public
+License along with this program.  If not, see
+<a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a></p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr></div>
+<div id="footer">
+<div id="footer-text">
+Version 9.0.8<br>
+Last updated
+ Tue Aug  5 16:04:45 CEST 2025
+</div>
+</div>
+</body>
+</html>

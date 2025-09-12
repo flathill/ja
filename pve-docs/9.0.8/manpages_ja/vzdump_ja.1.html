@@ -1,0 +1,3012 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="AsciiDoc 10.2.1" />
+<title>vzdump(1)</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
+  padding: 0;
+  margin: 0;
+}
+pre {
+  white-space: pre-wrap;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; vertical-align: text-bottom; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel0, div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overridden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+</style>
+
+
+<style type="text/css">
+:root {
+    /* pre-defined colors */
+    --pdt-grey-950: hsl(0deg, 0%, 95%);
+    --pdt-grey-750: hsl(0deg, 0%, 75%);
+    --pdt-grey-400: hsl(0deg, 0%, 40%);
+    --pdt-grey-250: hsl(0deg, 0%, 25%);
+    --pdt-grey-150: hsl(0deg, 0%, 15%);
+    --pdt-grey-100: hsl(0deg, 0%, 10%);
+    --pdt-primary-850: hsl(205deg, 100%, 85%);
+    --pdt-primary-800: hsl(205deg, 100%, 80%);
+    --pdt-primary-700: hsl(205deg, 100%, 70%);
+    --pdt-primary-250: hsl(205deg, 100%, 25%);
+    --pdt-secondary-850: hsl(250deg, 100%, 85%);
+}
+
+#header > h1 > .image > img {
+    max-width: 100%;
+}
+
+/* Avoid serif font and increase font-size from 16px to 18px. Makes it more similar to PBS docs */
+body, p {
+    font-family: Open Sans, sans-serif;
+    font-size: 18px;
+}
+
+/* adjust admonition block spacing. this allows for a background on
+ * admonition blocks that doesn't make the elements look to tightly
+ * spaced.
+ */
+div.admonitionblock {
+    border-radius: 3px;
+    margin: 1.5em 0;
+    padding: 0.5em 10% 0.5em 0.5em;
+}
+
+div.admonitionblock td.icon {
+    padding-right: 0.5em;
+}
+
+div.admonitionblock td.icon > img {
+    box-sizing: border-box;
+    padding: 0.15em;
+}
+
+th.tableblock, td.tableblock {
+    border-color: #527bbd80;
+}
+
+/* Fine-tune headings a bit */
+h4 {
+  font-size: 1.1em;
+}
+h5 {
+  font-size: 1.05em;
+}
+h6 {
+  font-size: 1.0em;
+}
+
+/* Support for heading anchor links */
+h3 {
+    border-bottom: unset;
+}
+
+h3 > span {
+    display: inline-block;
+    border-bottom: 2px solid silver;
+}
+
+a, a:visited {
+    color: var(--pdt-primary-250);
+}
+
+a.headerlink {
+    color: var(--pdt-grey-750);
+    padding: 0 4px;
+    text-decoration: none;
+    visibility: hidden;
+}
+
+/* add it as an pseudo-element, so that it does not show up in the ToC */
+a.headerlink::after {
+    content: '\00b6';
+    text-decoration: none;
+}
+
+h1:hover > a.headerlink,
+h2:hover > a.headerlink,
+h3:hover > a.headerlink,
+h4:hover > a.headerlink,
+h5:hover > a.headerlink,
+h6:hover > a.headerlink {
+  visibility: visible;
+}
+
+/* Hide the TOC menu toggler by default */
+.menu-toggler, .nav-toggle, .menu-overlay {
+    display: none;
+}
+
+#toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    padding: 0.5em;
+    transition: transform 0.2s ease-in-out;
+    z-index: 1000;
+}
+
+/* Mobile styles */
+@media only screen and (max-width: 1000px) {
+    /* Avoid overly big header author block */
+    #header span {
+        font-size: 1rem;
+        line-height: 1rem;
+    }
+
+    /* Show toggle button on mobile */
+    .nav-toggle {
+        display: inline-block;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 1001;
+        background-color: var(--pdt-grey-100);
+        color: var(--pdt-grey-950);
+        opacity: 0.6;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 2px;
+        transition: left 0.2s ease-in-out;
+        font-size: 0;
+    }
+    .no-toc.nav-toggle {
+        display: none !important;
+    }
+
+    /* Hide sidebar by default on mobile */
+    #toc {
+        transform: translateX(-100%);
+        line-height: 1.5em;
+        overflow-x: auto;
+    }
+    #content, #header {
+        font-size: 1.25em;
+        line-height: 1.5em;
+    }
+
+    /* Adjust body margin for mobile */
+    body {
+        margin: 1em !important;
+        max-width: 100% !important;
+        overflow-wrap: break-word;
+    }
+
+    /* Show sidebar when checkbox is checked */
+    .menu-toggler:checked ~ #header #toc {
+        transform: translateX(0);
+    }
+
+    /* Show overlay when menu is open */
+    .menu-toggler:checked ~ .menu-overlay {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        cursor: pointer;
+        animation: fadeIn 0.2s;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* Change icon when open */
+    .menu-toggler:checked ~ .nav-toggle::after {
+        content: '✕';
+    }
+    .menu-toggler:not(:checked) ~ .nav-toggle::after {
+        content: '☰';
+    }
+
+    .nav-toggle::after {
+        display: block;
+        font-size: 1.5rem;
+    }
+    .menu-toggler:checked ~ .nav-toggle {
+        left: 24rem;
+    }
+
+}
+
+/* barely useable at such small sizes but can only win here */
+@media only screen and (max-width: 27rem) {
+    body {
+        margin: 0.5em !important;
+    }
+    #toc {
+        font-size: 0.8em;
+    }
+    .menu-toggler:checked ~ .nav-toggle {
+        left: 19rem;
+    }
+}
+
+
+/* Dark mode theme */
+@media screen and (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+        --pdt-body-background: var(--pdt-grey-150);
+        --pdt-text: var(--pdt-grey-950);
+        --pdt-headline: var(--pdt-primary-800);
+        --pdt-link: var(--pdt-primary-700);
+        --pdt-highlighted-text: var(--pdt-primary-850);
+        --pdt-background-sidebar: var(--pdt-grey-100);
+        --pdt-background-listings: var(--pdt-grey-100);
+        --pdt-border: var(--pdt-grey-400);
+        --pdt-border-alt: var(--pdt-grey-250);
+        --pdt-table-border: var(--pdt-grey-400);
+        --pdt-background-admonition: var(--pdt-grey-250);
+    }
+
+    body {
+        color: var(--pdt-text);
+        background-color: var(--pdt-body-background);
+    }
+
+    a, a:visited {
+        color: var(--pdt-link);
+    }
+
+    /* style headlines, titles etc. */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    thead,
+    #author,
+    #toctitle,
+    div.title,
+    td.hdlist1,
+    caption.title,
+    p.tableblock.header {
+        color: var(--pdt-headline);
+    }
+
+    h1,
+    h2,
+    h3,
+    #footer {
+        border-color: var(--pdt-border);
+    }
+
+    /* formatted colored text */
+    dt,
+    em,
+    pre,
+    code,
+    strong,
+    .monospaced {
+        color: var(--pdt-highlighted-text);
+    }
+
+    /* style the table of contents sidebar */
+    div #toc {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-sidebar);
+        border-color: var(--pdt-border-alt);
+    }
+
+    div #toc a:link,
+    div #toc a:visited {
+        color: var(--pdt-text);
+    }
+
+    /* reduce the brigthness of images a bit and make it reversable
+     * through hovering over them.
+     */
+    .image > img {
+        filter: brightness(90%);
+    }
+
+    .image > img:hover {
+        filter: none;
+    }
+
+    /* tables */
+    th.tableblock,
+    td.tableblock,
+    table.tableblock {
+        border-color: var(--pdt-table-border);
+    }
+
+    div.quoteblock,
+    div.verseblock {
+        color: var(--pdt-text);
+        border-color: var(--pdt-border);
+    }
+
+    /* listings (e.g. code snippet blocks) */
+    div.listingblock > div.content {
+        background-color: var(--pdt-background-listings);
+        border-color: var(--pdt-border-alt);
+    }
+
+    /* admonition blocks (e.g. notes, warnings etc.) */
+    div.admonitionblock {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-admonition);
+    }
+
+    div.admonitionblock td.content {
+        border-color: var(--pdt-border);
+    }
+
+    /* makes the admonition icons appear a bit more consistent, by
+     * adding a white background the shadows in the icons look
+     * "correct"
+     */
+    div.admonitionblock td.icon > img {
+        background-color: white;
+        border-radius: 100%;
+        filter: brightness(95%);
+    }
+
+    /* invert the logo */
+    #header > h1 > .image > img {
+        filter: invert(100%) hue-rotate(180deg) brightness(90%);
+    }
+
+    /* fixes the black text on unorderd lists */
+    ul > li > * {
+        color: var(--pdt-text);
+    }
+
+    .nav-toggle {
+        background-color: var(--pdt-grey-250);
+        color: var(--pdt-grey-950);
+    }
+}
+</style>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install();
+/*]]>*/
+</script>
+<script type="text/javascript">
+var asciiDocTocOrig = asciidoc.toc;
+asciidoc.toc = function(toclevel) {
+    asciiDocTocOrig.call(asciidoc, toclevel);
+    document.querySelectorAll('#toc a').forEach(link => {
+        link.addEventListener('click', () => {
+            document.getElementById('menu-toggler').checked = false;
+        });
+    });
+    document.querySelector('.nav-toggle')?.classList.remove("no-toc");;
+}
+</script>
+</head>
+<body class="article" style="max-width:55em">
+<input id="menu-toggler" type="checkbox" class="menu-toggler" />
+<label for="menu-toggler" class="no-toc nav-toggle">☰</label>
+<div id="header">
+<h1>vzdump(1)</h1>
+<span id="author">Proxmox Server Solutions GmbH</span><br />
+<span id="email" class="monospaced"><a href="mailto:support@proxmox.com">&lt;support@proxmox.com&gt;</a></span><br />
+<span id="revnumber">バージョン 9.0.8</span>
+<span id="revdate">最終更新 Tue Aug 5 16:04:45 CEST 2025</span>
+</div>
+<label for="menu-toggler" class="menu-overlay"></label>
+<div id="content">
+<div class="sect1">
+<h2 id="chapter_vzdump">
+NAME<a class="headerlink" href="#chapter_vzdump" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>vzdump - VMとコンテナのバックアップユーティリティ</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_synopsis">
+SYNOPSIS<a class="headerlink" href="#_synopsis" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>vzdump</strong> <span class="monospaced">ヘルプ</span></p></div>
+<div class="paragraph">
+<p><strong>vzdump</strong> <span class="monospaced">{&lt;vmid&gt;}</span> <span class="monospaced">[OPTIONS]</span>バックアップを<strong>作成します</strong> <span class="monospaced">。</span></p></div>
+<div class="paragraph">
+<p>バックアップを作成します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;vmid&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+バックアップするゲストシステムの ID。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--all</span> <span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+このホスト上のすべての既知のゲストシステムをバックアップします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--bwlimit</span> <span class="monospaced">&lt;integer&gt; (0 - N)</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+I/O バンド幅を制限します (KiB/s 単位)。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--compress</span> <span class="monospaced">&lt;0 | 1 | gzip | lzo | zstd&gt;</span><em>(default =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+ダンプファイルを圧縮します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--dumpdir</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+結果のファイルを指定したディレクトリに保存します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--exclude</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+指定したゲストシステムを除外します (--all を想定)。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--除外パス</span> <span class="monospaced">&lt;配列</span></dt>
+<dd>
+<p>
+特定のファイル/ディレクトリを除外します (シェル・グロブ)。<em>で</em>始まるパスはコンテナのルートに固定され、その他のパスは各サブディレクトリに相対的に一致します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--fleecing</span> <span class="monospaced">[[enabled=]&lt;1|0&gt;].[,storage=&lt;ストレージID&gt;</span>] --ionice &lt;integer&gt; (整数)</dt>
+<dd>
+<p>
+バックアップフリートのオプション（VM のみ）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--ionice</span> <span class="monospaced">&lt;integer&gt; (0 - 8)</span><em>(デフォルト =</em> <span class="monospaced">7</span>)</dt>
+<dd>
+<p>
+BFQスケジューラ使用時のIO優先度を設定します。VMのスナップショットとサスペンドモードのバックアップでは、これはコンプレッサにのみ影響します。値が8の場合はアイドル優先度が使用され、それ以外の場合は指定した値でベストエフォート優先度が使用されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--ジョブID</span></dt>
+<dd>
+<p>
+バックアップジョブのID。設定すると、バックアップ通知の<em>backup-job</em>メタデータフィールドにこの値が設定されます。<a href="mailto:root@pam">root@pamのみが</a>このパラメータを設定できます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--ロックウェイト</span> <span class="monospaced">&lt;integer&gt; (0 - N)</span><em>(デフォルト =</em> <span class="monospaced">180</span>)</dt>
+<dd>
+<p>
+グローバルロックを待機する最大時間（分）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--mailnotification</span> <span class="monospaced">&lt;always | failure&gt;</span><em>(default =</em> <span class="monospaced">always</span>)</dt>
+<dd>
+<p>
+非推奨: 代わりに通知ターゲット/マッチャーを使用してください。通知メールを送信するタイミングを指定します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--mailto</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+非推奨：代わりに notification targets/matchers を使用してください。通知メールを受け取るメールアドレスまたはユーザのカンマ区切りリスト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--maxfiles</span> <span class="monospaced">&lt;integer&gt; (1 - N</span>)</dt>
+<dd>
+<p>
+非推奨: 代わりに<em>prune-backups を</em>使用してください。ゲストシステムごとのバックアップファイルの最大数。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">-モード</span> <span class="monospaced">&lt;スナップショット | 停止 | サスペンド&gt;</span><em>(デフォルト =</em> <span class="monospaced">スナップショット</span>)</dt>
+<dd>
+<p>
+バックアップモード。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--ノード</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+このノードで実行された場合のみ実行されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--notes-template</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+バックアップのメモを生成するためのテンプレート文字列。値で置き換えられる変数を含めることができます。現在サポートされているのは{{cluster}}, {{guestname}}, {{node}}, {{vmid}}ですが、将来追加されるかもしれません。1行にする必要があり、改行とバックスラッシュは、<em>それぞれ｟n｠と｟｠として</em>エスケープする必要があります。</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">必要なオプション:<span class="monospaced">storage</span></td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--notification-mode</span> <span class="monospaced">&lt;auto | legacy-sendmail | notification-system&gt;</span><em>(default =</em> <span class="monospaced">auto</span>)</dt>
+<dd>
+<p>
+どの通知システムを使用するかを決定します。<em>legacy-sendmailに</em>設定すると、vzdumpはmailto/mailnotificationパラメータを考慮し、<em>sendmail</em>コマンドで指定されたアドレスにメールを送信します。<em>notification-systemに</em>設定すると、PVEの通知システム経由で通知が送信され、mailtoとmailnotificationは無視されます。<em>auto</em>に設定すると（デフォルト設定）、mailto が設定されていればメールが送信され、設定されていなければ通知システムが使用されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--pbs-change-detection-mode</span> <span class="monospaced">&lt;data | legacy | metadata&gt;</span><span class="monospaced">(</span>default = auto)</dt>
+<dd>
+<p>
+コンテナ・バックアップのファイル変更の検出とエンコード形式の切り替えに使用されるPBSモード。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--performance</span> <span class="monospaced">[max-workers=&lt;integer&gt;] [,pbs-entries-max=&lt;integer&gt;</span>]<span class="monospaced">--pigz</span> <span class="monospaced">&lt;integer&gt;</span><span class="monospaced">(</span>default = auto)</dt>
+<dd>
+<p>
+その他のパフォーマンス関連の設定。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--pigz</span> <span class="monospaced">&lt;integer&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+N&gt;0 の場合は gzip の代わりに pigz を使用します。N=1 はコアの半分を使用し、N&gt;1 は N をスレッドカウントとして使用します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--pool</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+指定したプールに含まれるすべての既知のゲストシステムをバックアップします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--protected</span> <span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+true の場合、バックアップに保護マークを付けます。</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">オプションが必要:<span class="monospaced">storage</span></td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--prune-backups</span> <span class="monospaced">[keep-all=&lt;1|0&gt;] [,keep-daily=&lt;N&gt;] [,keep-hourly=&lt;N&gt;] [,keep-last=&lt;N&gt;] [,keep-monthly=&lt;N&gt;] [,keep-weekly=&lt;N&gt;] [,keep-yearly=&lt;N&gt;]</span><em>(default =</em> <span class="monospaced">keep-all=1</span>)</dt>
+<dd>
+<p>
+ストレージ設定からではなく、これらの保持オプションを使用します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--quiet</span> <span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+静かにします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--remove</span> <span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+<em>prune-backups</em> に従って古いバックアップを削除します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--スクリプト</span> <span class="monospaced">&lt;string</span></dt>
+<dd>
+<p>
+指定したフック・スクリプトを使用します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--stdexcludes</span> <span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+一時ファイルとログを除外します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--stdout</span> <span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+tarをファイルではなく標準出力に書き込みます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--stop</span> <span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+このホストでのバックアップジョブの実行を停止します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--stopwait</span> <span class="monospaced">&lt;integer&gt; (0 - N)</span><em>(デフォルト =</em> <span class="monospaced">10</span>)</dt>
+<dd>
+<p>
+ゲストシステムが停止するまで待機する最大時間 (分)。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--storage</span> <span class="monospaced">&lt;ストレージID</span></dt>
+<dd>
+<p>
+結果のファイルをこのストレージに保存します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--tmpdir</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+指定されたディレクトリに一時ファイルを格納します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--zstd</span> <span class="monospaced">&lt;整数&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+Zstd スレッド。N=0 は利用可能なコアの半分を使用し、N が 0 より大きな値に設定されている場合は、N がスレッド数として使用されます。</p>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description">
+説明<a class="headerlink" href="#_description" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Proxmox VEは、各ストレージおよび各ゲストシステムタイプの機能を使用して、完全に統合されたソリューションを提供します。Proxmox VEは、各ストレージおよび各ゲストシステムのタイプの機能を使用して、完全に統合されたソリューションを提供します。これにより、システム管理者は、<span class="monospaced">モード</span>オプションを介して、バックアップの一貫性とゲストシステムのダウンタイムを微調整することができます。</p></div>
+<div class="paragraph">
+<p>Proxmox VEのバックアップは、常にVM/CTコンフィギュレーションとすべてのデータを含むフルバックアップです。  バックアップはGUIまたは<span class="monospaced">vzdump</span>コマンドラインツールから開始できます。</p></div>
+<div class="paragraph">
+<div class="title">バックアップストレージ</div><p>バックアップを実行する前に、バックアップストレージを定義する必要があります。ストレージを追加する方法については、<a href="pvesm.1.html#chapter_storage">ストレージのマニュアルを</a>参照してください。Proxmox Backup Serverストレージの場合、バックアップは重複排除されたチャンクとメタデータとして保存され、ファイルレベルのストレージの場合、バックアップは通常のファイルとして保存されます。Proxmox Backup Serverは高度な機能を備えているため、専用ホストで使用することをお勧めします。NFSサーバを使用するのも良い方法です。どちらの場合も、バックアップをテープドライブに保存して、オフサイトアーカイブにすることができます。</p></div>
+<div class="paragraph">
+<div class="title">バックアップのスケジュール</div><p>バックアップジョブは、選択可能なノードとゲストシステムに対して、特定の日時に自動的に実行されるようにスケジュールすることができます。詳細は<a href="vzdump.1.html#vzdump_jobs">バックアップジョブセクションを</a>参照してください。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_backup_modes">
+バックアップモード<a class="headerlink" href="#_backup_modes" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ゲストのタイプに応じて、一貫性（オプション<span class="monospaced">モード</span>）を提供するいくつかの方法があります。</p></div>
+<div class="dlist"><div class="title">VMのバックアップモード：</div><dl>
+<dt class="hdlist1">
+<span class="monospaced">停止</span>モード</dt>
+<dd>
+<p>
+このモードでは、バックアップの一貫性が最も高くなりますが、VM操作のダウンタイムが短くなります。このモードは、VMの整然としたシャットダウンを実行し、バックグラウンドでQEMUプロセスを実行してVMデータをバックアップします。バックアップの開始後、VMはフル稼働モードに移行します。ライブバックアップ機能を使用することで、整合性が保証されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">サスペンド</span>モード</dt>
+<dd>
+<p>
+このモードは互換性のために提供されており、<span class="monospaced">スナップショット・</span>モードを呼び出す前にVMをサスペンドします。VMを一時停止するとダウンタイムが長くなり、データの整合性が必ずしも向上しないため、<span class="monospaced">スナップショット・</span>モードの使用をお勧めします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">スナップショット</span>モード</dt>
+<dd>
+<p>
+このモードでは、操作のダウンタイムが最も短くなりますが、不整合のリスクは小さくなります。このモードはProxmox VEのライブバックアップを実行することで機能し、VMの実行中にデータブロックがコピーされます。ゲストエージェントが有効<span class="monospaced">（エージェント：1</span>）で実行中の場合、<span class="monospaced">guest-fsfreeze-freezeと</span> <span class="monospaced">guest-fsfreeze-thawを呼び出して</span>整合性を向上させます。</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">Windows ゲストでは、ゲスト内で別のバックアップソフトウェアが使用されている場合、ゲストエージェントを設定する必要があります。詳細については、ゲストエージェントセクションの<a href="qm.1.html#qm_qga_fsfreeze">Freeze &amp; Thaw</a>を参照してください。</td>
+</tr></table>
+</div>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p>QemuServer用のProxmox VEライブバックアップの技術的な概要は<a href="https://git.proxmox.com/?p=pve-qemu.git;a=blob_plain;f=backup.txt">こちらを</a>ご覧ください。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">Proxmox VEライブバックアップは、あらゆるストレージタイプでスナップショットのようなセマンティクスを提供します。基礎となるストレージがスナップショットをサポートしている必要はありません。また、バックアップはバックグラウンドのQEMUプロセスによって実行されるため、QEMUによってVMディスクが読み込まれている間、停止したVMは短時間実行されているように見えますが、VM自体は起動されず、ディスクが読み込まれるだけであることに注意してください。</td>
+</tr></table>
+</div>
+<div class="dlist"><div class="title">コンテナのバックアップモード：</div><dl>
+<dt class="hdlist1">
+<span class="monospaced">停止</span>モード</dt>
+<dd>
+<p>
+バックアップの間、コンテナを停止します。これは、非常に長いダウンタイムになる可能性があります。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">サスペンド</span>モード</dt>
+<dd>
+<p>
+このモードでは、rsync を使用してコンテナデータを一時的な場所にコピーします（オプション<span class="monospaced">--tmpdir</span> を参照）。その後、コンテナが一時停止され、2 回目の rsync で変更されたファイルがコピーされます。その後、コンテナが再び起動（再開）されます。この結果、ダウンタイムは最小限になりますが、コンテナのコピーを保持するための追加の領域が必要になります。</p>
+<div class="paragraph">
+<p>コンテナがローカル・ファイル・システム上にあり、バックアップのターゲット・ストレージがNFS/CIFSサーバである場合、<span class="monospaced">-tmpdirも</span>ローカル・ファイル・システム上に存在するように設定する必要があります。  バックアップストレージがNFSサーバの場合、サスペンドモードでACLを使用してローカルコンテナをバックアップする場合にも、ローカル<span class="monospaced">tmpdirの</span>使用が必要です。</p></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">スナップショット</span>モード</dt>
+<dd>
+<p>
+このモードでは、基礎となるストレージのスナップショット機能を使用します。まず、データの一貫性を確保するためにコンテナが一時停止され、コンテナのボリュームの一時スナップショットが作成され、スナップショットの内容がtarファイルにアーカイブされます。最後に、一時スナップショットを再度削除します。</p>
+</dd>
+</dl></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content"><span class="monospaced">スナップショット</span>モードでは、すべてのバックアップボリュームがスナップショットをサポートするストレージ上にある必要があります。<span class="monospaced">backup=no</span>マウントポイントオプションを使用して、個々のボリュームをバックアップから除外することができます（したがって、この要件も除外されます）。</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAJhUlEQVRoge2ZWWycVxXHf+fce7/v
+m/GaGCde4pI0aQlJC0kRtE1L00JbLIjY4QkeUB9YHhAIJFCExAsKUkE8IAFFPIDUIqhBRSDRBUqC
+CimFFBCBpCWx02IaZ3G2SdyxPZ7vHh6+mcnSZnFjKIge6Wj8zYzvPf9z/me5d8TM+F8WfbkNuFx5
+BcDLLf/fAEZGRmx4eNh6enqsp6fHhoeHbWRk5D9aFeSlVqHNmzfb6H33sHnT7ZQmD5GfOMax6Sm+
+Pl5h1Yc+xpYtW2SBbX1ReUkRGBkZsdH77mHLW95EOv4Ms3ueJh6YYPHUFF9aljJ63z3cf//9/5FI
+vKQIDA8P293L2yhVjjH7t51ocDiviFecF46n7XzBreChhx4qNhH5t0XjJUVgx44ddGUZ9b/vIpQD
+oRQIWSDJAiFL6B9axo4dO4gxAmANWVDLG+Ln82URMRGhVCqRHxonlAPqFXWKC4r6IhI6OMjMzBN4
+/4LlTUQQEZxzZ32QJAlpmrb+p16vU6vVOHXq1AWjN18AnDj0F971vrs4OnmYJVkoDA4FCPUO172I
+Cgnt7SV++4vvsGhRJx3tJbIsRVVpsUnOBBABBVFEClKYwbKr7sTM7EIUnBcA7z21k7t49x1X8JXv
+bOWra7rw5QRtcN8PLCfvvZJvb9vJycpJpg4/hp/N0I4SMQs4Jw0A5zBXHGiCaIZIKABgpGlKjPEF
+0TpT5pUDRXiVt99+Le03r+WzuytM1gO6pB/3+o0cbxvk8yOPMjW6i2iR2lxOjJDHSDMFogmGwzQ7
+rRJAUpAENAGXIZq2AFzQpvkACCEQcahP+cRH3sKHn9zHXU+MM7rtGeD33NDXzaZynZU9gcezpUw9
+X6OzIyOakkfF4QEpPG6nDRNNEA2FSgKimETSNCXPc0II57VpXhEolUqoOrxPSLOMT330Dv5SqfKD
+NR388Y2L+caQsjITNv3pMBs3rOT56ZyZGaM+J0QUxDc0INrWUgggoRGBAOIRAt77hY1AmqaoeJxP
+cN645jVDbNn8Hj73o8fZ/af9mEE9j9y2YRXt5YzZWmRmzjj1/BwhTXAKzitOHEbeWlc0AVwDnCv8
+KoZzjotV33lTSL1HNKAuEtKM1169jM98/E6mTk3x4Nbd7Bk7TEdHRvAeVY+hmDqmZwx1kIkiqrhz
+S2zL+AbNMC6l/80LgHMOEY9oQvBCks5RKpXo7JhFxbhz42pet2aQet1YtLiDJAkIDq8BHwJmwlwO
+UaD0ojsrNKuUReIZyb9gABCHcwWFgg+0lTPyvIRToVzKWLpkMfV6REQplYvmZCj1uuBUSdJwTg8A
+XBdoCZMOsBkQBeGi/J83gBgjmABC8AlJGsjzFLMyaXDM1etEA0VR50iCx6mSZhkiijpPjEpQD+SF
+4WdJrTAewdCFB1CtVlFVVATnhMQnWJqC5aTBk+c5IIgWRoTgSZJAmiZAo1s7hwsppglI+fTiljeY
+nyHkLQotKIAYI4igzpFHISQOiwEnKTEG8hhRVZw6YjRQLfJGHcF7jleqTBw8znXr12MABnv37efY
+iSnesG4tiUsRUQwD7JIAzKsPqCqiRbVwweM04XdPjhJN+dvTBxgbn6G9q59yZx9/3HWEb33vN+zc
+/RzOJ+w/eJLtO8Z5ZNtT7PvHIUQTvvv9X/Lc/mN0d3by3fseRLQwvWh0Fy+h8wbQ2VFG1KM+xfuA
+qufo8So/fejPPD/rqJys8pvf7eLAoeNMHqnw2U9+kH3jVQ5MClMzKUla5obr13HliiEMmDx6gltv
+uY7Vr1nBQF8PJopQ9AFTt/AROFfMjCW9XTy19xB33Hodb924jr1j+/nDk3/nzTdei4jw3nfeyCOP
+bufa1y5jzeoVrcHM8HR3dfHlr/2Q+x94jFtuuh44/9B2PplXDryYLF3STXd3e+t5UXcHY89OsOH6
+NS2Qed7wpM1Rm50G4MGHH2P961Zy3bqreXrPP5mrzwLt5y6/cACq1eoLCKm+TN/SAebmfn8aUG83
+PYs7+cnPH+eqKwd5as8/edc7bi02847pmVkATk1VWbF8AOcca1Yv59DkqcYK0tCL02deACqVCldc
+0YdIwLmEPM9RV6NnUZlPf3wT6oqJcePN6wHhzTeu4/CRCrfctJ4sSxBRli7pYfHEMUSU97/7Th75
+1RP8eec+Yp5zzTVXM9DfDyogBvHS6HTJACYmJnjVoq5GFw0454gCEOnoaMfiNGZFFRFxJGkbywZ6
+i1NWoy9kWYmbb1gHKCHApuGbisVFGyoYUswa5OR5ftF56JIBjI6OMtDfWwAQ35jnc8AVpRXBohVq
+UowECKqK4RBxoE0W6gvGCcEjaOEAwEQWdpgbGxujt7erOLO2mk3R8i0Wz9EiuUGz+qlKEQEUaJbI
+4lTHmTVePKgWzpDGJGpc8CDTlEsuo88++wxXDA0UIUbAOP23KGZKjI48KnkuhcbiPbPCOBoeBikO
+Lk2VxjqNRilaAEqSZGEAbN261bZt+zW33XY7IAXXm6Ou0YhIMamaaUOl5WRrzg00viuKWWxpQUOH
+NAZFQRpD48Xlkig0MTHBB95zG+VSylz1KCbWyDOh2XyK+56IqjWMKigkUnzWnPPFFFRRLZ29SQRU
+ELOGY4pZ6LKOlM07mZ07d/KOtw1TcB4sGkTDiDQ9K1IkrKeYmQC08d7pZLSiRBpE5s7aS0XAHFEK
+AGY51Wr18g80Zmb33nsvX/z8XdSmj2AWOXhwkrxe46+79jB55Dh/3T2GxUhHextdXW2sXN7PNWtW
+IQKDA71FFBoAjIgQkVg/a5+oHrU5zIznDhxk964xKpXKggAoTlWW8+OfPorlOQ//cjsDy1bS2dFO
+W+diVly1iL6+Pqanpzl5qsL4pPHwN3/G1InDlMsZ7Z1tDA30cfWqIa5dexV9fb2YnT7UTxw4xsHJ
+o4yOjfOP8QOMjx/k4OQx7r777lY0zycXvJ02M4sxMjg4SL1eR0TYsGEDw8PD9PX10d7ejogUN3a1
+GqpKCIE8z5mdnUVVqVarbN++nba2Nvbu3csDDzyAqrJ8+atb+zjn6e/vZ/Xq1axatYq1a9fS29tL
+lmUMDQ1RKpXOm9EXvV6v1+tWr9eZnp5mZmaGWq1GjLHF62aiNZ+bnPfe45xrvTZzxMyYmZk56+LX
+zKjX661DvHOOJElIkoRSqYT3/vLvRlW15eHCa4VxzdvmpjZDfubzuXeb3vuzqCEixBhbo0NTkyS5
+PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">デフォルトでは、ルートディスクマウントポイント以外のマウントポイントはバックアップに含まれません。ボリュームのマウントポイントについては、<strong>バックアップ</strong>オプションを設定して、マウントポイントをバックアップに含めることができます。デバイスマウントとバインドマウントは、コンテンツがProxmox VEストレージ ライブラリの外部で管理されるため、バックアップされることはありません。</td>
+</tr></table>
+</div>
+<div class="sect2">
+<h3 id="_vm_backup_fleecing">
+<span>VM Backup Fleecing</span> <a class="headerlink" href="#_vm_backup_fleecing" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>VMのバックアップが開始されると、QEMUはブロック層に「copy-before-write」フィルタをインストールします。このフィルタは、新しいゲストの書き込み時に、バックアップにまだ必要な古いデータが最初にバックアップターゲットに送信されることを保証します。ゲストの書き込みはこの操作が終わるまでブロックされるため、まだバックアップされていないセクタへのゲストの IO はバックアップターゲットの速度によって制限されます。</p></div>
+<div class="paragraph">
+<p>バックアップフリーシングでは、そのような古いデータはバックアップターゲットに直接送信されるのではなく、フリーシングイメージにキャッシュされます。これにより、ゲストのIOパフォーマンスを向上させ、特定のシナリオではハングを防止することもできます。</p></div>
+<div class="paragraph">
+<p>ストレージ<span class="monospaced">local-lvm</span> 上に作成された fleecing イメージで VM<span class="monospaced">123</span>のバックアップを手動で開始するには、以下を実行します。</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>vzdump 123 ---fleecing enabled=1,storage=local-lvm。</pre>
+</div></div>
+<div class="paragraph">
+<p>いつものように、<a href="vzdump.1.html#vzdump_configuration">設定</a>オプションを使用して、特定のバックアップジョブ、またはノード全体のフォールバックとしてオプションを設定できます。UIでは、バックアップジョブの編集時に<em>Advanced</em>タブでfleecingを設定できます。</p></div>
+<div class="paragraph">
+<p>fleecingストレージは、シンプロビジョニングと廃棄をサポートする高速ローカルストレージである必要があります。例としては、LVM-thin、RBD、ストレージ構成に<span class="monospaced">スパース1を</span>持つZFS、多くのファイルベースのストレージがあります。理想的には、fleecingストレージは専用ストレージで、フルに動作しても他のゲストには影響せず、バックアップに失敗するだけです。バックアップされたfleecingイメージの一部は、スペース使用量を低く抑えるために破棄されます。</p></div>
+<div class="paragraph">
+<p>破棄をサポートしないファイルベースのストレージ（例えば、バージョン4.2以前のNFS）の場合、ストレージ設定で<span class="monospaced">preallocationをoffに</span>設定する必要があります。<span class="monospaced">qcow2</span>（ストレージがサポートしている場合、fleecingイメージのフォーマットとして自動的に使用されます）と組み合わせて、これはイメージの既に割り当てられた部分を後で再利用できるという利点があり、かなりのスペースを節約するのに役立ちます。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">シンプリー・プロビジョニングされていないストレージ、例えば<span class="monospaced">スパース・オプションの</span>ないLVMやZFSでは、オリジナル・ディスクのフルサイズを前もってフリート・イメージ用に予約しておく必要があります。シンプリー・プロビジョニングされたストレージでは、バックアップが別のディスクでビジーになっている間にゲストがディスク全体を再書き込みした場合にのみ、フリ-キング・イメージはオリジナル・イメージと同じサイズまで成長することができます。</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ct_change_detection_mode">
+<span>CT変更検出モード</span> <a class="headerlink" href="#_ct_change_detection_mode" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>変更検出モードを設定すると、pxarアーカイブのエンコード形式が定義され、Proxmox Backup Serverをターゲットとしたコンテナバックアップで変更されたファイル、および変更されていないファイルがどのように処理されるかが定義されます。</p></div>
+<div class="paragraph">
+<p>変更検出モードオプションは、ジョブの編集中に<em>Advanced</em>タブで個々のバックアップジョブに対して設定することができます。さらに、このオプションは<a href="vzdump.1.html#vzdump_configuration">設定オプションで</a>ノード全体のフォールバックとして設定することもできます。</p></div>
+<div class="paragraph">
+<p>利用可能な変更検出モードは3つあります：</p></div>
+<div style="overflow-x:auto">
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:20%;" />
+<col style="width:80%;" />
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">モード     </th>
+<th class="tableblock halign-left valign-top">説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock monospaced">デフォルト</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pxar 形式バージョン 1 を使用して、すべてのファイルを読み取り、単一のアーカイブにエンコードします。</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock monospaced">データ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">すべてのファイルを読み込み、エンコードしますが、pxarフォーマットバージョン2を使用して、データとメタデータを別々のストリームに分割します。</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock monospaced">メタデータ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ストリームを分割し、<span class="monospaced">データと</span>同様にアーカイブ・フォーマット・バージョン2を使用します。ただし、変更されていないファイルを検出するために、以前のスナップショットのメタデータ・アーカイブを使用します（存在する場合）。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="paragraph">
+<p>変更検出モードの<span class="monospaced">メタデータを</span>使用してバックアップを実行するには、以下を実行します。</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>vzdump 123 --storage pbs-storage --pbs-change-detection-mode metadata</pre>
+</div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">VMのバックアップやProxmox Backup Server以外のストレージバックエンドへのバックアップは、この設定の影響を受けません。</td>
+</tr></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_backup_file_names">
+バックアップファイル名<a class="headerlink" href="#_backup_file_names" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>vzdumpの新しいバージョンは、ゲストの種類とバックアップ時間をファイル名にエンコードします。</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>vzdump-lxc-105-2009_10_09-11_04_43.tar</pre>
+</div></div>
+<div class="paragraph">
+<p>これにより、同じディレクトリに複数のバックアップを保存できます。さまざまな<a href="vzdump.1.html#vzdump_retention">保持</a>オプションで保持するバックアップの数を制限できます。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_backup_file_compression">
+バックアップファイル圧縮<a class="headerlink" href="#_backup_file_compression" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="monospaced">lzo</span><span class="footnote"><br>[Lempel-Ziv-Oberhumer a lossless data compression algorithm<a href="https://en.wikipedia.org/wiki/Lempel-Ziv-Oberhumer">https://en.wikipedia.org/wiki/Lempel-Ziv-Oberhumer]</a><br></span>,<span class="monospaced">gzip</span> <span class="footnote"><br>[gzip - based on the DEFLATE algorithm<a href="https://en.wikipedia.org/wiki/Gzip">https://en.wikipedia.org/wiki/Gzip]</a><br></span>or<span class="monospaced">zstd</span><span class="footnote"><br>[Zstandard a lossless data compression algorithm<a href="https://en.wikipedia.org/wiki/Zstandard">https://en.wikipedia.org/wiki/Zstandard]</a><br></span>.</p></div>
+<div class="paragraph">
+<p>現在、Zstandard (zstd) はこれら3つのアルゴリズムの中で最速です。 マルチスレッドは、lzoやgzipに対するzstdのもう一つの利点です。Lzo と gzip はより広く使われており、しばしばデフォルトでインストールされます。</p></div>
+<div class="paragraph">
+<p>pigz<span class="footnote"><br>[pigz - parallel implementation of gzip<a href="https://zlib.net/pigz/">https://zlib.net/pigz/]</a><br></span>をインストールすることで、gzip の代替としてマルチスレッドによるより良いパフォーマンスを得ることができます。pigz と zstd では、スレッド数/コア数を調整できます。以下の<a href="vzdump.1.html#vzdump_configuration">設定</a>オプションを参照してください。</p></div>
+<div class="paragraph">
+<p>バックアップファイル名の拡張子は通常、バックアップの作成にどの圧縮アルゴリズムが使用されたかを判断するために使用できます。</p></div>
+<div style="overflow-x:auto">
+<table class="tableblock frame-all grid-all" style="
+width:100%;
+">
+<col style="width:50%;" />
+<col style="width:50%;" />
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">.zst</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Z標準（zstd）圧縮</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">.gz または .tgz</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gzip圧縮</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">.lzo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lzo 圧縮</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="paragraph">
+<p>バックアップファイル名の末尾が上記のファイル拡張子のいずれかでない場合、vzdumpによって圧縮されていません。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_backup_encryption">
+バックアップ暗号化<a class="headerlink" href="#_backup_encryption" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Proxmox Backup Serverストレージでは、オプションでバックアップのクライアント側暗号化を設定できます<a href="pvesm.1.html#storage_pbs_encryption">。</a></p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="vzdump_jobs">
+バックアップジョブ<a class="headerlink" href="#vzdump_jobs" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<a class="image" href="images/screenshot/gui-cluster-backup-overview.png">
+<img src="images/screenshot/gui-cluster-backup-overview.png" alt="screenshot/gui-cluster-backup-overview.png" width=250 style="padding: 0 0 0 10px;float:right;" /></a>
+<p>手動でバックアップをトリガーする以外に、すべての仮想ゲストまたは選択した仮想ゲストをストレージにバックアップする定期的なジョブを設定することもできます。ジョブは UI の<em>Datacenter</em>→<em>Backup</em>で管理するか、<span class="monospaced">/cluster/backup</span>API エンドポイント経由で管理できます。どちらも<span class="monospaced">/etc/pve/jobs.cfg</span> にジョブエントリを生成し、<span class="monospaced">pvescheduler</span>デーモンによって解析および実行されます。</p></div>
+<div class="paragraph">
+<a class="image" href="images/screenshot/gui-cluster-backup-edit-01-general.png">
+<img src="images/screenshot/gui-cluster-backup-edit-01-general.png" alt="screenshot/gui-cluster-backup-edit-01-general.png" width=250 style="padding: 0 10px 0 0;float:left;" /></a>
+<p>ジョブはすべてのクラスタノードまたは特定のノードに対して設定され、指定されたスケジュールに従って実行されます。スケジュールのフォーマットは<span class="monospaced">systemd の</span>カレンダーイベントとよく似ています。UI の<em>Schedule</em>フィールドは自由に編集することができ、そのドロップダウンリストには出発点として使えるいくつかの例が含まれています。</p></div>
+<div class="paragraph">
+<p>ストレージやノードの設定より優先されるジョブ固有の<a href="vzdump.1.html#vzdump_retention">保持オプションや</a>、バックアップと一緒に保存される追加情報のための<a href="vzdump.1.html#vzdump_notes">メモのテンプレートを</a>設定できます。</p></div>
+<div class="paragraph">
+<p>スケジュールされたバックアップは、スケジュールされた時間中にホストがオフラインであった場合やpveschedulerが無効であった場合にその実行を逃すため、復旧のための動作を設定することができます。<span class="monospaced">Repeat missed</span>オプション（UIの<em>Advanced</em>タブ、configの<span class="monospaced">repeat-missed</span>）を有効にすると、見逃したジョブをできるだけ早く実行するようスケジューラに指示できます。</p></div>
+<div class="paragraph">
+<a class="image" href="images/screenshot/gui-cluster-backup-edit-04-advanced.png">
+<img src="images/screenshot/gui-cluster-backup-edit-04-advanced.png" alt="screenshot/gui-cluster-backup-edit-04-advanced.png" width=250 style="padding: 0 0 0 10px;float:right;" /></a>
+<p>バックアップのパフォーマンスを調整するための設定がいくつかあります（そのうちのいくつかはUIの<em>Advanced</em>タブで公開されています）。最も注目すべきは、IO帯域幅を制限するための<span class="monospaced">bwlimit</span>です。さらに、<span class="monospaced">ionice</span>（BFQスケジューラ使用時）、<span class="monospaced">パフォーマンス</span>設定の一部として<span class="monospaced">max-workers</span>（VMバックアップにのみ影響）、<span class="monospaced">pbs-entries-max</span>（コンテナバックアップにのみ影響）があります。詳細については、<a href="vzdump.1.html#vzdump_configuration">設定オプションを</a>参照してください。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="vzdump_retention">
+バックアップ保持<a class="headerlink" href="#vzdump_retention" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="monospaced">prune-backups</span>オプションを使用すると、保存するバックアップを柔軟に指定できます。</p></div>
+<div class="paragraph">
+<a class="image" href="images/screenshot/gui-cluster-backup-edit-02-retention.png">
+<img src="images/screenshot/gui-cluster-backup-edit-02-retention.png" alt="screenshot/gui-cluster-backup-edit-02-retention.png" width=250 style="padding: 0 0 0 10px;float:right;" /></a>
+<p>以下の保持オプションを使用できます：</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">keep-all &lt;ブール値</span></dt>
+<dd>
+<p>
+すべてのバックアップを保持します。これが<span class="monospaced">trueの</span>場合、他のオプションは設定できません。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">キープラスト &lt;N</span></dt>
+<dd>
+<p>
+最後の<span class="monospaced">&lt;N&gt;</span>個のバックアップを保持します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">一定時間毎 &lt;N</span></dt>
+<dd>
+<p>
+直近<span class="monospaced">&lt;N&gt;</span>時間のバックアップを保持します。1時間に複数のバックアップがある場合は、最新のものだけが保持されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">毎日保持 &lt;N</span></dt>
+<dd>
+<p>
+過去<span class="monospaced">&lt;N&gt;</span>日間のバックアップを保持します。1日に複数のバックアップがある場合、最新のものだけが保持されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">週単位 &lt;N</span></dt>
+<dd>
+<p>
+過去<span class="monospaced">&lt;N&gt;</span>週間分のバックアップを保持します。1週間に複数のバックアップがある場合は、最新のものだけが保存されます。</p>
+</dd>
+</dl></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">週は月曜日に始まり、日曜日に終わります。このソフトウェアは<span class="monospaced">ISO 週日付システムを</span>使用し、年末の週を正しく処理します。</td>
+</tr></table>
+</div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">月単位で保持 &lt;N&gt;</span></dt>
+<dd>
+<p>
+過去<span class="monospaced">&lt;N&gt;</span>ヶ月分のバックアップを保持します。1つの月に複数のバックアップがある場合、最新のものだけが保存されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">年単位で保存 &lt;N</span></dt>
+<dd>
+<p>
+過去<span class="monospaced">&lt;N&gt;</span>年間のバックアップを保持します。1年分のバックアップが複数ある場合は、最新のものだけが保持されます。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p>保持オプションは上記の順序で処理されます。各オプションは、その期間内のバックアップのみを対象とします。次のオプションでは、すでにカバーされているバックアップは処理されません。古いバックアップのみを考慮します。</p></div>
+<div class="paragraph">
+<p>使用する保持オプションをカンマ区切りのリストとして指定します：</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># vzdump 777 --prune-backups keep-last=3,keep-daily=13,keep-yearly=9</pre>
+</div></div>
+<div class="paragraph">
+<p><span class="monospaced">prune-backupsを</span>直接<span class="monospaced">vzdumpに</span>渡すこともできますが、ストレージレベルで設定する方が賢明な場合が多く、Webインターフェイスから行うことができます。</p></div>
+<div class="sect2">
+<h3 id="_prune_simulator">
+<span>プルーンシミュレータ</span> <a class="headerlink" href="#_prune_simulator" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p><a href="https://pbs.proxmox.com/docs/prune-simulator">Proxmox Backup Serverドキュメントのpruneシミュレータを</a>使用して、さまざまなバックアップスケジュールでさまざまな保持オプションの効果を調べることができます。</p></div>
+</div>
+<div class="sect2">
+<h3 id="_retention_settings_example">
+<span>保持設定例</span> <a class="headerlink" href="#_retention_settings_example" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>バックアップの頻度と古いバックアップの保持は、データの変更頻度や、特定の作業負荷における古い状態の重要性に依存する場合があります。 バックアップが企業のドキュメントアーカイブとして機能する場合、バックアップの保持期間に関する法的要件がある場合もあります。</p></div>
+<div class="paragraph">
+<p>この例では、毎日バックアップを行い、保存期間を10年とし、保存されるバックアップの間隔は徐々に長くなっていくと仮定します。</p></div>
+<div class="paragraph">
+<p><span class="monospaced">keep-last=3</span>- 毎日バックアップを取る場合でも、管理者は大きなアップグレードの直前または直後に追加のバックアップを作成したいと思うかもしれません。keep-lastを設定することで、これが確実になります。</p></div>
+<div class="paragraph">
+<p><span class="monospaced">keep-hourly</span>が設定されていない - 毎日のバックアップには関係ありません。keep-lastを設定することで、手動バックアップの追加をカバーできます。</p></div>
+<div class="paragraph">
+<p><span class="monospaced">keep-daily=13</span>- keep-last（最低1日）と合わせて、最低2週間分のバックアップを確保します。</p></div>
+<div class="paragraph">
+<p><span class="monospaced">keep-weekly=8</span>- 毎週少なくとも2ヶ月分のバックアップを確保します。</p></div>
+<div class="paragraph">
+<p><span class="monospaced">keep-monthly=11</span>- 前のkeep設定と合わせて、少なくとも1年間の月別バックアップを確保します。</p></div>
+<div class="paragraph">
+<p><span class="monospaced">keep-yearly=9</span>- これは長期アーカイブ用です。前のオプションで現在の年をカバーしたので、残りの年についてはこれを9に設定し、合計で少なくとも10年間をカバーするようにします。</p></div>
+<div class="paragraph">
+<p>保存期間が不必要に長いと感じたら、いつでも減らすことができますが、一度削除されたバックアップを再作成することはできません。</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="vzdump_protection">
+バックアップ保護<a class="headerlink" href="#vzdump_protection" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>バックアップを<span class="monospaced">保護</span>マークして削除できないようにすることができます。Proxmox VE の UI、CLI、または API を使用して保護されたバックアップを削除しようとすると、失敗します。ただし、これはファイルシステムではなく Proxmox VE によって実行されるため、バックアップファイル自体を手動で削除することは、基礎となるバックアップストレージへの書き込みアクセス権を持っている人であれば誰でも可能です。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">保護されたバックアップはプルーニングによって無視され、保持設定にカウントされません。</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>ファイルシステムベースのストレージの場合、保護はセンチネルファイル<span class="monospaced">&lt;backup-name&gt;.protectedを介して</span>実装されます。Proxmox Backup Serverの場合は、サーバ側で処理されます（Proxmox Backup Serverバージョン2.1以降で利用可能）。</p></div>
+<div class="paragraph">
+<p>ストレージオプションの<span class="monospaced">max-protected-backupsを</span>使用して、ゲストごとにストレージで許可される保護バックアップの数を制御します。無制限には<span class="monospaced">-1を</span>使用します。デフォルトは、<span class="monospaced">Datastore.Allocate</span>権限を持つユーザは無制限、その他のユーザは<span class="monospaced">5</span>です。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="vzdump_notes">
+バックアップノート<a class="headerlink" href="#vzdump_notes" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>UIの［<em>Edit Notes］</em>ボタンまたはストレージコンテンツAPIを使用して、バックアップにノートを追加できます。</p></div>
+<div class="paragraph">
+<a class="image" href="images/screenshot/gui-cluster-backup-edit-03-template.png">
+<img src="images/screenshot/gui-cluster-backup-edit-03-template.png" alt="screenshot/gui-cluster-backup-edit-03-template.png" width=250 style="padding: 0 0 0 10px;float:right;" /></a>
+<p>また、バックアップ・ジョブや手動バックアップでノートを動的に生成するためのテンプレートを指定することもできます。テンプレート文字列には、2つの中括弧で囲まれた変数を含めることができ、バックアップ実行時に対応する値に置き換えられます。</p></div>
+<div class="paragraph">
+<p>現在サポートされているのは以下のとおりです：</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<span class="monospaced">{{cluster}}</span>クラスタ名 (もしあれば)</p>
+</li>
+<li>
+<p>
+<span class="monospaced">{ゲスト名}}</span>仮想ゲストの割り当て名</p>
+</li>
+<li>
+<p>
+<span class="monospaced">{node}}</span>バックアップを作成するノードのホスト名</p>
+</li>
+<li>
+<p>
+<span class="monospaced">{vmid}}</span>ゲストの数値VMID</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>APIまたはCLIで指定する場合は1行にする必要があり、改行とバックスラッシュはそれぞれリテラル<span class="monospaced"> ∕nと∕として</span>エスケープする必要があります。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="vzdump_restore">
+リストア<a class="headerlink" href="#vzdump_restore" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>バックアップアーカイブは、Proxmox VEのWeb GUIまたは以下のCLIツールからリストアできます：</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">pctリストア</span></dt>
+<dd>
+<p>
+コンテナリストアユーティリティ</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">qmrestore</span></dt>
+<dd>
+<p>
+仮想マシンのリストアユーティリティ</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p>詳細については、対応するマニュアルページを参照してください。</p></div>
+<div class="sect2">
+<h3 id="_bandwidth_limit">
+<span>帯域幅制限</span> <a class="headerlink" href="#_bandwidth_limit" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>つまたは複数の大きなバックアップをリストアする場合、多くのリソース、特にバックアップストレージからの読み取りとターゲットストレージへの書き込みの両方にストレージ帯域幅が必要になることがあります。これは、ストレージへのアクセスが混雑するため、他の仮想ゲストに悪影響を及ぼす可能性があります。</p></div>
+<div class="paragraph">
+<p>これを回避するには、バックアップジョブに帯域幅の制限を設定します。Proxmox VEはリストアとアーカイブに2種類の制限を実装しています：</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+per-restore制限: バックアップアーカイブからの読み取りの最大帯域幅を示します。</p>
+</li>
+<li>
+<p>
+ストレージごとの書き込み制限: 特定のストレージへの書き込みに使用される最大帯域幅を示します。</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>読み込み制限は書き込み制限に間接的に影響します。ジョブごとの制限を小さくすると、ストレージごとの制限を大きくしても上書きされます。より大きなジョブごとの制限は、影響を受けるストレージに 'Data.Allocate' 権限がある場合にのみ、ストレージごとの制限を上書きします。</p></div>
+<div class="paragraph">
+<p>リストアCLIコマンドで '--bwlimit &lt;integer&gt;` オプションを使用すると、リストアジョブ固有の帯域幅制限を設定できます。KiB/sが制限の単位として使用されます。つまり、`10240'を渡すと、バックアップの読み取り速度が10MiB/sに制限され、実行中の仮想ゲストが残りのストレージ帯域幅を使用できるようになります。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAJhUlEQVRoge2ZWWycVxXHf+fce7/v
+m/GaGCde4pI0aQlJC0kRtE1L00JbLIjY4QkeUB9YHhAIJFCExAsKUkE8IAFFPIDUIqhBRSDRBUqC
+CimFFBCBpCWx02IaZ3G2SdyxPZ7vHh6+mcnSZnFjKIge6Wj8zYzvPf9z/me5d8TM+F8WfbkNuFx5
+BcDLLf/fAEZGRmx4eNh6enqsp6fHhoeHbWRk5D9aFeSlVqHNmzfb6H33sHnT7ZQmD5GfOMax6Sm+
+Pl5h1Yc+xpYtW2SBbX1ReUkRGBkZsdH77mHLW95EOv4Ms3ueJh6YYPHUFF9aljJ63z3cf//9/5FI
+vKQIDA8P293L2yhVjjH7t51ocDiviFecF46n7XzBreChhx4qNhH5t0XjJUVgx44ddGUZ9b/vIpQD
+oRQIWSDJAiFL6B9axo4dO4gxAmANWVDLG+Ln82URMRGhVCqRHxonlAPqFXWKC4r6IhI6OMjMzBN4
+/4LlTUQQEZxzZ32QJAlpmrb+p16vU6vVOHXq1AWjN18AnDj0F971vrs4OnmYJVkoDA4FCPUO172I
+Cgnt7SV++4vvsGhRJx3tJbIsRVVpsUnOBBABBVFEClKYwbKr7sTM7EIUnBcA7z21k7t49x1X8JXv
+bOWra7rw5QRtcN8PLCfvvZJvb9vJycpJpg4/hp/N0I4SMQs4Jw0A5zBXHGiCaIZIKABgpGlKjPEF
+0TpT5pUDRXiVt99+Le03r+WzuytM1gO6pB/3+o0cbxvk8yOPMjW6i2iR2lxOjJDHSDMFogmGwzQ7
+rRJAUpAENAGXIZq2AFzQpvkACCEQcahP+cRH3sKHn9zHXU+MM7rtGeD33NDXzaZynZU9gcezpUw9
+X6OzIyOakkfF4QEpPG6nDRNNEA2FSgKimETSNCXPc0II57VpXhEolUqoOrxPSLOMT330Dv5SqfKD
+NR388Y2L+caQsjITNv3pMBs3rOT56ZyZGaM+J0QUxDc0INrWUgggoRGBAOIRAt77hY1AmqaoeJxP
+cN645jVDbNn8Hj73o8fZ/af9mEE9j9y2YRXt5YzZWmRmzjj1/BwhTXAKzitOHEbeWlc0AVwDnCv8
+KoZzjotV33lTSL1HNKAuEtKM1169jM98/E6mTk3x4Nbd7Bk7TEdHRvAeVY+hmDqmZwx1kIkiqrhz
+S2zL+AbNMC6l/80LgHMOEY9oQvBCks5RKpXo7JhFxbhz42pet2aQet1YtLiDJAkIDq8BHwJmwlwO
+UaD0ojsrNKuUReIZyb9gABCHcwWFgg+0lTPyvIRToVzKWLpkMfV6REQplYvmZCj1uuBUSdJwTg8A
+XBdoCZMOsBkQBeGi/J83gBgjmABC8AlJGsjzFLMyaXDM1etEA0VR50iCx6mSZhkiijpPjEpQD+SF
+4WdJrTAewdCFB1CtVlFVVATnhMQnWJqC5aTBk+c5IIgWRoTgSZJAmiZAo1s7hwsppglI+fTiljeY
+nyHkLQotKIAYI4igzpFHISQOiwEnKTEG8hhRVZw6YjRQLfJGHcF7jleqTBw8znXr12MABnv37efY
+iSnesG4tiUsRUQwD7JIAzKsPqCqiRbVwweM04XdPjhJN+dvTBxgbn6G9q59yZx9/3HWEb33vN+zc
+/RzOJ+w/eJLtO8Z5ZNtT7PvHIUQTvvv9X/Lc/mN0d3by3fseRLQwvWh0Fy+h8wbQ2VFG1KM+xfuA
+qufo8So/fejPPD/rqJys8pvf7eLAoeNMHqnw2U9+kH3jVQ5MClMzKUla5obr13HliiEMmDx6gltv
+uY7Vr1nBQF8PJopQ9AFTt/AROFfMjCW9XTy19xB33Hodb924jr1j+/nDk3/nzTdei4jw3nfeyCOP
+bufa1y5jzeoVrcHM8HR3dfHlr/2Q+x94jFtuuh44/9B2PplXDryYLF3STXd3e+t5UXcHY89OsOH6
+NS2Qed7wpM1Rm50G4MGHH2P961Zy3bqreXrPP5mrzwLt5y6/cACq1eoLCKm+TN/SAebmfn8aUG83
+PYs7+cnPH+eqKwd5as8/edc7bi02847pmVkATk1VWbF8AOcca1Yv59DkqcYK0tCL02deACqVCldc
+0YdIwLmEPM9RV6NnUZlPf3wT6oqJcePN6wHhzTeu4/CRCrfctJ4sSxBRli7pYfHEMUSU97/7Th75
+1RP8eec+Yp5zzTVXM9DfDyogBvHS6HTJACYmJnjVoq5GFw0454gCEOnoaMfiNGZFFRFxJGkbywZ6
+i1NWoy9kWYmbb1gHKCHApuGbisVFGyoYUswa5OR5ftF56JIBjI6OMtDfWwAQ35jnc8AVpRXBohVq
+UowECKqK4RBxoE0W6gvGCcEjaOEAwEQWdpgbGxujt7erOLO2mk3R8i0Wz9EiuUGz+qlKEQEUaJbI
+4lTHmTVePKgWzpDGJGpc8CDTlEsuo88++wxXDA0UIUbAOP23KGZKjI48KnkuhcbiPbPCOBoeBikO
+Lk2VxjqNRilaAEqSZGEAbN261bZt+zW33XY7IAXXm6Ou0YhIMamaaUOl5WRrzg00viuKWWxpQUOH
+NAZFQRpD48Xlkig0MTHBB95zG+VSylz1KCbWyDOh2XyK+56IqjWMKigkUnzWnPPFFFRRLZ29SQRU
+ELOGY4pZ6LKOlM07mZ07d/KOtw1TcB4sGkTDiDQ9K1IkrKeYmQC08d7pZLSiRBpE5s7aS0XAHFEK
+AGY51Wr18g80Zmb33nsvX/z8XdSmj2AWOXhwkrxe46+79jB55Dh/3T2GxUhHextdXW2sXN7PNWtW
+IQKDA71FFBoAjIgQkVg/a5+oHrU5zIznDhxk964xKpXKggAoTlWW8+OfPorlOQ//cjsDy1bS2dFO
+W+diVly1iL6+Pqanpzl5qsL4pPHwN3/G1InDlMsZ7Z1tDA30cfWqIa5dexV9fb2YnT7UTxw4xsHJ
+o4yOjfOP8QOMjx/k4OQx7r777lY0zycXvJ02M4sxMjg4SL1eR0TYsGEDw8PD9PX10d7ejogUN3a1
+GqpKCIE8z5mdnUVVqVarbN++nba2Nvbu3csDDzyAqrJ8+atb+zjn6e/vZ/Xq1axatYq1a9fS29tL
+lmUMDQ1RKpXOm9EXvV6v1+tWr9eZnp5mZmaGWq1GjLHF62aiNZ+bnPfe45xrvTZzxMyYmZk56+LX
+zKjX661DvHOOJElIkoRSqYT3/vLvRlW15eHCa4VxzdvmpjZDfubzuXeb3vuzqCEixBhbo0NTkyS5
+PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==" />
+</td>
+<td class="content"><span class="monospaced">bwlimit</span>パラメータに'0`を使用すると、特定のリストアジョブのすべての制限を無効にすることができます。これは、非常に重要な仮想ゲストをできるだけ速くリストアする必要がある場合に役立ちます。(ストレージの `Data.Allocate' パーミッションが必要です。</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>ほとんどの場合、ストレージの一般的に利用可能な帯域幅は時間の経過とともに変化しないため、設定されたストレージごとにデフォルトの帯域幅制限を設定できるようにしました：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># pvesm set STORAGEID --bwlimit restore=KIBs</pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_live_restore">
+<span>ライブリストア</span> <a class="headerlink" href="#_live_restore" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>大規模なバックアップのリストアには長い時間がかかることがあり、その場合ゲストはまだ利用できません。Proxmox Backup Server上に保存されたVMバックアップでは、ライブリストアオプションを使用することで、この待ち時間を短縮できます。</p></div>
+<div class="paragraph">
+<p>GUIのチェックボックスまたは<span class="monospaced">qmrestoreの</span> <span class="monospaced">-live-restore</span>引数のいずれかを使用してライブリストアを有効にすると、リストアが開始されるとすぐにVMが起動します。データはバックグラウンドでコピーされ、VMがアクティブにアクセスしているチャンクが優先されます。</p></div>
+<div class="paragraph">
+<p>これには2つの注意点があることに注意してください：</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+ライブリストア中は、データをバックアップサーバからロードする必要があるため、VM は制限されたディスク読み取り速度で動作します (ただし、一度ロードされると、宛先ストレージですぐに利用可能になるため、データに 2 回アクセスしてもペナルティが発生するのは最初の 1 回だけです)。書き込み速度はほとんど影響を受けません。</p>
+</li>
+<li>
+<p>
+つまり、すべてのデータがバックアップからコピーされていない可能性があり、失敗したリストア操作中に書き込まれたデータを保持できない<em>可能性が高い</em>のです。</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>この動作モードは、ウェブ・サーバなど、初期動作に必要なデータが少量しかない大規模なVMに特に有効です。OSと必要なサービスが開始されると、VMは稼動し、バックグラウンド・タスクはあまり使用されないデータのコピーを継続します。</p></div>
+</div>
+<div class="sect2">
+<h3 id="_single_file_restore">
+<span>シングルファイルリストア</span> <a class="headerlink" href="#_single_file_restore" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>ストレージGUIの<em>バックアップ</em>タブにある<em>ファイルリストアボタンを</em>使用すると、バックアップに含まれるデータ上で直接ファイルブラウザを開くことができます。この機能は Proxmox Backup Server 上のバックアップでのみ使用できます。</p></div>
+<div class="paragraph">
+<p>コンテナの場合、ファイルツリーの最初のレイヤには、含まれるすべての<em>pxar</em>アーカイブが表示され、自由に開いてブラウズできます。VMの場合、最初のレイヤには含まれるドライブイメージが表示され、これを開くとドライブでサポートされているストレージテクノロジーのリストが表示されます。最も基本的な場合、これはパーティションテーブルを表す<em>partと</em>呼ばれるエントリで、ドライブにある各パーティションのエントリを含んでいます。VMの場合、すべてのデータにアクセスできるわけではないことに注意してください（サポートされていないゲストファイルシステム、ストレージテクノロジーなど）。</p></div>
+<div class="paragraph">
+<p>ファイルやディレクトリは<em>Download</em>ボタンを使ってダウンロードでき、後者はその場で zip アーカイブに圧縮されます。</p></div>
+<div class="paragraph">
+<p>信頼できないデータを含む可能性のある VM イメージへの安全なアクセスを可能にするため、一時的な VM (ゲストとして表示されない) が起動されます。これは、このようなアーカイブからダウンロードされたデータが本質的に安全であることを意味するものではありませんが、ハイパーバイザー・システムが危険にさらされるのを避けることができます。VMはタイムアウト後に停止します。このプロセス全体はユーザから見て透過的に行われます。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">トラブルシューティングのために、各一時的なVMインスタンスは<span class="monospaced">/var/log/proxmox-backup/file-restore/に</span>ログファイルを生成します。このログファイルには、バックアップアーカイブに含まれる個々のファイルのリストアやファイルシステムへのアクセスが失敗した場合の追加情報が含まれている可能性があります。</td>
+</tr></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="vzdump_configuration">
+コンフィギュレーション<a class="headerlink" href="#vzdump_configuration" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>グローバル設定は<span class="monospaced">/etc/vzdump.confに</span>保存されます。このファイルでは、コロンで区切られた単純なキー/値形式を使用します。各行の書式は次のとおりです：</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>オプション：値</pre>
+</div></div>
+<div class="paragraph">
+<p>ファイル内の空白行は無視され、<span class="monospaced">#</span>文字で始まる行はコメントとして扱われ、これも無視されます。このファイルの値はデフォルトで使用され、コマンドラインで上書きすることができます。</p></div>
+<div class="paragraph">
+<p>現在、以下のオプションをサポートしています：</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">bwlimit</span>:<span class="monospaced">&lt;整数&gt; (0 - N)</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+I/Oバンド幅を制限します（KiB/s単位）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">compress</span>:<span class="monospaced">&lt;0 | 1 | gzip | lzo | zstd&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+ダンプファイルを圧縮します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">dumpdir</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+結果のファイルを指定したディレクトリに格納します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">除外パス</span>:<span class="monospaced">&lt;配列</span></dt>
+<dd>
+<p>
+特定のファイル/ディレクトリを除外します（シェル・グロブ）。<em>で</em>始まるパスはコンテナのルートに固定され、その他のパスは各サブディレクトリに相対的に一致します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">fleecing</span>：<span class="monospaced">[[enabled=]&lt;1|0&gt;] とします。[,storage=&lt;ストレージID&gt;] を</span>指定します。</dt>
+<dd>
+<p>
+バックアップフリートのオプション（VMのみ）。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">enabled=&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+バックアップフリーシングを有効にします。バックアップターゲットに直接コピーする代わりに、指定されたストレージで新しいゲストの書き込みが発生するブロックからバックアップデータをキャッシュします。これにより、ゲストの IO パフォーマンスを向上させ、ハングを防止することができます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">storage=&lt;ストレージ</span><span class="monospaced">ID</span></dt>
+<dd>
+<p>
+このストレージをストレージフリーキングイメージに使用します。スペースを効率的に使用するには、廃棄とシンプロビジョニングまたはスパースファイルのいずれかをサポートするローカルストレージを使用するのが最善です。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ionice</span>:<span class="monospaced">&lt;整数&gt; (0 - 8)</span><em>(デフォルト =</em> <span class="monospaced">7</span>)</dt>
+<dd>
+<p>
+BFQスケジューラ使用時のIO優先度を設定します。VMのスナップショットとサスペンドモードのバックアップでは、これはコンプレッサにのみ影響します。値が8の場合はアイドル優先度が使用され、それ以外の場合は指定した値でベストエフォート優先度が使用されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">lockwait</span>:<span class="monospaced">&lt;整数&gt; (0 - N)</span><em>(デフォルト =</em> <span class="monospaced">180</span>)</dt>
+<dd>
+<p>
+グローバルロックを待機する最大時間（分）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mailnotification</span>:<span class="monospaced">&lt;常に｜失敗&gt;</span><em>(デフォルト =</em> <span class="monospaced">常に</span>)</dt>
+<dd>
+<p>
+非推奨: 代わりに通知ターゲット/マッチャーを使用してください。通知メールを送信するタイミングを指定します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mailto</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+非推奨：代わりに notification targets/matchers を使用してください。通知メールを受け取るメールアドレスまたはユーザのカンマ区切りリスト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">maxfiles</span>:<span class="monospaced">&lt;整数&gt; (1 - N</span>)</dt>
+<dd>
+<p>
+非推奨: 代わりに<em>prune-backups を</em>使用してください。ゲストシステムごとのバックアップファイルの最大数。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mode</span>:<span class="monospaced">&lt;スナップショット | 停止 | サスペンド&gt;</span><em>(default =</em> <span class="monospaced">snapshot</span>)</dt>
+<dd>
+<p>
+バックアップモード。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">notes-template</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+バックアップのメモを生成するためのテンプレート文字列。値で置き換えられる変数を含めることができます。現在サポートされているのは {{cluster}}, {{guestname}}, {{node}}, {{vmid}} ですが、将来追加されるかもしれません。1行にする必要があり、改行とバックスラッシュは、<em>それぞれ｟n｠と｟｠として</em>エスケープする必要があります。</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">必要なオプション：<span class="monospaced">ストレージ</span></td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">notification-mode</span>:<span class="monospaced">&lt;auto | legacy-sendmail | notification-system&gt;</span><em>(default =</em> <span class="monospaced">auto</span>)</dt>
+<dd>
+<p>
+どの通知システムを使用するかを決定します。<em>legacy-sendmailに</em>設定すると、vzdumpはmailto/mailnotificationパラメータを考慮し、<em>sendmail</em>コマンドで指定されたアドレスにメールを送信します。<em>notification-systemに</em>設定すると、PVEの通知システム経由で通知が送信され、mailtoとmailnotificationは無視されます。<em>auto</em>に設定すると（デフォルト設定）、mailto が設定されていればメールが送信され、設定されていなければ通知システムが使用されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">pbs-change-detection-mode</span>:<span class="monospaced">&lt;data | legacy | metadata&gt;</span>です。</dt>
+<dd>
+<p>
+コンテナ・バックアップのファイル変更の検出とエンコード形式の切り替えに使用されるPBSモード。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">パフォーマンス</span>[<span class="monospaced">max-workers=&lt;integer&gt;] [,pbs-entries-max=&lt;integer&gt;</span>] を指定します。</dt>
+<dd>
+<p>
+その他のパフォーマンス関連の設定。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">max-workers=&lt;integer&gt;</span><span class="monospaced">(1 - 256)</span><em>(デフォルト =</em> <span class="monospaced">16</span>)</dt>
+<dd>
+<p>
+VM に適用されます。同時に最大これだけのIOワーカーを許可します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">pbs-entries-max=&lt;integer&gt;</span><span class="monospaced">(1 - N)</span><em>(デフォルト =</em> <span class="monospaced">1048576</span>)</dt>
+<dd>
+<p>
+PBS に送信されるコンテナバックアップに適用されます。意図しない OOM 状況を回避するために、一度にメモリ上に許可されるエントリ数を制限します。これを増やすと、大量のファイルを含むコンテナのバックアップが可能になります。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">pigz</span>:<span class="monospaced">&lt;整数&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+N&gt;0 の場合は gzip の代わりに pigz を使用します。N=1 はコアの半分を使用し、N&gt;1 は N をスレッドカウントとして使用します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">pool</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+指定したプールに含まれるすべての既知のゲストシステムをバックアップします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">protected</span>:<span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+true の場合、バックアップに保護マークを付けます。</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">必要なオプション：<span class="monospaced">storage</span></td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">を削除</span>します：[<span class="monospaced">keep-all=&lt;1|0&gt;] [,keep-daily=&lt;N&gt;] [,keep-hourly=&lt;N&gt;] [,keep-last=&lt;N&gt;] [,keep-monthly=&lt;N&gt;] [,keep-weekly=&lt;N&gt;] [,keep-yearly=&lt;N&gt;]</span><em>(default =</em> <span class="monospaced">keep-all=1</span>)</dt>
+<dd>
+<p>
+ストレージ設定の保持オプションの代わりに、これらの保持オプションを使用します。</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">keep</span><span class="monospaced">-all=&lt;ブール値</span></dt>
+<dd>
+<p>
+すべてのバックアップを保持します。trueの場合、他のオプションと競合します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">キープ</span><span class="monospaced">デイリー</span><span class="monospaced">=&lt;N</span></dt>
+<dd>
+<p>
+過去 &lt;N&gt; 日間のバックアップを保持します。1日に複数のバックアップがある場合、最新のものだけが保持されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">キープ</span><span class="monospaced">アワー</span><span class="monospaced">=&lt;N</span></dt>
+<dd>
+<p>
+最後の&lt;N&gt;個の異なる時間のバックアップを保持します。1時間に複数のバックアップがある場合、最新のものだけが保持されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">キープ</span><span class="monospaced">ラスト</span><span class="monospaced">=&lt;N</span></dt>
+<dd>
+<p>
+最後の&lt;N&gt;個のバックアップを保持します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">キープ・マンスリー</span><span class="monospaced">=&lt;N</span></dt>
+<dd>
+<p>
+最後の&lt;N&gt;個の異なる月のバックアップを保持します。1つの月に複数のバックアップがある場合、最新のものだけが保持されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">キープ</span><span class="monospaced">ウィークリー</span><span class="monospaced">=&lt;N</span></dt>
+<dd>
+<p>
+過去&lt;N&gt;週間分のバックアップを保持します。1週間に複数のバックアップがある場合、最新のものだけが保持されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">キープ・イヤーリー</span><span class="monospaced">=&lt;N</span></dt>
+<dd>
+<p>
+過去&lt;N&gt;年間のバックアップを保持します。一つの年に複数のバックアップがある場合、最新のものだけが保存されます。</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">remove</span>:<span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+<em>prune-backups</em> に従って古いバックアップを削除します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">script</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+指定したフック・スクリプトを使用します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">stdexcludes</span>:<span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+一時ファイルとログを除外します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">stopwait</span>:<span class="monospaced">&lt;整数&gt; (0 - N)</span><em>(デフォルト =</em> <span class="monospaced">10</span>)</dt>
+<dd>
+<p>
+ゲストシステムが停止するまでの最大待機時間 (分)。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">storage</span>:<span class="monospaced">&lt;ストレージID</span></dt>
+<dd>
+<p>
+結果のファイルをこのストレージに保存します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">tmpdir</span>:<span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+一時ファイルを指定されたディレクトリに格納します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">zstd</span>:<span class="monospaced">&lt;整数&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+Zstd スレッド。N=0 は使用可能なコアの半分を使用し、N が 0 より大きい値に設定された場合は、N がスレッド数として使用されます。</p>
+</dd>
+</dl></div>
+<div class="listingblock">
+<div class="title"><span class="monospaced">vzdump.conf</span>設定例</div>
+<div class="content monospaced">
+<pre>tmpdir/mnt/fast_local_disk storage: my_backup_storage mode: snapshot bwlimit: 10000</pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hook_scripts">
+フックスクリプト<a class="headerlink" href="#_hook_scripts" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>オプション<span class="monospaced">--script</span> でフックスクリプトを指定できます。このスクリプトはバックアッププロセスのさまざまな段階で呼び出され、パラメータが適宜設定されます。ドキュメンテーションディレクトリに例があります<span class="monospaced">(vzdump-hook-script.pl</span>)。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_file_exclusions">
+ファイルの除外<a class="headerlink" href="#_file_exclusions" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">このオプションはコンテナのバックアップでのみ使用できます。</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p><span class="monospaced">vzdumpは</span>デフォルトで以下のファイルをスキップします（<span class="monospaced">--stdexcludes 0</span>オプションで無効にできます）。</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>/tmp/?* /var/tmp/?* /var/run/?*pid</pre>
+</div></div>
+<div class="paragraph">
+<p>手動で(追加の)除外パスを指定することもできます：</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># vzdump 777 --exclude-path /tmp/ --exclude-path '/var/foo*'</pre>
+</div></div>
+<div class="paragraph">
+<p>は、<span class="monospaced">/tmp/</span>ディレクトリと、<span class="monospaced">/var/foo</span>、<span class="monospaced">/var/foobar</span> などの名前のファイルやディレクトリを除外します。</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">Proxmox Backup Server (PBS)へのバックアップと<span class="monospaced">サスペンドモードバックアップの</span>場合、末尾にスラッシュが付いたパターンはディレクトリにマッチしますが、ファイルにはマッチしません。一方、PBS 以外の<span class="monospaced">スナップショット・</span>モードと<span class="monospaced">停止</span>モードのバックアップでは、<span class="monospaced">tar</span>コマンドがサポートしていないため、末尾のスラッシュを含むパターンは現在まったく一致しません。</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p><span class="monospaced">で</span>始まらないパスは、コンテナのルートにアンカーされませんが、 サブディレクトリに相対的にマッチします。例えば</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># vzdump 777 --exclude-path bar</pre>
+</div></div>
+<div class="paragraph">
+<p>は、<span class="monospaced">/bar</span>、<span class="monospaced">/var/bar</span>、<span class="monospaced">/var/foo/bar</span> などのファイルやディレクトリを除外しますが、<span class="monospaced">/bar2 は</span>除外しません。</p></div>
+<div class="paragraph">
+<p>設定ファイルもバックアップアーカイブ内（<span class="monospaced">./etc/vzdump/</span>内）に保存され、正しくリストアされます。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_examples">
+例<a class="headerlink" href="#_examples" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>単にゲスト777をダンプします - スナップショットはなく、デフォルトのダンプディレクトリ（通常は<span class="monospaced">/var/lib/vz/dump/）に</span>ゲストのプライベート領域と設定ファイルをアーカイブするだけです。</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># vzdump 777</pre>
+</div></div>
+<div class="paragraph">
+<p>rsync と suspend/resume を使用してスナップショットを作成します (ダウンタイムは最小限)。</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># vzdump 777 ---mode suspend</pre>
+</div></div>
+<div class="paragraph">
+<p>すべてのゲストシステムをバックアップし、rootとadminに通知メールを送信します。<span class="monospaced">mailtoが</span>設定され、<span class="monospaced">notification-modeが</span>デフォルトで<span class="monospaced">autoに</span>設定されているため、通知メールは通知システムの代わりにシステムの<span class="monospaced">sendmail</span>コマンドで送信されます。</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># vzdump --all --mode suspend --mailto root --mailto admin</pre>
+</div></div>
+<div class="paragraph">
+<p>スナップショットモード (ダウンタイムなし) とデフォルト以外のダンプディレクトリを使用します。</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># vzdump 777 --dumpdir /mnt/backup --mode snapshot</pre>
+</div></div>
+<div class="paragraph">
+<p>複数のゲストのバックアップ (選択的)</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># vzdump 101 102 103 --mailto root</pre>
+</div></div>
+<div class="paragraph">
+<p>101と102を除くすべてのゲストをバックアップ</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># vzdump --mode suspend --exclude 101,102</pre>
+</div></div>
+<div class="paragraph">
+<p>コンテナを新しいCT 600にリストア</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># pct restore 600 /mnt/backup/vzdump-lxc-777.tar</pre>
+</div></div>
+<div class="paragraph">
+<p>QemuServer VMをVM 601にリストア</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># qmrestore /mnt/backup/vzdump-qemu-888.vma 601</pre>
+</div></div>
+<div class="paragraph">
+<p>パイプを使用して、既存のコンテナ101を4GBのルートファイルシステムを持つ新しいコンテナ300にクローンします。</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># qmrestore /mnt/backup/vzdump-qemu-888.vma 601</pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_copyright_and_disclaimer">
+著作権および免責事項<a class="headerlink" href="#_copyright_and_disclaimer" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>著作権 © 2007-2022 Proxmox Server Solutions GmbH</p></div>
+<div class="paragraph">
+<p>このプログラムはフリーソフトウェアです。Free Software Foundationが発行したGNU Affero General Public Licenseのバージョン3またはそれ以降のバージョンのいずれかに従って、再配布および/または変更を行うことができます。</p></div>
+<div class="paragraph">
+<p>このプログラムは有用であることを期待して配布されていますが、商品性や特定目的への適合性についての暗黙の保証もなく、いかなる保証もありません。詳細はGNU Affero General Public Licenseをご覧ください。</p></div>
+<div class="paragraph">
+<p>あなたはこのプログラムとともにGNU Affero General Public Licenseのコピーを受け取っているはずです。  そうでない場合は、<a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>を参照してください。</p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+バージョン 9.0.8<br>
+最終更新 Tue Aug 5 16:04:45 CEST 2025</div>
+</div>
+</body>
+</html>
+
+<!-- ***** END FILE ***** -->

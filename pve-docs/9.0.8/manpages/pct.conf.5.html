@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="AsciiDoc 10.2.1">
+<title>pct.conf(5)</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
+  padding: 0;
+  margin: 0;
+}
+pre {
+  white-space: pre-wrap;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; vertical-align: text-bottom; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel0, div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overridden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+</style>
+
+
+<style type="text/css">
+:root {
+    /* pre-defined colors */
+    --pdt-grey-950: hsl(0deg, 0%, 95%);
+    --pdt-grey-750: hsl(0deg, 0%, 75%);
+    --pdt-grey-400: hsl(0deg, 0%, 40%);
+    --pdt-grey-250: hsl(0deg, 0%, 25%);
+    --pdt-grey-150: hsl(0deg, 0%, 15%);
+    --pdt-grey-100: hsl(0deg, 0%, 10%);
+    --pdt-primary-850: hsl(205deg, 100%, 85%);
+    --pdt-primary-800: hsl(205deg, 100%, 80%);
+    --pdt-primary-700: hsl(205deg, 100%, 70%);
+    --pdt-primary-250: hsl(205deg, 100%, 25%);
+    --pdt-secondary-850: hsl(250deg, 100%, 85%);
+}
+
+#header > h1 > .image > img {
+    max-width: 100%;
+}
+
+/* Avoid serif font and increase font-size from 16px to 18px. Makes it more similar to PBS docs */
+body, p {
+    font-family: Open Sans, sans-serif;
+    font-size: 18px;
+}
+
+/* adjust admonition block spacing. this allows for a background on
+ * admonition blocks that doesn't make the elements look to tightly
+ * spaced.
+ */
+div.admonitionblock {
+    border-radius: 3px;
+    margin: 1.5em 0;
+    padding: 0.5em 10% 0.5em 0.5em;
+}
+
+div.admonitionblock td.icon {
+    padding-right: 0.5em;
+}
+
+div.admonitionblock td.icon > img {
+    box-sizing: border-box;
+    padding: 0.15em;
+}
+
+th.tableblock, td.tableblock {
+    border-color: #527bbd80;
+}
+
+/* Fine-tune headings a bit */
+h4 {
+  font-size: 1.1em;
+}
+h5 {
+  font-size: 1.05em;
+}
+h6 {
+  font-size: 1.0em;
+}
+
+/* Support for heading anchor links */
+h3 {
+    border-bottom: unset;
+}
+
+h3 > span {
+    display: inline-block;
+    border-bottom: 2px solid silver;
+}
+
+a, a:visited {
+    color: var(--pdt-primary-250);
+}
+
+a.headerlink {
+    color: var(--pdt-grey-750);
+    padding: 0 4px;
+    text-decoration: none;
+    visibility: hidden;
+}
+
+/* add it as an pseudo-element, so that it does not show up in the ToC */
+a.headerlink::after {
+    content: '\00b6';
+    text-decoration: none;
+}
+
+h1:hover > a.headerlink,
+h2:hover > a.headerlink,
+h3:hover > a.headerlink,
+h4:hover > a.headerlink,
+h5:hover > a.headerlink,
+h6:hover > a.headerlink {
+  visibility: visible;
+}
+
+/* Hide the TOC menu toggler by default */
+.menu-toggler, .nav-toggle, .menu-overlay {
+    display: none;
+}
+
+#toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    padding: 0.5em;
+    transition: transform 0.2s ease-in-out;
+    z-index: 1000;
+}
+
+/* Mobile styles */
+@media only screen and (max-width: 1000px) {
+    /* Avoid overly big header author block */
+    #header span {
+        font-size: 1rem;
+        line-height: 1rem;
+    }
+
+    /* Show toggle button on mobile */
+    .nav-toggle {
+        display: inline-block;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 1001;
+        background-color: var(--pdt-grey-100);
+        color: var(--pdt-grey-950);
+        opacity: 0.6;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 2px;
+        transition: left 0.2s ease-in-out;
+        font-size: 0;
+    }
+    .no-toc.nav-toggle {
+        display: none !important;
+    }
+
+    /* Hide sidebar by default on mobile */
+    #toc {
+        transform: translateX(-100%);
+        line-height: 1.5em;
+        overflow-x: auto;
+    }
+    #content, #header {
+        font-size: 1.25em;
+        line-height: 1.5em;
+    }
+
+    /* Adjust body margin for mobile */
+    body {
+        margin: 1em !important;
+        max-width: 100% !important;
+        overflow-wrap: break-word;
+    }
+
+    /* Show sidebar when checkbox is checked */
+    .menu-toggler:checked ~ #header #toc {
+        transform: translateX(0);
+    }
+
+    /* Show overlay when menu is open */
+    .menu-toggler:checked ~ .menu-overlay {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        cursor: pointer;
+        animation: fadeIn 0.2s;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* Change icon when open */
+    .menu-toggler:checked ~ .nav-toggle::after {
+        content: '✕';
+    }
+    .menu-toggler:not(:checked) ~ .nav-toggle::after {
+        content: '☰';
+    }
+
+    .nav-toggle::after {
+        display: block;
+        font-size: 1.5rem;
+    }
+    .menu-toggler:checked ~ .nav-toggle {
+        left: 24rem;
+    }
+
+}
+
+/* barely useable at such small sizes but can only win here */
+@media only screen and (max-width: 27rem) {
+    body {
+        margin: 0.5em !important;
+    }
+    #toc {
+        font-size: 0.8em;
+    }
+    .menu-toggler:checked ~ .nav-toggle {
+        left: 19rem;
+    }
+}
+
+
+/* Dark mode theme */
+@media screen and (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+        --pdt-body-background: var(--pdt-grey-150);
+        --pdt-text: var(--pdt-grey-950);
+        --pdt-headline: var(--pdt-primary-800);
+        --pdt-link: var(--pdt-primary-700);
+        --pdt-highlighted-text: var(--pdt-primary-850);
+        --pdt-background-sidebar: var(--pdt-grey-100);
+        --pdt-background-listings: var(--pdt-grey-100);
+        --pdt-border: var(--pdt-grey-400);
+        --pdt-border-alt: var(--pdt-grey-250);
+        --pdt-table-border: var(--pdt-grey-400);
+        --pdt-background-admonition: var(--pdt-grey-250);
+    }
+
+    body {
+        color: var(--pdt-text);
+        background-color: var(--pdt-body-background);
+    }
+
+    a, a:visited {
+        color: var(--pdt-link);
+    }
+
+    /* style headlines, titles etc. */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    thead,
+    #author,
+    #toctitle,
+    div.title,
+    td.hdlist1,
+    caption.title,
+    p.tableblock.header {
+        color: var(--pdt-headline);
+    }
+
+    h1,
+    h2,
+    h3,
+    #footer {
+        border-color: var(--pdt-border);
+    }
+
+    /* formatted colored text */
+    dt,
+    em,
+    pre,
+    code,
+    strong,
+    .monospaced {
+        color: var(--pdt-highlighted-text);
+    }
+
+    /* style the table of contents sidebar */
+    div #toc {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-sidebar);
+        border-color: var(--pdt-border-alt);
+    }
+
+    div #toc a:link,
+    div #toc a:visited {
+        color: var(--pdt-text);
+    }
+
+    /* reduce the brigthness of images a bit and make it reversable
+     * through hovering over them.
+     */
+    .image > img {
+        filter: brightness(90%);
+    }
+
+    .image > img:hover {
+        filter: none;
+    }
+
+    /* tables */
+    th.tableblock,
+    td.tableblock,
+    table.tableblock {
+        border-color: var(--pdt-table-border);
+    }
+
+    div.quoteblock,
+    div.verseblock {
+        color: var(--pdt-text);
+        border-color: var(--pdt-border);
+    }
+
+    /* listings (e.g. code snippet blocks) */
+    div.listingblock > div.content {
+        background-color: var(--pdt-background-listings);
+        border-color: var(--pdt-border-alt);
+    }
+
+    /* admonition blocks (e.g. notes, warnings etc.) */
+    div.admonitionblock {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-admonition);
+    }
+
+    div.admonitionblock td.content {
+        border-color: var(--pdt-border);
+    }
+
+    /* makes the admonition icons appear a bit more consistent, by
+     * adding a white background the shadows in the icons look
+     * "correct"
+     */
+    div.admonitionblock td.icon > img {
+        background-color: white;
+        border-radius: 100%;
+        filter: brightness(95%);
+    }
+
+    /* invert the logo */
+    #header > h1 > .image > img {
+        filter: invert(100%) hue-rotate(180deg) brightness(90%);
+    }
+
+    /* fixes the black text on unorderd lists */
+    ul > li > * {
+        color: var(--pdt-text);
+    }
+
+    .nav-toggle {
+        background-color: var(--pdt-grey-250);
+        color: var(--pdt-grey-950);
+    }
+}
+</style>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install();
+/*]]>*/
+</script>
+<script type="text/javascript">
+var asciiDocTocOrig = asciidoc.toc;
+asciidoc.toc = function(toclevel) {
+    asciiDocTocOrig.call(asciidoc, toclevel);
+    document.querySelectorAll('#toc a').forEach(link => {
+        link.addEventListener('click', () => {
+            document.getElementById('menu-toggler').checked = false;
+        });
+    });
+    document.querySelector('.nav-toggle')?.classList.remove("no-toc");;
+}
+</script>
+</head>
+<body class="article" style="max-width:55em">
+<input id="menu-toggler" type="checkbox" class="menu-toggler">
+<label for="menu-toggler" class="no-toc nav-toggle">☰</label>
+<div id="header">
+<h1>pct.conf(5)</h1>
+<span id="author">Proxmox Server Solutions GmbH</span><br>
+<span id="email" class="monospaced">&lt;<a href="mailto:support@proxmox.com">support@proxmox.com</a>&gt;</span><br>
+<span id="revnumber">version 9.0.8,</span>
+<span id="revdate">Tue Aug  5 16:04:45 CEST 2025</span>
+</div>
+<label for="menu-toggler" class="menu-overlay"></label>
+<div id="content">
+<div class="sect1">
+<h2 id="_name">
+NAME
+ <a class="headerlink" href="#_name" title="Permalink to this heading"></a>
+</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>pct.conf - Proxmox VE Container Configuration</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_synopsis">
+SYNOPSIS
+ <a class="headerlink" href="#_synopsis" title="Permalink to this heading"></a>
+</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="monospaced">/etc/pve/lxc/&lt;CTID&gt;.conf</span></p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description">
+DESCRIPTION
+ <a class="headerlink" href="#_description" title="Permalink to this heading"></a>
+</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <span class="monospaced">/etc/pve/lxc/&lt;CTID&gt;.conf</span> files stores container configuration,
+where <span class="monospaced">CTID</span> is the numeric ID of the given container.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">IDs &lt; 100 are reserved for internal purposes.</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_file_format">
+File Format
+ <a class="headerlink" href="#_file_format" title="Permalink to this heading"></a>
+</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The file uses a simple colon separated key/value format. Each line has
+the following format:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>OPTION: value</pre>
+</div></div>
+<div class="paragraph">
+<p>Blank lines in the file are ignored, and lines starting with a <span class="monospaced">#</span>
+character are treated as comments and are also ignored.</p></div>
+<div class="paragraph">
+<p>One can use the <span class="monospaced">pct</span> command to generate and modify those files.</p></div>
+<div class="paragraph">
+<p>It is also possible to add low-level LXC-style configuration directly, for
+example:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>lxc.init_cmd: /sbin/my_own_init</pre>
+</div></div>
+<div class="paragraph">
+<p>or</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>lxc.init_cmd = /sbin/my_own_init</pre>
+</div></div>
+<div class="paragraph">
+<p>Those settings are directly passed to the LXC low-level tools.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_options">
+Options
+ <a class="headerlink" href="#_options" title="Permalink to this heading"></a>
+</h2>
+<div class="sectionbody">
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">arch</span>: <span class="monospaced">&lt;amd64 | arm64 | armhf | i386 | riscv32 | riscv64&gt;</span> (<em>default =</em> <span class="monospaced">amd64</span>)
+</dt>
+<dd>
+<p>
+OS architecture type.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cmode</span>: <span class="monospaced">&lt;console | shell | tty&gt;</span> (<em>default =</em> <span class="monospaced">tty</span>)
+</dt>
+<dd>
+<p>
+Console mode. By default, the console command tries to open a connection to one of the available tty devices. By setting cmode to <em>console</em> it tries to attach to /dev/console instead. If you set cmode to <em>shell</em>, it simply invokes a shell inside the container (no login).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">console</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Attach a console device (/dev/console) to the container.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cores</span>: <span class="monospaced">&lt;integer&gt; (1 - 8192)</span> 
+</dt>
+<dd>
+<p>
+The number of cores assigned to the container. A container can use all available cores by default.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cpulimit</span>: <span class="monospaced">&lt;number&gt; (0 - 8192)</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Limit of CPU usage.
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">If the computer has 2 CPUs, it has a total of <em>2</em> CPU time. Value <em>0</em> indicates no CPU limit.</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">cpuunits</span>: <span class="monospaced">&lt;integer&gt; (0 - 500000)</span> (<em>default =</em> <span class="monospaced">cgroup v1: 1024, cgroup v2: 100</span>)
+</dt>
+<dd>
+<p>
+CPU weight for a container. Argument is used in the kernel fair scheduler. The larger the number is, the more CPU time this container gets. Number is relative to the weights of all the other running guests.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">debug</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Try to be more verbose. For now this only enables debug log-level on start.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">description</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Description for the Container. Shown in the web-interface CT&#8217;s summary. This is saved as comment inside the configuration file.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">dev[n]</span>: <span class="monospaced">[[path=]&lt;Path&gt;] [,deny-write=&lt;1|0&gt;] [,gid=&lt;integer&gt;] [,mode=&lt;Octal access mode&gt;] [,uid=&lt;integer&gt;]</span> 
+</dt>
+<dd>
+<p>
+Device to pass through to the container
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">deny-write</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Deny the container to write to the device
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">gid</span>=<span class="monospaced">&lt;integer&gt; (0 - N)</span> 
+</dt>
+<dd>
+<p>
+Group ID to be assigned to the device node
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mode</span>=<span class="monospaced">&lt;Octal access mode&gt;</span> 
+</dt>
+<dd>
+<p>
+Access mode to be set on the device node
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">path</span>=<span class="monospaced">&lt;Path&gt;</span> 
+</dt>
+<dd>
+<p>
+Path to the device to pass through to the container
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">uid</span>=<span class="monospaced">&lt;integer&gt; (0 - N)</span> 
+</dt>
+<dd>
+<p>
+User ID to be assigned to the device node
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">features</span>: <span class="monospaced">[force_rw_sys=&lt;1|0&gt;] [,fuse=&lt;1|0&gt;] [,keyctl=&lt;1|0&gt;] [,mknod=&lt;1|0&gt;] [,mount=&lt;fstype;fstype;...&gt;] [,nesting=&lt;1|0&gt;]</span> 
+</dt>
+<dd>
+<p>
+Allow containers access to advanced features.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">force_rw_sys</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Mount /sys in unprivileged containers as <span class="monospaced">rw</span> instead of <span class="monospaced">mixed</span>. This can break networking under newer (&gt;= v245) systemd-network use.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">fuse</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Allow using <em>fuse</em> file systems in a container. Note that interactions between fuse and the freezer cgroup can potentially cause I/O deadlocks.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">keyctl</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+For unprivileged containers only: Allow the use of the keyctl() system call. This is required to use docker inside a container. By default unprivileged containers will see this system call as non-existent. This is mostly a workaround for systemd-networkd, as it will treat it as a fatal error when some keyctl() operations are denied by the kernel due to lacking permissions. Essentially, you can choose between running systemd-networkd or docker.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mknod</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Allow unprivileged containers to use mknod() to add certain device nodes. This requires a kernel with seccomp trap to user space support (5.3 or newer). This is experimental.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mount</span>=<span class="monospaced">&lt;fstype;fstype;...&gt;</span> 
+</dt>
+<dd>
+<p>
+Allow mounting file systems of specific types. This should be a list of file system types as used with the mount command. Note that this can have negative effects on the container&#8217;s security. With access to a loop device, mounting a file can circumvent the mknod permission of the devices cgroup, mounting an NFS file system can block the host&#8217;s I/O completely and prevent it from rebooting, etc.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">nesting</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Allow nesting. Best used with unprivileged containers with additional id mapping. Note that this will expose procfs and sysfs contents of the host to the guest.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">hookscript</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Script that will be executed during various steps in the containers lifetime.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">hostname</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Set a host name for the container.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">lock</span>: <span class="monospaced">&lt;backup | create | destroyed | disk | fstrim | migrate | mounted | rollback | snapshot | snapshot-delete&gt;</span> 
+</dt>
+<dd>
+<p>
+Lock/unlock the container.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">memory</span>: <span class="monospaced">&lt;integer&gt; (16 - N)</span> (<em>default =</em> <span class="monospaced">512</span>)
+</dt>
+<dd>
+<p>
+Amount of RAM for the container in MB.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mp[n]</span>: <span class="monospaced">[volume=]&lt;volume&gt; ,mp=&lt;Path&gt; [,acl=&lt;1|0&gt;] [,backup=&lt;1|0&gt;] [,mountoptions=&lt;opt[;opt...]&gt;] [,quota=&lt;1|0&gt;] [,replicate=&lt;1|0&gt;] [,ro=&lt;1|0&gt;] [,shared=&lt;1|0&gt;] [,size=&lt;DiskSize&gt;]</span> 
+</dt>
+<dd>
+<p>
+Use volume as container mount point. Use the special syntax STORAGE_ID:SIZE_IN_GiB to allocate a new volume.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">acl</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Explicitly enable or disable ACL support.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">backup</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Whether to include the mount point in backups (only used for volume mount points).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mountoptions</span>=<span class="monospaced">&lt;opt[;opt...]&gt;</span> 
+</dt>
+<dd>
+<p>
+Extra mount options for rootfs/mps.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mp</span>=<span class="monospaced">&lt;Path&gt;</span> 
+</dt>
+<dd>
+<p>
+Path to the mount point as seen from inside the container.
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAJhUlEQVRoge2ZWWycVxXHf+fce7/v
+m/GaGCde4pI0aQlJC0kRtE1L00JbLIjY4QkeUB9YHhAIJFCExAsKUkE8IAFFPIDUIqhBRSDRBUqC
+CimFFBCBpCWx02IaZ3G2SdyxPZ7vHh6+mcnSZnFjKIge6Wj8zYzvPf9z/me5d8TM+F8WfbkNuFx5
+BcDLLf/fAEZGRmx4eNh6enqsp6fHhoeHbWRk5D9aFeSlVqHNmzfb6H33sHnT7ZQmD5GfOMax6Sm+
+Pl5h1Yc+xpYtW2SBbX1ReUkRGBkZsdH77mHLW95EOv4Ms3ueJh6YYPHUFF9aljJ63z3cf//9/5FI
+vKQIDA8P293L2yhVjjH7t51ocDiviFecF46n7XzBreChhx4qNhH5t0XjJUVgx44ddGUZ9b/vIpQD
+oRQIWSDJAiFL6B9axo4dO4gxAmANWVDLG+Ln82URMRGhVCqRHxonlAPqFXWKC4r6IhI6OMjMzBN4
+/4LlTUQQEZxzZ32QJAlpmrb+p16vU6vVOHXq1AWjN18AnDj0F971vrs4OnmYJVkoDA4FCPUO172I
+Cgnt7SV++4vvsGhRJx3tJbIsRVVpsUnOBBABBVFEClKYwbKr7sTM7EIUnBcA7z21k7t49x1X8JXv
+bOWra7rw5QRtcN8PLCfvvZJvb9vJycpJpg4/hp/N0I4SMQs4Jw0A5zBXHGiCaIZIKABgpGlKjPEF
+0TpT5pUDRXiVt99+Le03r+WzuytM1gO6pB/3+o0cbxvk8yOPMjW6i2iR2lxOjJDHSDMFogmGwzQ7
+rRJAUpAENAGXIZq2AFzQpvkACCEQcahP+cRH3sKHn9zHXU+MM7rtGeD33NDXzaZynZU9gcezpUw9
+X6OzIyOakkfF4QEpPG6nDRNNEA2FSgKimETSNCXPc0II57VpXhEolUqoOrxPSLOMT330Dv5SqfKD
+NR388Y2L+caQsjITNv3pMBs3rOT56ZyZGaM+J0QUxDc0INrWUgggoRGBAOIRAt77hY1AmqaoeJxP
+cN645jVDbNn8Hj73o8fZ/af9mEE9j9y2YRXt5YzZWmRmzjj1/BwhTXAKzitOHEbeWlc0AVwDnCv8
+KoZzjotV33lTSL1HNKAuEtKM1169jM98/E6mTk3x4Nbd7Bk7TEdHRvAeVY+hmDqmZwx1kIkiqrhz
+S2zL+AbNMC6l/80LgHMOEY9oQvBCks5RKpXo7JhFxbhz42pet2aQet1YtLiDJAkIDq8BHwJmwlwO
+UaD0ojsrNKuUReIZyb9gABCHcwWFgg+0lTPyvIRToVzKWLpkMfV6REQplYvmZCj1uuBUSdJwTg8A
+XBdoCZMOsBkQBeGi/J83gBgjmABC8AlJGsjzFLMyaXDM1etEA0VR50iCx6mSZhkiijpPjEpQD+SF
+4WdJrTAewdCFB1CtVlFVVATnhMQnWJqC5aTBk+c5IIgWRoTgSZJAmiZAo1s7hwsppglI+fTiljeY
+nyHkLQotKIAYI4igzpFHISQOiwEnKTEG8hhRVZw6YjRQLfJGHcF7jleqTBw8znXr12MABnv37efY
+iSnesG4tiUsRUQwD7JIAzKsPqCqiRbVwweM04XdPjhJN+dvTBxgbn6G9q59yZx9/3HWEb33vN+zc
+/RzOJ+w/eJLtO8Z5ZNtT7PvHIUQTvvv9X/Lc/mN0d3by3fseRLQwvWh0Fy+h8wbQ2VFG1KM+xfuA
+qufo8So/fejPPD/rqJys8pvf7eLAoeNMHqnw2U9+kH3jVQ5MClMzKUla5obr13HliiEMmDx6gltv
+uY7Vr1nBQF8PJopQ9AFTt/AROFfMjCW9XTy19xB33Hodb924jr1j+/nDk3/nzTdei4jw3nfeyCOP
+bufa1y5jzeoVrcHM8HR3dfHlr/2Q+x94jFtuuh44/9B2PplXDryYLF3STXd3e+t5UXcHY89OsOH6
+NS2Qed7wpM1Rm50G4MGHH2P961Zy3bqreXrPP5mrzwLt5y6/cACq1eoLCKm+TN/SAebmfn8aUG83
+PYs7+cnPH+eqKwd5as8/edc7bi02847pmVkATk1VWbF8AOcca1Yv59DkqcYK0tCL02deACqVCldc
+0YdIwLmEPM9RV6NnUZlPf3wT6oqJcePN6wHhzTeu4/CRCrfctJ4sSxBRli7pYfHEMUSU97/7Th75
+1RP8eec+Yp5zzTVXM9DfDyogBvHS6HTJACYmJnjVoq5GFw0454gCEOnoaMfiNGZFFRFxJGkbywZ6
+i1NWoy9kWYmbb1gHKCHApuGbisVFGyoYUswa5OR5ftF56JIBjI6OMtDfWwAQ35jnc8AVpRXBohVq
+UowECKqK4RBxoE0W6gvGCcEjaOEAwEQWdpgbGxujt7erOLO2mk3R8i0Wz9EiuUGz+qlKEQEUaJbI
+4lTHmTVePKgWzpDGJGpc8CDTlEsuo88++wxXDA0UIUbAOP23KGZKjI48KnkuhcbiPbPCOBoeBikO
+Lk2VxjqNRilaAEqSZGEAbN261bZt+zW33XY7IAXXm6Ou0YhIMamaaUOl5WRrzg00viuKWWxpQUOH
+NAZFQRpD48Xlkig0MTHBB95zG+VSylz1KCbWyDOh2XyK+56IqjWMKigkUnzWnPPFFFRRLZ29SQRU
+ELOGY4pZ6LKOlM07mZ07d/KOtw1TcB4sGkTDiDQ9K1IkrKeYmQC08d7pZLSiRBpE5s7aS0XAHFEK
+AGY51Wr18g80Zmb33nsvX/z8XdSmj2AWOXhwkrxe46+79jB55Dh/3T2GxUhHextdXW2sXN7PNWtW
+IQKDA71FFBoAjIgQkVg/a5+oHrU5zIznDhxk964xKpXKggAoTlWW8+OfPorlOQ//cjsDy1bS2dFO
+W+diVly1iL6+Pqanpzl5qsL4pPHwN3/G1InDlMsZ7Z1tDA30cfWqIa5dexV9fb2YnT7UTxw4xsHJ
+o4yOjfOP8QOMjx/k4OQx7r777lY0zycXvJ02M4sxMjg4SL1eR0TYsGEDw8PD9PX10d7ejogUN3a1
+GqpKCIE8z5mdnUVVqVarbN++nba2Nvbu3csDDzyAqrJ8+atb+zjn6e/vZ/Xq1axatYq1a9fS29tL
+lmUMDQ1RKpXOm9EXvV6v1+tWr9eZnp5mZmaGWq1GjLHF62aiNZ+bnPfe45xrvTZzxMyYmZk56+LX
+zKjX661DvHOOJElIkoRSqYT3/vLvRlW15eHCa4VxzdvmpjZDfubzuXeb3vuzqCEixBhbo0NTkyS5
+PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==">
+</td>
+<td class="content">Must not contain any symlinks for security reasons.</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">quota</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Enable user quotas inside the container (not supported with zfs subvolumes)
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">replicate</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Will include this volume to a storage replica job.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ro</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Read-only mount point
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">shared</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Mark this non-volume mount point as available on all nodes.
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content">This option does not share the mount point automatically, it assumes it is shared already!</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">size</span>=<span class="monospaced">&lt;DiskSize&gt;</span> 
+</dt>
+<dd>
+<p>
+Volume size (read only value).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">volume</span>=<span class="monospaced">&lt;volume&gt;</span> 
+</dt>
+<dd>
+<p>
+Volume, device or directory to mount into the container.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">nameserver</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Sets DNS server IP address for a container. Create will automatically use the setting from the host if you neither set searchdomain nor nameserver.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">net[n]</span>: <span class="monospaced">name=&lt;string&gt; [,bridge=&lt;bridge&gt;] [,firewall=&lt;1|0&gt;] [,gw=&lt;GatewayIPv4&gt;] [,gw6=&lt;GatewayIPv6&gt;] [,hwaddr=&lt;XX:XX:XX:XX:XX:XX&gt;] [,ip=&lt;(IPv4/CIDR|dhcp|manual)&gt;] [,ip6=&lt;(IPv6/CIDR|auto|dhcp|manual)&gt;] [,link_down=&lt;1|0&gt;] [,mtu=&lt;integer&gt;] [,rate=&lt;mbps&gt;] [,tag=&lt;integer&gt;] [,trunks=&lt;vlanid[;vlanid...]&gt;] [,type=&lt;veth&gt;]</span> 
+</dt>
+<dd>
+<p>
+Specifies network interfaces for the container.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">bridge</span>=<span class="monospaced">&lt;bridge&gt;</span> 
+</dt>
+<dd>
+<p>
+Bridge to attach the network device to.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">firewall</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Controls whether this interface&#8217;s firewall rules should be used.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">gw</span>=<span class="monospaced">&lt;GatewayIPv4&gt;</span> 
+</dt>
+<dd>
+<p>
+Default gateway for IPv4 traffic.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">gw6</span>=<span class="monospaced">&lt;GatewayIPv6&gt;</span> 
+</dt>
+<dd>
+<p>
+Default gateway for IPv6 traffic.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">hwaddr</span>=<span class="monospaced">&lt;XX:XX:XX:XX:XX:XX&gt;</span> 
+</dt>
+<dd>
+<p>
+A common MAC address with the I/G (Individual/Group) bit not set.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ip</span>=<span class="monospaced">&lt;(IPv4/CIDR|dhcp|manual)&gt;</span> 
+</dt>
+<dd>
+<p>
+IPv4 address in CIDR format.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ip6</span>=<span class="monospaced">&lt;(IPv6/CIDR|auto|dhcp|manual)&gt;</span> 
+</dt>
+<dd>
+<p>
+IPv6 address in CIDR format.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">link_down</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Whether this interface should be disconnected (like pulling the plug).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mtu</span>=<span class="monospaced">&lt;integer&gt; (64 - 65535)</span> 
+</dt>
+<dd>
+<p>
+Maximum transfer unit of the interface. (lxc.network.mtu)
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">name</span>=<span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Name of the network device as seen from inside the container. (lxc.network.name)
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">rate</span>=<span class="monospaced">&lt;mbps&gt;</span> 
+</dt>
+<dd>
+<p>
+Apply rate limiting to the interface
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">tag</span>=<span class="monospaced">&lt;integer&gt; (1 - 4094)</span> 
+</dt>
+<dd>
+<p>
+VLAN tag for this interface.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">trunks</span>=<span class="monospaced">&lt;vlanid[;vlanid...]&gt;</span> 
+</dt>
+<dd>
+<p>
+VLAN ids to pass through the interface
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">type</span>=<span class="monospaced">&lt;veth&gt;</span> 
+</dt>
+<dd>
+<p>
+Network interface type.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">onboot</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Specifies whether a container will be started during system bootup.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ostype</span>: <span class="monospaced">&lt;alpine | archlinux | centos | debian | devuan | fedora | gentoo | nixos | opensuse | ubuntu | unmanaged&gt;</span> 
+</dt>
+<dd>
+<p>
+OS type. This is used to setup configuration inside the container, and corresponds to lxc setup scripts in /usr/share/lxc/config/&lt;ostype&gt;.common.conf. Value <em>unmanaged</em> can be used to skip and OS specific setup.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">protection</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Sets the protection flag of the container. This will prevent the CT or CT&#8217;s disk remove/update operation.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">rootfs</span>: <span class="monospaced">[volume=]&lt;volume&gt; [,acl=&lt;1|0&gt;] [,mountoptions=&lt;opt[;opt...]&gt;] [,quota=&lt;1|0&gt;] [,replicate=&lt;1|0&gt;] [,ro=&lt;1|0&gt;] [,shared=&lt;1|0&gt;] [,size=&lt;DiskSize&gt;]</span> 
+</dt>
+<dd>
+<p>
+Use volume as container root.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">acl</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Explicitly enable or disable ACL support.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">mountoptions</span>=<span class="monospaced">&lt;opt[;opt...]&gt;</span> 
+</dt>
+<dd>
+<p>
+Extra mount options for rootfs/mps.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">quota</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Enable user quotas inside the container (not supported with zfs subvolumes)
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">replicate</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Will include this volume to a storage replica job.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">ro</span>=<span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Read-only mount point
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">shared</span>=<span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Mark this non-volume mount point as available on all nodes.
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content">This option does not share the mount point automatically, it assumes it is shared already!</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">size</span>=<span class="monospaced">&lt;DiskSize&gt;</span> 
+</dt>
+<dd>
+<p>
+Volume size (read only value).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">volume</span>=<span class="monospaced">&lt;volume&gt;</span> 
+</dt>
+<dd>
+<p>
+Volume, device or directory to mount into the container.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">searchdomain</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Sets DNS search domains for a container. Create will automatically use the setting from the host if you neither set searchdomain nor nameserver.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">startup</span>: `[[order=]\d+] [,up=\d+] [,down=\d+] ` 
+</dt>
+<dd>
+<p>
+Startup and shutdown behavior. Order is a non-negative number defining the general startup order. Shutdown in done with reverse ordering. Additionally you can set the <em>up</em> or <em>down</em> delay in seconds, which specifies a delay to wait before the next VM is started or stopped.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">swap</span>: <span class="monospaced">&lt;integer&gt; (0 - N)</span> (<em>default =</em> <span class="monospaced">512</span>)
+</dt>
+<dd>
+<p>
+Amount of SWAP for the container in MB.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">tags</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Tags of the Container. This is only meta information.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">template</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Enable/disable Template.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">timezone</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Time zone to use in the container. If option isn&#8217;t set, then nothing will be done. Can be set to <em>host</em> to match the host time zone, or an arbitrary time zone option from /usr/share/zoneinfo/zone.tab
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">tty</span>: <span class="monospaced">&lt;integer&gt; (0 - 6)</span> (<em>default =</em> <span class="monospaced">2</span>)
+</dt>
+<dd>
+<p>
+Specify the number of tty available to the container
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">unprivileged</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Makes the container run as unprivileged user. (Should not be modified manually.)
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">unused[n]</span>: <span class="monospaced">[volume=]&lt;volume&gt;</span> 
+</dt>
+<dd>
+<p>
+Reference to unused volumes. This is used internally, and should not be modified manually.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">volume</span>=<span class="monospaced">&lt;volume&gt;</span> 
+</dt>
+<dd>
+<p>
+The volume that is not used currently.
+</p>
+</dd>
+</dl></div>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_copyright_and_disclaimer">
+Copyright and Disclaimer
+ <a class="headerlink" href="#_copyright_and_disclaimer" title="Permalink to this heading"></a>
+</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Copyright &#169; 2007-2022 Proxmox Server Solutions GmbH</p></div>
+<div class="paragraph">
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.</p></div>
+<div class="paragraph">
+<p>This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Affero General Public License for more details.</p></div>
+<div class="paragraph">
+<p>You should have received a copy of the GNU Affero General Public
+License along with this program.  If not, see
+<a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a></p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr></div>
+<div id="footer">
+<div id="footer-text">
+Version 9.0.8<br>
+Last updated
+ Tue Aug  5 16:04:45 CEST 2025
+</div>
+</div>
+</body>
+</html>

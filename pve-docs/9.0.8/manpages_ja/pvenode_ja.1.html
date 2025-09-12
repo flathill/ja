@@ -1,0 +1,1952 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="AsciiDoc 10.2.1" />
+<title>pvenode(1)</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
+  padding: 0;
+  margin: 0;
+}
+pre {
+  white-space: pre-wrap;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; vertical-align: text-bottom; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel0, div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overridden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+</style>
+
+
+<style type="text/css">
+:root {
+    /* pre-defined colors */
+    --pdt-grey-950: hsl(0deg, 0%, 95%);
+    --pdt-grey-750: hsl(0deg, 0%, 75%);
+    --pdt-grey-400: hsl(0deg, 0%, 40%);
+    --pdt-grey-250: hsl(0deg, 0%, 25%);
+    --pdt-grey-150: hsl(0deg, 0%, 15%);
+    --pdt-grey-100: hsl(0deg, 0%, 10%);
+    --pdt-primary-850: hsl(205deg, 100%, 85%);
+    --pdt-primary-800: hsl(205deg, 100%, 80%);
+    --pdt-primary-700: hsl(205deg, 100%, 70%);
+    --pdt-primary-250: hsl(205deg, 100%, 25%);
+    --pdt-secondary-850: hsl(250deg, 100%, 85%);
+}
+
+#header > h1 > .image > img {
+    max-width: 100%;
+}
+
+/* Avoid serif font and increase font-size from 16px to 18px. Makes it more similar to PBS docs */
+body, p {
+    font-family: Open Sans, sans-serif;
+    font-size: 18px;
+}
+
+/* adjust admonition block spacing. this allows for a background on
+ * admonition blocks that doesn't make the elements look to tightly
+ * spaced.
+ */
+div.admonitionblock {
+    border-radius: 3px;
+    margin: 1.5em 0;
+    padding: 0.5em 10% 0.5em 0.5em;
+}
+
+div.admonitionblock td.icon {
+    padding-right: 0.5em;
+}
+
+div.admonitionblock td.icon > img {
+    box-sizing: border-box;
+    padding: 0.15em;
+}
+
+th.tableblock, td.tableblock {
+    border-color: #527bbd80;
+}
+
+/* Fine-tune headings a bit */
+h4 {
+  font-size: 1.1em;
+}
+h5 {
+  font-size: 1.05em;
+}
+h6 {
+  font-size: 1.0em;
+}
+
+/* Support for heading anchor links */
+h3 {
+    border-bottom: unset;
+}
+
+h3 > span {
+    display: inline-block;
+    border-bottom: 2px solid silver;
+}
+
+a, a:visited {
+    color: var(--pdt-primary-250);
+}
+
+a.headerlink {
+    color: var(--pdt-grey-750);
+    padding: 0 4px;
+    text-decoration: none;
+    visibility: hidden;
+}
+
+/* add it as an pseudo-element, so that it does not show up in the ToC */
+a.headerlink::after {
+    content: '\00b6';
+    text-decoration: none;
+}
+
+h1:hover > a.headerlink,
+h2:hover > a.headerlink,
+h3:hover > a.headerlink,
+h4:hover > a.headerlink,
+h5:hover > a.headerlink,
+h6:hover > a.headerlink {
+  visibility: visible;
+}
+
+/* Hide the TOC menu toggler by default */
+.menu-toggler, .nav-toggle, .menu-overlay {
+    display: none;
+}
+
+#toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    padding: 0.5em;
+    transition: transform 0.2s ease-in-out;
+    z-index: 1000;
+}
+
+/* Mobile styles */
+@media only screen and (max-width: 1000px) {
+    /* Avoid overly big header author block */
+    #header span {
+        font-size: 1rem;
+        line-height: 1rem;
+    }
+
+    /* Show toggle button on mobile */
+    .nav-toggle {
+        display: inline-block;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 1001;
+        background-color: var(--pdt-grey-100);
+        color: var(--pdt-grey-950);
+        opacity: 0.6;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 2px;
+        transition: left 0.2s ease-in-out;
+        font-size: 0;
+    }
+    .no-toc.nav-toggle {
+        display: none !important;
+    }
+
+    /* Hide sidebar by default on mobile */
+    #toc {
+        transform: translateX(-100%);
+        line-height: 1.5em;
+        overflow-x: auto;
+    }
+    #content, #header {
+        font-size: 1.25em;
+        line-height: 1.5em;
+    }
+
+    /* Adjust body margin for mobile */
+    body {
+        margin: 1em !important;
+        max-width: 100% !important;
+        overflow-wrap: break-word;
+    }
+
+    /* Show sidebar when checkbox is checked */
+    .menu-toggler:checked ~ #header #toc {
+        transform: translateX(0);
+    }
+
+    /* Show overlay when menu is open */
+    .menu-toggler:checked ~ .menu-overlay {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        cursor: pointer;
+        animation: fadeIn 0.2s;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* Change icon when open */
+    .menu-toggler:checked ~ .nav-toggle::after {
+        content: '✕';
+    }
+    .menu-toggler:not(:checked) ~ .nav-toggle::after {
+        content: '☰';
+    }
+
+    .nav-toggle::after {
+        display: block;
+        font-size: 1.5rem;
+    }
+    .menu-toggler:checked ~ .nav-toggle {
+        left: 24rem;
+    }
+
+}
+
+/* barely useable at such small sizes but can only win here */
+@media only screen and (max-width: 27rem) {
+    body {
+        margin: 0.5em !important;
+    }
+    #toc {
+        font-size: 0.8em;
+    }
+    .menu-toggler:checked ~ .nav-toggle {
+        left: 19rem;
+    }
+}
+
+
+/* Dark mode theme */
+@media screen and (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+        --pdt-body-background: var(--pdt-grey-150);
+        --pdt-text: var(--pdt-grey-950);
+        --pdt-headline: var(--pdt-primary-800);
+        --pdt-link: var(--pdt-primary-700);
+        --pdt-highlighted-text: var(--pdt-primary-850);
+        --pdt-background-sidebar: var(--pdt-grey-100);
+        --pdt-background-listings: var(--pdt-grey-100);
+        --pdt-border: var(--pdt-grey-400);
+        --pdt-border-alt: var(--pdt-grey-250);
+        --pdt-table-border: var(--pdt-grey-400);
+        --pdt-background-admonition: var(--pdt-grey-250);
+    }
+
+    body {
+        color: var(--pdt-text);
+        background-color: var(--pdt-body-background);
+    }
+
+    a, a:visited {
+        color: var(--pdt-link);
+    }
+
+    /* style headlines, titles etc. */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    thead,
+    #author,
+    #toctitle,
+    div.title,
+    td.hdlist1,
+    caption.title,
+    p.tableblock.header {
+        color: var(--pdt-headline);
+    }
+
+    h1,
+    h2,
+    h3,
+    #footer {
+        border-color: var(--pdt-border);
+    }
+
+    /* formatted colored text */
+    dt,
+    em,
+    pre,
+    code,
+    strong,
+    .monospaced {
+        color: var(--pdt-highlighted-text);
+    }
+
+    /* style the table of contents sidebar */
+    div #toc {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-sidebar);
+        border-color: var(--pdt-border-alt);
+    }
+
+    div #toc a:link,
+    div #toc a:visited {
+        color: var(--pdt-text);
+    }
+
+    /* reduce the brigthness of images a bit and make it reversable
+     * through hovering over them.
+     */
+    .image > img {
+        filter: brightness(90%);
+    }
+
+    .image > img:hover {
+        filter: none;
+    }
+
+    /* tables */
+    th.tableblock,
+    td.tableblock,
+    table.tableblock {
+        border-color: var(--pdt-table-border);
+    }
+
+    div.quoteblock,
+    div.verseblock {
+        color: var(--pdt-text);
+        border-color: var(--pdt-border);
+    }
+
+    /* listings (e.g. code snippet blocks) */
+    div.listingblock > div.content {
+        background-color: var(--pdt-background-listings);
+        border-color: var(--pdt-border-alt);
+    }
+
+    /* admonition blocks (e.g. notes, warnings etc.) */
+    div.admonitionblock {
+        color: var(--pdt-text);
+        background-color: var(--pdt-background-admonition);
+    }
+
+    div.admonitionblock td.content {
+        border-color: var(--pdt-border);
+    }
+
+    /* makes the admonition icons appear a bit more consistent, by
+     * adding a white background the shadows in the icons look
+     * "correct"
+     */
+    div.admonitionblock td.icon > img {
+        background-color: white;
+        border-radius: 100%;
+        filter: brightness(95%);
+    }
+
+    /* invert the logo */
+    #header > h1 > .image > img {
+        filter: invert(100%) hue-rotate(180deg) brightness(90%);
+    }
+
+    /* fixes the black text on unorderd lists */
+    ul > li > * {
+        color: var(--pdt-text);
+    }
+
+    .nav-toggle {
+        background-color: var(--pdt-grey-250);
+        color: var(--pdt-grey-950);
+    }
+}
+</style>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install();
+/*]]>*/
+</script>
+<script type="text/javascript">
+var asciiDocTocOrig = asciidoc.toc;
+asciidoc.toc = function(toclevel) {
+    asciiDocTocOrig.call(asciidoc, toclevel);
+    document.querySelectorAll('#toc a').forEach(link => {
+        link.addEventListener('click', () => {
+            document.getElementById('menu-toggler').checked = false;
+        });
+    });
+    document.querySelector('.nav-toggle')?.classList.remove("no-toc");;
+}
+</script>
+</head>
+<body class="article" style="max-width:55em">
+<input id="menu-toggler" type="checkbox" class="menu-toggler" />
+<label for="menu-toggler" class="no-toc nav-toggle">☰</label>
+<div id="header">
+<h1>pvenode(1)</h1>
+<span id="author">Proxmox Server Solutions GmbH</span><br />
+<span id="email" class="monospaced"><a href="mailto:support@proxmox.com">&lt;support@proxmox.com&gt;</a></span><br />
+<span id="revnumber">バージョン 9.0.8</span>
+<span id="revdate">最終更新 Tue Aug 5 16:04:45 CEST 2025</span>
+</div>
+<label for="menu-toggler" class="menu-overlay"></label>
+<div id="content">
+<div class="sect1">
+<h2 id="_name">
+NAME<a class="headerlink" href="#_name" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>pvenode - Proxmox VEノード管理</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_synopsis">
+SYNOPSIS<a class="headerlink" href="#_synopsis" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>pvenode</strong> <span class="monospaced">&lt;COMMAND&gt; [ARGS] [OPTIONS] (コマンド)</span></p></div>
+<div class="paragraph">
+<p><strong>pvenode acme account deactivate</strong> <span class="monospaced">[&lt;name&gt;]</span><strong>(pvenode acme account deactivate</strong> <span class="monospaced">[&lt;name&gt;])</span></p></div>
+<div class="paragraph">
+<p>CAで既存のACMEアカウントを停止します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;name&gt;:</span> <span class="monospaced">&lt;名前&gt;</span><em>(default =</em> <span class="monospaced">デフォルト</span>)</dt>
+<dd>
+<p>
+ACME アカウント設定ファイル名</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode acme account info</strong> <span class="monospaced">[&lt;name&gt;]</span> <span class="monospaced">[FORMAT_OPTIONS]</span><strong>既存のACMEアカウント情報を</strong>返します。</p></div>
+<div class="paragraph">
+<p>既存のACMEアカウント情報を返します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;name&gt;:</span> <span class="monospaced">&lt;name&gt;</span><em>(デフォルト =</em> <span class="monospaced">デフォルト</span>)</dt>
+<dd>
+<p>
+ACME アカウント設定ファイル名</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode acme account list</strong></p></div>
+<div class="paragraph">
+<p>ACMEAccountインデックスを返します。</p></div>
+<div class="paragraph">
+<p><strong>pvenode acme account register</strong> <span class="monospaced">[&lt;name&gt;] {&lt;contact&gt;}</span> <span class="monospaced">[OPTIONS]</span><strong>新規ACMEアカウントを登録します。</strong></p></div>
+<div class="paragraph">
+<p>互換性のあるCAに新しいACMEアカウントを登録します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;name&gt;:</span> <span class="monospaced">&lt;名前&gt;</span><em>(デフォルト =</em> <span class="monospaced">デフォルト</span>)</dt>
+<dd>
+<p>
+ACMEアカウント設定ファイル名</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">&lt;contact&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+連絡先メールアドレス。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">-ディレクトリ</span> <span class="monospaced">^https?://.*</span></dt>
+<dd>
+<p>
+ACME CA ディレクトリエンドポイントの URL。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode acme account update</strong> <span class="monospaced">[&lt;name&gt;]</span> <span class="monospaced">[OPTIONS]</span><strong>既存の</strong>ACMEアカウント情報を<strong>更新</strong>します。</p></div>
+<div class="paragraph">
+<p>既存の ACME アカウント情報を CA に更新します。注意: 新しいアカウント情報を指定しないと、更新がトリガされます。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;name&gt;:</span> <span class="monospaced">&lt;name&gt;</span><em>(デフォルト =</em> <span class="monospaced">デフォルト</span>)</dt>
+<dd>
+<p>
+ACMEアカウント設定ファイル名</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">-コンタクト</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+連絡先メールアドレス</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode acme cert order</strong> <span class="monospaced">[OPTIONS]</span>新しい<strong>証明書を</strong>ACMEに<strong>注文します</strong>。</p></div>
+<div class="paragraph">
+<p>ACME 互換 CA に新しい証明書を注文します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--force</span> <span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+既存のカスタム証明書の上書き</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode acme cert renew</strong> <span class="monospaced">[OPTIONS]</span>CA から既存の証明書を<strong>更新します</strong>。</p></div>
+<div class="paragraph">
+<p>CA から既存の証明書を更新します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--force</span> <span class="monospaced">&lt;ブール値&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+有効期限が 30 日以上先でも更新を強制します。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode acme cert revoke [OPTIONS] CA から既存の証明書を失効させます。</strong></p></div>
+<div class="paragraph">
+<p>CA から既存の証明書を失効させます。</p></div>
+<div class="paragraph">
+<p><strong>pvenode acme plugin add</strong> <span class="monospaced">&lt;type&gt; &lt;id&gt;</span> <span class="monospaced">[OPTIONS]</span><strong>ACMEプラグイン</strong>構成を<strong>追加します</strong>。</p></div>
+<div class="paragraph">
+<p>ACMEプラグイン構成を追加します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;type&gt;:</span> <span class="monospaced">&lt;dns | standalone&gt; (スタンドアロン)</span></dt>
+<dd>
+<p>
+ACME チャレンジタイプ</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">&lt;id&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+ACMEプラグインID名</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--api</span> <span class="monospaced">&lt;1984hosting | acmedns | acmeproxy | active24 | ad | ali | alviy | anx | artfiles | arvan | aurora | autodns | aws | azion | azure | beget | bookmyname | bunny | cf | clouddns | cloudns| cn | conoha | constellix | cpanel | curanet | cyon | da | ddnss | desec | df | dgon | dnsexit | dnshome | dnsimple | dnsservices | doapi | domeneshop | dp | dpi | dreamhost | duckdns| durabledns | dyn | dynu | dynv6 | easydns | edgecenter | edgedns | euserv | exoscale | fornex | freedns | freemyip | gandi_livedns | gcloud | gcore | gd | geoscaling | googledomains |he｜he_ddns｜hetzner｜hexonet｜hostingde｜huaweicloud｜infoblox｜infomaniak｜internetbs｜inwx｜ionos｜ionos_cloud｜ipv64｜ispconfig｜jd｜joker｜kappernet｜kas｜kinghost| knot | la | leaseweb | lexicon | limacity | linode | linode_v4 | loopia | lua | maradns | me | miab | mijnhost | misaka | myapi | mydevil | mydnsjp | mythic_beasts | namecheap |namecom | namesilo | nanelo | nederhost | neodigit | netcup | netlify | nic | njalla | nm | nsd | nsone | nsupdate | nw | oci | omglol | one | online | openprovider | openstack | opnsense |ovh｜pdns｜pleskxml｜pointhq｜porkbun｜rackcorp｜rackspace｜rage4｜rcode0｜regru｜scaleway｜schlundtech｜selectel｜selfhost｜servercow｜simply｜technitium｜tele3｜。tencent｜timeweb｜transip｜udr｜ultra｜unoeuro｜variomedia｜veesp｜vercel｜vscale｜vultr｜websupport｜west_cn｜world4you｜yandex360｜yc｜zilore｜zone｜zoneedit｜zonomi＞。</span>
+</dt>
+<dd>
+<p>
+APIプラグイン名</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--data</span> <span class="monospaced">1行に1つのキーと値のペアを持つファイルで、プラグイン設定に保存するためにbase64urlエンコードされます。</span>
+</dt>
+<dd>
+<p>
+DNSプラグインデータ。(base64エンコード)</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--disable</span> <span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+コンフィグを無効にするフラグ。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--nodes</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+クラスタノード名のリスト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--validation-delay</span> <span class="monospaced">&lt;integer&gt; (0 - 172800)</span><em>(デフォルト =</em> <span class="monospaced">30</span>)</dt>
+<dd>
+<p>
+バリデーションを要求する前に待つ、秒単位の追加遅延。DNSレコードの長いTTLに対応できるようにします。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode acme plugin config</strong> <span class="monospaced">&lt;id&gt;</span> <span class="monospaced">[FORMAT_OPTIONS]</span>ACME<strong>プラグイン構成を取得</strong>します。</p></div>
+<div class="paragraph">
+<p>ACMEプラグイン構成を取得します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;id&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+ACMEプラグインインスタンスの一意な識別子。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode acme plugin list</strong> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span>ACME<strong>プラグインのインデックスを取得</strong>します。</p></div>
+<div class="paragraph">
+<p>ACME プラグインのインデックスを取得します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--type</span> <span class="monospaced">&lt;dns | スタンドアロン</span></dt>
+<dd>
+<p>
+特定のタイプの ACME プラグインのみをリストします。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode acme plugin remove</strong> <span class="monospaced">&lt;id&gt;</span><strong>ACMEプラグイン</strong>構成を<strong>削除します</strong>。</p></div>
+<div class="paragraph">
+<p>ACME プラグイン構成を削除します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;id&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+ACMEプラグインインスタンスの一意の識別子。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode acme plugin set</strong> <span class="monospaced">&lt;id&gt;</span> <span class="monospaced">[OPTIONS]</span>ACME<strong>プラグイン構成を更新</strong>します。</p></div>
+<div class="paragraph">
+<p>ACME プラグイン構成を更新します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;id&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+ACMEプラグインID名</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--api</span> <span class="monospaced">&lt;1984hosting | acmedns | acmeproxy | active24 | ad | ali | alviy | anx | artfiles | arvan | aurora | autodns | aws | azion | azure | beget | bookmyname | bunny | cf | clouddns | cloudns| cn | conoha | constellix | cpanel | curanet | cyon | da | ddnss | desec | df | dgon | dnsexit | dnshome | dnsimple | dnsservices | doapi | domeneshop | dp | dpi | dreamhost | duckdns| durabledns | dyn | dynu | dynv6 | easydns | edgecenter | edgedns | euserv | exoscale | fornex | freedns | freemyip | gandi_livedns | gcloud | gcore | gd | geoscaling | googledomains |he｜he_ddns｜hetzner｜hexonet｜hostingde｜huaweicloud｜infoblox｜infomaniak｜internetbs｜inwx｜ionos｜ionos_cloud｜ipv64｜ispconfig｜jd｜joker｜kappernet｜kas｜kinghost| knot | la | leaseweb | lexicon | limacity | linode | linode_v4 | loopia | lua | maradns | me | miab | mijnhost | misaka | myapi | mydevil | mydnsjp | mythic_beasts | namecheap |namecom | namesilo | nanelo | nederhost | neodigit | netcup | netlify | nic | njalla | nm | nsd | nsone | nsupdate | nw | oci | omglol | one | online | openprovider | openstack | opnsense |ovh｜pdns｜pleskxml｜pointhq｜porkbun｜rackcorp｜rackspace｜rage4｜rcode0｜regru｜scaleway｜schlundtech｜selectel｜selfhost｜servercow｜simply｜technitium｜tele3｜。tencent｜timeweb｜transip｜udr｜ultra｜unoeuro｜variomedia｜veesp｜vercel｜vscale｜vultr｜websupport｜west_cn｜world4you｜yandex360｜yc｜zilore｜zone｜zoneedit｜zonomi&gt;をご覧ください。</span>
+</dt>
+<dd>
+<p>
+APIプラグイン名</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--data</span> <span class="monospaced">1行に1つのキーと値のペアを持つファイルで、プラグイン設定に保存するためにbase64urlエンコードされます。</span>
+</dt>
+<dd>
+<p>
+DNSプラグインのデータ。(base64エンコード)</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--削除</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+削除したい設定のリスト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">-ダイジェスト</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+現在の設定ファイルのダイジェストが異なる場合、変更を防止します。これは同時変更を防ぐために使用できます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--disable</span> <span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+設定を無効にするフラグ。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--nodes</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+クラスタノード名のリスト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--validation-delay</span> <span class="monospaced">&lt;integer&gt; (0 - 172800)</span><em>(デフォルト =</em> <span class="monospaced">30</span>)</dt>
+<dd>
+<p>
+検証を要求する前に待つ追加遅延時間（秒）。DNSレコードの長いTTLに対処できるようにします。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode cert delete</strong> <span class="monospaced">[&lt;再起動&gt;]</span><strong>カスタム証明</strong>書チェーンおよびカスタム証明書チェーンを<strong>削除</strong> <span class="monospaced">します</span>。</p></div>
+<div class="paragraph">
+<p>カスタム証明書チェーンとキーを削除します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;restart&gt;:</span> <span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+pveproxyを再起動します。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode cert info</strong> <span class="monospaced">[FORMAT_OPTIONS]</span><strong>ノードの証明書に関する情報を取得</strong>します。</p></div>
+<div class="paragraph">
+<p>ノードの証明書に関する情報を取得します。</p></div>
+<div class="paragraph">
+<p><strong>pvenode cert set</strong> <span class="monospaced">&lt;certificates&gt; [&lt;key&gt;]</span> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span>カスタム証明書チェーンをアップロードまたは更新します。</p></div>
+<div class="paragraph">
+<p>カスタム証明書チェーンとキーをアップロードまたは更新します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;certificates&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+PEM エンコードされた証明書 (チェーン)。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">&lt;key&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+PEM エンコードされた秘密鍵。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--force</span> <span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+既存のカスタムまたは ACME 証明書ファイルを上書きします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--restart</span> <span class="monospaced">&lt;boolean&gt;</span><em>(default =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+pveproxy を再起動します。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode config get</strong> <span class="monospaced">[OPTIONS]</span><strong>ノード構成オプションを取得します</strong>。</p></div>
+<div class="paragraph">
+<p>ノード構成オプションを取得します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--property</span> <span class="monospaced">&lt;acme | acmedomain0 | acmedomain1 | acmedomain2 | acmedomain3 | acmedomain4 | acmedomain5 | ballooning-target | description | startall-onboot-delay | wakeonlan&gt;</span><em>(default =</em> <span class="monospaced">all</span>)</dt>
+<dd>
+<p>
+ノード設定から特定のプロパティのみを返します。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode config set</strong> <span class="monospaced">[OPTIONS]</span><strong>ノード構成オプションを設定</strong>します。</p></div>
+<div class="paragraph">
+<p>ノード構成オプションを設定します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--acme</span> <span class="monospaced">[アカウント=&lt;名前&gt;] [,ドメイン=&lt;ドメイン[;ドメイン;...]&gt;]]。</span>
+</dt>
+<dd>
+<p>
+ノード固有の ACME 設定。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--acmedomain[n]</span> <span class="monospaced">[domain=]&lt;domain&gt; [,alias=&lt;ドメイン&gt;] [,plugin=&lt;プラグイン設定名&gt;]</span><span class="monospaced">--</span>バルーニングターゲット&lt;ballooning-target</dt>
+<dd>
+<p>
+ACME ドメインおよび検証プラグイン</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--ballooning-target</span> <span class="monospaced">&lt;integer&gt; (0 - 100)</span><em>(デフォルト =</em> <span class="monospaced">80</span>)</dt>
+<dd>
+<p>
+バルーニングのRAM使用量の目標値（総メモリのパーセント単位）</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--delete</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+削除する設定のリスト。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">-説明</span> <span class="monospaced">&lt;string</span></dt>
+<dd>
+<p>
+ノードの説明。ウェブインターフェースのノードノートパネルに表示されます。これは設定ファイル内のコメントとして保存されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">-ダイジェスト</span> <span class="monospaced">&lt;string</span></dt>
+<dd>
+<p>
+Prevent changes if current configuration file has different SHA1 digest（現在の設定ファイルのSHA1ダイジェストが異なる場合に変更を防止）。これは、同時変更を防止するために使用できます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--startall-onboot-delay</span> <span class="monospaced">&lt;integer&gt; (0 - 300)</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+オンブートを有効にしたすべての仮想ゲストを起動する前の初期遅延時間（秒）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--wakeonlan</span> <span class="monospaced">[mac=]&lt;MACアドレス&gt; [,bind-interface=&lt;バインドインターフェイス&gt;] [,broadcast-address=&lt;IPv4ブロードキャストアドレス&gt;</span>]<span class="monospaced">--extraargs</span>&lt;配列</dt>
+<dd>
+<p>
+ノード固有の wake on LAN 設定。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode help</strong> <span class="monospaced">[OPTIONS]</span><strong>ノード</strong>構成<strong>オプションを</strong>設定します。</p></div>
+<div class="paragraph">
+<p>指定したコマンドに関するヘルプを取得します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--extra-args</span> <span class="monospaced">&lt;array&gt;</span></dt>
+<dd>
+<p>
+特定のコマンドのヘルプを表示します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--verbose</span> <span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+詳細出力フォーマット</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode migrateall</strong> <span class="monospaced">&lt;target&gt;</span> <span class="monospaced">[OPTIONS]</span><strong>すべての</strong>VMと<strong>コンテナを移行します。</strong></p></div>
+<div class="paragraph">
+<p>すべてのVMとコンテナを移行します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;ターゲット&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+ターゲットノード</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--maxworkers</span> <span class="monospaced">&lt;integer&gt; (1 - N</span>)</dt>
+<dd>
+<p>
+並列マイグレーションジョブの最大数。設定されていない場合は、datacenter.cfgの'max_workers'を使用します。どちらか一方を設定する必要があります！</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--vms</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+これらの ID を持つゲストのみを考慮します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--with-local-disks</span> <span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+ローカルディスクのライブストレージ移行を有効にします</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode startall</strong> <span class="monospaced">[OPTIONS]</span><strong>すべての</strong>VMと<strong>コンテナを起動します。</strong></p></div>
+<div class="paragraph">
+<p>このノードにあるすべてのVMとコンテナ（デフォルトではonboot=1のもののみ）を起動します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--force</span> <span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">off</span>)</dt>
+<dd>
+<p>
+仮想ゲストの<em>onboot</em>が設定されていないか off に設定されていても start コマンドを発行します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--vms</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+このカンマ区切りの VMID リストからのゲストのみを考慮します。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode stopall</strong> <span class="monospaced">[OPTIONS]</span><strong>すべての</strong>VMと<strong>コンテナを停止します</strong>。</p></div>
+<div class="paragraph">
+<p>すべてのVMとコンテナを停止します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--force-stop</span> <span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+タイムアウト後の強制ハード停止</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--timeout</span> <span class="monospaced">&lt;integer&gt; (0 - 7200)</span><em>(デフォルト =</em> <span class="monospaced">180</span>)</dt>
+<dd>
+<p>
+各ゲストシャットダウンタスクのタイムアウト。<span class="monospaced">force-stop</span> に応じて、シャットダウンは単に中止されるか、ハードストップが強制されます。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--vms</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+これらの ID を持つゲストのみを考慮します。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode task list</strong> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span>1つの<strong>ノードのタスク・リストを</strong>読み取ります。</p></div>
+<div class="paragraph">
+<p>1つのノードのタスク・リスト（終了したタスク）を読み取ります。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--errors</span> <span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+ステータスがERRORのタスクのみをリストします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--limit</span> <span class="monospaced">&lt;integer&gt; (0 - N)</span><em>(デフォルト =</em> <span class="monospaced">50</span>)</dt>
+<dd>
+<p>
+この量のタスクのみをリストします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--since</span> <span class="monospaced">&lt;整数</span></dt>
+<dd>
+<p>
+この UNIX エポック以降のタスクのみをリストします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--ソース</span> <span class="monospaced">&lt;active | all | archive&gt;</span><em>(default =</em> <span class="monospaced">archive</span>)</dt>
+<dd>
+<p>
+アーカイブされた、アクティブな、あるいは全てのタスクをリストします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--start</span> <span class="monospaced">&lt;integer&gt; (0 - N)</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+このオフセットから始まるタスクをリストします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--statusfilter</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+返すべきタスク状態のリスト</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--typefilter</span> <span class="monospaced">&lt;string</span></dt>
+<dd>
+<p>
+このタイプ（vzstart、vzdump など）のタスクのみをリストします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--until</span> <span class="monospaced">&lt;integer</span></dt>
+<dd>
+<p>
+この UNIX エポックまでのタスクだけをリストします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--userfilter</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+このユーザーからのタスクのみをリストします。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--vmid</span> <span class="monospaced">&lt;integer&gt; (100 - 999999999</span>)</dt>
+<dd>
+<p>
+この VM のタスクだけをリストします。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode task log</strong> <span class="monospaced">&lt;upid&gt;</span> <span class="monospaced">[OPTIONS]</span><strong>タスク・ログを読み取ります。</strong></p></div>
+<div class="paragraph">
+<p>タスクログを読み取ります。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;upid&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+タスクの一意な ID。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--ダウンロード</span> <span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+タスクログファイルをダウンロードするかどうか。このパラメーターは他のパラメーターと併用できません。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--start</span> <span class="monospaced">&lt;integer&gt; (0 - N)</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+タスクログの読み込みはこの行から開始</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode task status</strong> <span class="monospaced">&lt;upid&gt;</span> <span class="monospaced">[FORMAT_OPTIONS]</span><strong>タスクステータスを</strong>読み取ります。</p></div>
+<div class="paragraph">
+<p>タスクステータスを表示します。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;upid&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+タスクのユニークID。</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode wakeonlan</strong> <span class="monospaced">&lt;ノード</span></p></div>
+<div class="paragraph">
+<p><em>wake on LAN</em>ネットワークパケットでノードのウェイクを試みます。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;node&gt;:</span> <span class="monospaced">&lt;文字列</span></dt>
+<dd>
+<p>
+ウェイクオンLANパケットのターゲットノード</p>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description">
+説明<a class="headerlink" href="#_description" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Proxmox VEのノード管理ツール<span class="monospaced">(pvenode</span>)では、ノード固有の設定やリソースを制御できます。</p></div>
+<div class="paragraph">
+<p>現在<span class="monospaced">pvenode</span>では、ノードの説明の設定、ノードのゲストに対するさまざまな一括操作の実行、ノードのタスク履歴の表示、<span class="monospaced">pveproxy</span> を介した API および Web GUI で使用されるノードの SSL 証明書の管理を行うことができます。</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_format_options">
+フォーマットオプション<a class="headerlink" href="#_format_options" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>出力形式は<span class="monospaced">--output-format</span>パラメータを使用して指定できます。デフォルトのフォーマット・<em>テキストは</em>、ASCII-art を使用してテーブルの周りに美しいボーダーを描画します。さらに、いくつかの値を人間が読めるようなテキストに変換したりします：</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Unix のエポックは ISO 8601 の日付文字列で表示されます。</p>
+</li>
+<li>
+<p>
+期間は週/日/時/分/秒のカウントで表示されます。</p>
+</li>
+<li>
+<p>
+バイトサイズの値は、単位<span class="monospaced">（B</span>、<span class="monospaced">KiB</span>、<span class="monospaced">MiB</span>、<span class="monospaced">GiB</span>、<span class="monospaced">TiB</span>、<span class="monospaced">PiB</span>）を含みます。</p>
+</li>
+<li>
+<p>
+端数はパーセンテージで表示され、1.0は100%として表示されます。</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>また、<span class="monospaced">--quiet</span>オプションを使えば、出力を完全に抑制することもできます。</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--human-readable</span> <span class="monospaced">&lt;boolean&gt;</span><em>(default =</em> <span class="monospaced">1</span>)</dt>
+<dd>
+<p>
+出力レンダリング関数を呼び出して、人間が読めるテキストを生成します。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--noborder</span> <span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+ボーダーを描画しません（<em>テキスト</em>形式の場合）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--noheader</span> <span class="monospaced">&lt;boolean&gt;</span><em>(デフォルト =</em> <span class="monospaced">0</span>)</dt>
+<dd>
+<p>
+列ヘッダーを表示しません（<em>テキスト</em>形式の場合）。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--output-format</span> <span class="monospaced">&lt;json | json-pretty | text | yaml&gt;</span><em>(default =</em> <span class="monospaced">text</span>)</dt>
+<dd>
+<p>
+出力形式。</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--quiet</span> <span class="monospaced">&lt;ブール値</span></dt>
+<dd>
+<p>
+結果の印刷を抑制します。</p>
+</dd>
+</dl></div>
+<div class="sect2">
+<h3 id="_examples">
+<span>例</span> <a class="headerlink" href="#_examples" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<div class="title">外部から提供された証明書をインストールします。</div><p><span class="monospaced">pvenode cert set certificate.crt certificate.key -force</span></p></div>
+<div class="paragraph">
+<p>どちらのファイルもPEMエンコードされている必要があります。<span class="monospaced">certificate.keyには</span>秘密鍵が含まれ、<span class="monospaced">certificate.crtには</span>証明書チェーン全体が含まれます。</p></div>
+<div class="listingblock">
+<div class="title">ACMEアカウントをセットアップし、ローカルノード用の証明書を注文します。</div>
+<div class="content monospaced">
+<pre>pvenode acme account register default mail@example.invalid pvenode config set --acme domains=example.invalid pvenode acme cert order systemctl restart pveproxy</pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_wake_on_lan">
+<span>ウェイクオンLAN</span> <a class="headerlink" href="#_wake_on_lan" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>Wake-on-LAN (WoL)は、マジックパケットを送信することで、ネットワーク内でスリープしているコンピュータの電源を入れることができます。少なくとも1つのNICがこの機能をサポートし、コンピュータのファームウェア(BIOS/UEFI)設定でそれぞれのオプションを有効にする必要があります。オプション名は<em>Enable Wake-on-Lan</em>から<em>Power On By PCIE Device</em> まで様々で、不明な場合はマザーボードのベンダーマニュアルを確認してください：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>ethtool &lt;interface&gt; | grep Wake-on</pre>
+</div></div>
+<div class="paragraph">
+<p><span class="monospaced">pvenode は</span>、WoL を介してクラスタのスリープメンバーを目覚めさせることができます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>pvenode wakeonlan &lt;ノード</pre>
+</div></div>
+<div class="paragraph">
+<p>これは、<span class="monospaced">wakeonlan</span>プロパティから取得した<span class="monospaced">&lt;node&gt;</span>の MAC アドレスを含む WoL マジックパケットを UDP ポート 9 にブロードキャストします。ノード固有の<span class="monospaced">wakeonlan</span>プロパティは、次のコマンドで設定できます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>pvenode config set -wakeonlan XX:XX:XX:XX:XX</pre>
+</div></div>
+<div class="paragraph">
+<p>WoL パケットを送信するインターフェースはデフォルトルートから決定されます。これは、以下のコマンドで<span class="monospaced">bind-interface</span>を設定することで上書きできます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>pvenode config set -wakeonlan XX:XX:XX:XX:XX,bind-interface=&lt;iface-name&gt;.</pre>
+</div></div>
+<div class="paragraph">
+<p>WoLパケットを送信するときに使用されるブロードキャストアドレス（デフォルトは<span class="monospaced">255.255.255.255</span>）は、さらに以下のコマンドを使用して明示的に<span class="monospaced">broadcast-addressを</span>設定することで変更できます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>pvenode config set -wakeonlan XX:XX:XX:XX:XX,broadcast-address=&lt;broadcast-address&gt;.</pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_task_history">
+<span>タスク履歴</span> <a class="headerlink" href="#_task_history" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>バックアップジョブの失敗など、サーバーの問題をトラブルシューティングする場合、以前に実行したタスクのログがあると役立つことがよくあります。Proxmox VEでは、<span class="monospaced">pvenode task</span>コマンドでノードのタスク履歴にアクセスできます。</p></div>
+<div class="paragraph">
+<p><span class="monospaced">list</span>サブコマンドを使用すると、ノードの終了したタスクのフィルタリングされたリストを取得できます。例えば、エラーで終了したVM<em>100に</em>関連するタスクのリストを取得するには、次のようにコマンドを実行します：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>pvenode task list --errors --vmid 100</pre>
+</div></div>
+<div class="paragraph">
+<p>タスクのログはUPIDを使って出力できます：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>pvenode task log UPID:pve1:00010D94:001CA6EA:6124E1B9:vzdump:100:root@pam：</pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_bulk_guest_power_management">
+<span>一括ゲスト電源管理</span> <a class="headerlink" href="#_bulk_guest_power_management" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>多数のVM/コンテナがある場合、ゲストの起動と停止は、<span class="monospaced">pvenodeの</span> <span class="monospaced">startall</span>サブコマンドと<span class="monospaced">stopall</span>サブコマンドで一括して実行できます。  デフォルトでは、<span class="monospaced">pvenode startallは</span>ブート時に自動的に起動するように設定されたVM/コンテナのみを起動します（<a href="qm.1.html#qm_startup_and_shutdown">仮想マシンの自動起動とシャットダウン</a>参照）。両コマンドには<span class="monospaced">--vms</span>オプションもあり、停止/起動されるゲストを指定されたVMIDに制限します。</p></div>
+<div class="paragraph">
+<p>例えば、VM<em>100</em>、<em>101</em>、<em>102を</em>、<span class="monospaced">オンブートが</span>設定されているかどうかに関係なく起動するには、--vmsオプションを使用します：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>pvenode startall --vms 100,101,102 --force</pre>
+</div></div>
+<div class="paragraph">
+<p>これらのゲスト（および実行中の他のゲスト）を停止するには、コマンドを使用します：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>pvenode stopall</pre>
+</div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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" />
+</td>
+<td class="content">stopallコマンドはまずクリーンシャットダウンを試み、すべてのゲストが正常にシャットダウンされるか、オーバーライド可能なタイムアウト（デフォルトでは3分）が切れるまで待機します。これが発生し、force-stopパラメーターが明示的に0（false）に設定されないと、まだ実行中のすべての仮想ゲストがハード停止されます。</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="first_guest_boot_delay">
+<span>最初のゲストの起動遅延</span> <a class="headerlink" href="#first_guest_boot_delay" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>VM/コンテナが起動の遅い外部リソース（NFSサーバなど）に依存している場合、Proxmox VEが起動してから、自動起動に設定されている最初のVM/コンテナが起動するまでにノードごとに遅延を設定することもできます（<a href="qm.1.html#qm_startup_and_shutdown">仮想マシンの自動起動と自動シャットダウンを</a>参照）。</p></div>
+<div class="paragraph">
+<p>これを実現するには、次のように設定します(ここで<span class="monospaced">10は</span>秒単位の遅延を表します)：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>pvenode config set --startall-onboot-delay 10</pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_bulk_guest_migration">
+<span>ゲストの一括移行</span> <a class="headerlink" href="#_bulk_guest_migration" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p>アップグレードの状況により、すべてのゲストを1つのノードから別のノードに移行する必要がある場合、<span class="monospaced">pvenodeには</span>一括移行のための<span class="monospaced">migrateall</span>サブコマンドも用意されています。デフォルトでは、このコマンドはシステム上のすべてのゲストをターゲットノードに移行します。しかし、ゲストのセットだけを移行するように設定することもできます。</p></div>
+<div class="paragraph">
+<p>たとえば、ローカルディスクのライブマイグレーションを有効にして、VM<em>100</em>、<em>101</em>、および<em>102を</em>ノード<em>pve</em>2に移行するには、次のように実行します：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>pvenode migrateall pve2 --vms 100,101,102 --with-local-disks。</pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="ballooning-target">
+<span>バルーン用の RAM 使用量ターゲット</span> <a class="headerlink" href="#ballooning-target" title="Permalink to this heading"></a></h3>
+<div class="paragraph">
+<p><a href="qm.1.html#qm_ballooning">自動メモリ割り当ての</a>目標パーセンテージのデフォルトは80%です。このターゲットは、<span class="monospaced">ballooning-target</span>プロパティを設定することで、ノードごとにカスタマイズできます。たとえば、ホスト・メモリ使用率を90%に設定するには、次のようにします：</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>pvenode config set --ballooning-target 90</pre>
+</div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_copyright_and_disclaimer">
+著作権と免責事項<a class="headerlink" href="#_copyright_and_disclaimer" title="Permalink to this heading"></a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>著作権 © 2007-2022 Proxmox Server Solutions GmbH</p></div>
+<div class="paragraph">
+<p>このプログラムはフリーソフトウェアです。Free Software Foundationが発行したGNU Affero General Public Licenseのバージョン3、またはそれ以降のバージョンのいずれかに従って、再配布および/または変更することができます。</p></div>
+<div class="paragraph">
+<p>このプログラムは有用であることを期待して配布されていますが、商品性や特定の目的への適合性についての暗黙の保証もなく、いかなる保証もありません。詳細はGNU Affero General Public Licenseをご覧ください。</p></div>
+<div class="paragraph">
+<p>あなたはこのプログラムとともにGNU Affero General Public Licenseのコピーを受け取っているはずです。  そうでない場合は、<a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>をご覧ください。</p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+バージョン 9.0.8<br>
+最終更新 Tue Aug 5 16:04:45 CEST 2025</div>
+</div>
+</body>
+</html>
+
+<!-- ***** END FILE ***** -->
+
